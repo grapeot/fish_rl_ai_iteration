@@ -28,6 +28,8 @@ class FishEscapeEnv(gym.Env):
         divergence_reward_coef: float = 0.0,
         density_penalty_coef: float = 0.0,
         density_target: float = 0.4,
+        predator_spawn_jitter_radius: float = 0.0,
+        predator_pre_roll_steps: int = 0,
     ):
         super().__init__()
         
@@ -65,6 +67,8 @@ class FishEscapeEnv(gym.Env):
         self.divergence_reward_coef = float(divergence_reward_coef)
         self.density_penalty_coef = float(density_penalty_coef)
         self.density_target = float(np.clip(density_target, 0.0, 1.0))
+        self.predator_spawn_jitter_radius = max(float(predator_spawn_jitter_radius), 0.0)
+        self.predator_pre_roll_steps = max(int(predator_pre_roll_steps), 0)
 
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
@@ -139,7 +143,19 @@ class FishEscapeEnv(gym.Env):
         
         # 初始化大鱼位置（圆心附近）
         self.predator_pos = np.array([0.0, 0.0], dtype=np.float32)
+        if self.predator_spawn_jitter_radius > 0:
+            max_radius = min(self.predator_spawn_jitter_radius, self.STAGE_RADIUS * 0.8)
+            jitter_radius = self.np_random.uniform(0.0, max_radius)
+            jitter_angle = self.np_random.uniform(0.0, 2 * np.pi)
+            offset = np.array([
+                jitter_radius * np.cos(jitter_angle),
+                jitter_radius * np.sin(jitter_angle),
+            ], dtype=np.float32)
+            self.predator_pos = offset
         self.predator_vel = np.array([self.PREDATOR_INITIAL_VX, self.PREDATOR_INITIAL_VY], dtype=np.float32)
+
+        if self.predator_pre_roll_steps > 0:
+            self._apply_predator_pre_roll(self.predator_pre_roll_steps)
         
         # 获取初始观测
         observations = self._get_observations()
@@ -148,6 +164,11 @@ class FishEscapeEnv(gym.Env):
             self._render_frame()
 
         return observations, {}
+
+    def _apply_predator_pre_roll(self, steps: int):
+        """Advance predator only before正式计时，避免 step=1 的空间重叠。"""
+        for _ in range(max(int(steps), 0)):
+            self._update_predator()
 
     def set_density_penalty(self, coef: float, target: Optional[float] = None):
         """动态更新密度惩罚参数，供训练过程中调整 ramp。"""

@@ -1,0 +1,2060 @@
+import argparse
+import json
+import pickle
+import sys
+from collections import deque
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Deque, Dict, List, Literal, Optional, Sequence, Set, Tuple
+
+import gymnasium as gym
+import imageio.v2 as imageio
+import matplotlib
+
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+import numpy as np
+from torch.utils.tensorboard import SummaryWriter
+from stable_baselines3 import PPO
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from fish_env import FishEscapeEnv
+
+EXPERIMENT_DIR = Path(__file__).resolve().parent
+ARTIFACTS_DIR = EXPERIMENT_DIR / "artifacts"
+CHECKPOINT_DIR = ARTIFACTS_DIR / "checkpoints"
+LOG_DIR = ARTIFACTS_DIR / "logs"
+TB_LOG_DIR = ARTIFACTS_DIR / "tb_logs"
+PLOTS_DIR = ARTIFACTS_DIR / "plots"
+MEDIA_DIR = ARTIFACTS_DIR / "media"
+
+for _dir in (CHECKPOINT_DIR, LOG_DIR, TB_LOG_DIR, PLOTS_DIR, MEDIA_DIR):
+    _dir.mkdir(parents=True, exist_ok=True)
+
+MAX_STEPS = 500
+
+
+class TrainingSignals:
+    """Mutable container so callbacks可以读取实时实验信号（如 escape boost gating）。"""
+
+    def __init__(self, escape_boost_speed: float = 0.0):
+        self.escape_boost_speed = float(escape_boost_speed)
+        self.phase_base_escape_boost_speed = float(escape_boost_speed)
+
+
+class AdaptiveBoostController:
+    """Adjust escape boost speed based on rolling first_death_p10 heuristics."""
+
+    def __init__(
+        self,
+        *,
+        window: int,
+        lower_p10: float,
+        upper_p10: float,
+        low_speed: float,
+        high_speed: float,
+        min_iteration: int = 1,
+    ):
+        self.window = max(int(window), 1)
+        self.lower_p10 = float(lower_p10)
+        self.upper_p10 = float(upper_p10)
+        self.low_speed = float(low_speed)
+        self.high_speed = float(high_speed)
+        self.min_iteration = max(int(min_iteration), 1)
+        self._history: Deque[float] = deque(maxlen=self.window)
+
+    def update(self, iteration: int, p10_value: Optional[float]) -> Optional[Tuple[float, float]]:
+        if p10_value is None or np.isnan(p10_value):
+            return None
+        self._history.append(float(p10_value))
+        if iteration < self.min_iteration or len(self._history) < self.window:
+            return None
+        window_metric = float(np.mean(self._history))
+        target: Optional[float] = None
+        if window_metric < self.lower_p10:
+            target = self.low_speed
+        elif window_metric > self.upper_p10:
+            target = self.high_speed
+        if target is None:
+            return None
+        return target, window_metric
+
+
+class SingleFishEnv(gym.Env):
+    """Wrap FishEscapeEnv to expose one observation per step while sampling all fish."""
+
+    metadata = FishEscapeEnv.metadata
+
+    def __init__(
+        self,
+        num_fish: int = 1,
+        seed: Optional[int] = None,
+        sampling_mode: Literal["round_robin", "random"] = "round_robin",
+        include_neighbor_features: bool = False,
+        neighbor_radius: float = 2.0,
+        neighbor_average_count: int = 6,
+        initial_escape_boost: bool = False,
+        escape_boost_speed: float = 0.6,
+        escape_jitter_std: float = np.pi / 12,
+        divergence_reward_coef: float = 0.0,
+        density_penalty_coef: float = 0.0,
+        density_target: float = 0.4,
+        predator_spawn_jitter_radius: float = 0.0,
+        predator_pre_roll_steps: int = 0,
+    ):
+        super().__init__()
+        self.num_fish = num_fish
+        self.base_env = FishEscapeEnv(
+            num_fish=num_fish,
+            include_neighbor_features=include_neighbor_features,
+            neighbor_radius=neighbor_radius,
+            neighbor_average_count=neighbor_average_count,
+            initial_escape_boost=initial_escape_boost,
+            escape_boost_speed=escape_boost_speed,
+            escape_jitter_std=escape_jitter_std,
+            divergence_reward_coef=divergence_reward_coef,
+            density_penalty_coef=density_penalty_coef,
+            density_target=density_target,
+            predator_spawn_jitter_radius=predator_spawn_jitter_radius,
+            predator_pre_roll_steps=predator_pre_roll_steps,
+        )
+        self.observation_space = self.base_env.observation_space
+        self.action_space = self.base_env.action_space
+        self._last_obs: Optional[np.ndarray] = None
+        self._survival_sum = 0.0
+        self._steps = 0
+        self._initial_seed = seed
+        self._sampling_mode = sampling_mode
+        self._fish_pointer = 0
+        self._rng = np.random.default_rng(seed)
+        self._last_sampled_idx = -1
+
+    def _select_index(self, alive_count: int) -> int:
+        if alive_count <= 0:
+            return -1
+        if self._sampling_mode == "random":
+            return int(self._rng.integers(0, alive_count))
+        idx = self._fish_pointer % alive_count
+        self._fish_pointer = (idx + 1) % max(alive_count, 1)
+        return idx
+
+    def _single_observation(self, obs: np.ndarray) -> np.ndarray:
+        if len(obs) == 0:
+            return np.zeros(self.observation_space.shape, dtype=np.float32)
+        idx = self._select_index(len(obs))
+        self._last_sampled_idx = idx
+        return obs[idx]
+
+    def reset(self, *, seed: Optional[int] = None, options: Optional[Dict] = None):
+        rng_seed = seed if seed is not None else self._initial_seed
+        self._rng = np.random.default_rng(rng_seed)
+        self._fish_pointer = 0
+        obs, info = self.base_env.reset(seed=seed, options=options)
+        self._last_obs = obs
+        self._survival_sum = 0.0
+        self._steps = 0
+        single_obs = self._single_observation(obs)
+        info = dict(info)
+        info["sampled_fish_index"] = getattr(self, "_last_sampled_idx", -1)
+        return single_obs, info
+
+    def step(self, action):
+        alive = len(self._last_obs) if self._last_obs is not None else self.num_fish
+        actions = [action] * max(alive, 1)
+        obs, rewards, terminated, truncated, info = self.base_env.step(actions)
+        self._last_obs = obs
+
+        reward = float(np.mean(rewards)) if len(rewards) > 0 else -100.0
+        single_obs = self._single_observation(obs)
+
+        # 额外指标，方便 VecMonitor 读取
+        info = dict(info)
+        info["sampled_fish_index"] = getattr(self, "_last_sampled_idx", -1)
+        current_sr = info.get("survival_rate", 0.0)
+        self._survival_sum += current_sr
+        self._steps += 1
+        avg_survival = self._survival_sum / max(self._steps, 1)
+        info["avg_survival_rate"] = avg_survival
+        info["avg_num_alive"] = avg_survival * self.num_fish
+        info["single_reward"] = reward
+        if terminated or truncated:
+            info["final_num_alive"] = info.get("num_alive", 0)
+        else:
+            info["final_num_alive"] = None
+        return single_obs, reward, terminated, truncated, info
+
+    def render(self):
+        return self.base_env.render()
+
+    def close(self):
+        self.base_env.close()
+
+    def set_density_penalty(self, coef: float, target: Optional[float] = None):
+        """Expose density penalty control so VecEnv can adjust during training."""
+        self.base_env.set_density_penalty(coef, target)
+
+    def set_escape_boost_speed(self, speed: float):
+        """Propagate escape boost speed adjustments to the base env."""
+        self.base_env.set_escape_boost_speed(speed)
+
+
+class DensityPenaltyScheduler:
+    """Linearly interpolate density penalty across curriculum phases."""
+
+    def __init__(
+        self,
+        base_value: float,
+        phase_targets: Sequence[float],
+        phase_iterations: Sequence[int],
+        ramp_phases: Optional[Set[int]] = None,
+        phase_plateaus: Optional[Sequence[int]] = None,
+    ):
+        if len(phase_targets) != len(phase_iterations):
+            raise ValueError("density_penalty_phase_targets must match curriculum length")
+        self.base_value = float(base_value)
+        self.phase_targets = [float(v) for v in phase_targets]
+        self.phase_iterations = list(phase_iterations)
+        self.ramp_phases = set(ramp_phases or set())
+        if phase_plateaus is not None and len(phase_plateaus) != len(phase_targets):
+            raise ValueError("density_penalty_phase_plateaus must match curriculum length")
+        self.phase_plateaus = [max(int(v), 0) for v in phase_plateaus] if phase_plateaus else [0] * len(self.phase_targets)
+        self.phase_ranges: List[Tuple[int, int]] = []
+        start = 1
+        for count in self.phase_iterations:
+            end = start + max(count, 1) - 1
+            self.phase_ranges.append((start, end))
+            start = end + 1
+        self._initial_value = self._compute_initial_value()
+        self._last_value: Optional[float] = self._initial_value
+
+    @property
+    def current_value(self) -> Optional[float]:
+        return self._last_value
+
+    @property
+    def final_value(self) -> float:
+        return self.phase_targets[-1] if self.phase_targets else self.base_value
+
+    def initial_value(self) -> float:
+        return self._initial_value
+
+    def _compute_initial_value(self) -> float:
+        if not self.phase_ranges or not self.phase_targets:
+            return self.base_value
+        return self.base_value if 1 in self.ramp_phases else self.phase_targets[0]
+
+    def _phase_info(self, iteration: int) -> Tuple[int, int, int]:
+        for idx, (start, end) in enumerate(self.phase_ranges):
+            if start <= iteration <= end:
+                return idx, start, end
+        # Fallback: after final iteration, clamp to last phase
+        last_idx = len(self.phase_ranges) - 1
+        return last_idx, *self.phase_ranges[last_idx]
+
+    def value_for_iteration(self, iteration: int) -> Optional[float]:
+        phase_idx, phase_start, phase_end = self._phase_info(iteration)
+        target_value = self.phase_targets[phase_idx]
+        start_value = self.base_value if phase_idx == 0 else self.phase_targets[phase_idx - 1]
+        if (phase_idx + 1) in self.ramp_phases and phase_end > phase_start:
+            phase_length = max(phase_end - phase_start + 1, 1)
+            plateau_iters = min(self.phase_plateaus[phase_idx], phase_length)
+            plateau_end = phase_start + plateau_iters - 1
+            ramp_start = plateau_end + 1
+            if plateau_iters >= phase_length or iteration <= plateau_end:
+                value = start_value
+            else:
+                span = phase_end - ramp_start
+                if span <= 0:
+                    value = target_value
+                else:
+                    progress = (iteration - ramp_start) / span
+                    progress = float(np.clip(progress, 0.0, 1.0))
+                    value = start_value + (target_value - start_value) * progress
+        else:
+            value = target_value
+
+        if self._last_value is None or abs(value - self._last_value) > 1e-6:
+            self._last_value = value
+            return value
+        return None
+
+
+class EntropyCoefScheduler:
+    """Piecewise-constant entropy coefficient scheduler keyed by iteration."""
+
+    def __init__(self, base_value: float, windows: Sequence[Tuple[int, Optional[int], float]]):
+        self.base_value = float(base_value)
+        # sort by start iteration to ensure deterministic override order
+        self.windows = sorted(list(windows), key=lambda item: item[0])
+        self._current_value: Optional[float] = None
+
+    @property
+    def current_value(self) -> float:
+        if self._current_value is None:
+            return self.base_value
+        return self._current_value
+
+    def value_for_iteration(self, iteration: int) -> Optional[float]:
+        value = self.base_value
+        for start, end, window_value in self.windows:
+            if iteration >= start and (end is None or iteration <= end):
+                value = float(window_value)
+        if self._current_value is None or abs(value - self._current_value) > 1e-9:
+            self._current_value = value
+            return value
+        return None
+
+
+class IterationStatsCallback(BaseCallback):
+    """Collect stats per rollout iteration, manage schedulers, and run probes."""
+
+    def __init__(
+        self,
+        *,
+        run_name: str,
+        stats_path: Path,
+        log_path: Path,
+        checkpoint_dir: Path,
+        save_every: int = 5,
+        density_penalty_scheduler: Optional[DensityPenaltyScheduler] = None,
+        density_target: Optional[float] = None,
+        initial_density_penalty: float = 0.0,
+        entropy_scheduler: Optional[EntropyCoefScheduler] = None,
+        initial_entropy_coef: float = 0.0,
+        signals: Optional[TrainingSignals] = None,
+        initial_escape_boost_speed: float = 0.0,
+        schedule_trace_path: Optional[Path] = None,
+        escape_boost_penalty_caps: Optional[Sequence[Tuple[float, float]]] = None,
+        multi_eval_every: int = 0,
+        multi_eval_kwargs: Optional[Dict[str, Any]] = None,
+        multi_eval_history_path: Optional[Path] = None,
+        multi_eval_plot_path: Optional[Path] = None,
+        multi_eval_hist_dir: Optional[Path] = None,
+        multi_eval_tb_writer: Optional[SummaryWriter] = None,
+        adaptive_boost_controller: Optional[AdaptiveBoostController] = None,
+    ):
+        super().__init__(verbose=1)
+        self.run_name = run_name
+        self.stats_path = stats_path
+        self.log_path = log_path
+        self.checkpoint_dir = checkpoint_dir
+        self.save_every = save_every
+        self.iteration = 0
+        self.schedule_trace_path = schedule_trace_path
+        self.stats = {
+            "iterations": [],
+            "survival_rate": [],
+            "avg_reward": [],
+            "episode_length": [],
+            "avg_num_alive": [],
+            "final_num_alive": [],
+            "first_death_step": [],
+            "first_death_p10": [],
+            "first_death_sample_size": [],
+            "density_penalty_coef": [],
+            "entropy_coef": [],
+            "escape_boost_speed": [],
+            "step_one_deaths": [],
+        }
+        self.log_path.parent.mkdir(parents=True, exist_ok=True)
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self._log_file = open(self.log_path, "a", encoding="utf-8")
+        self.density_penalty_scheduler = density_penalty_scheduler
+        self.density_target = density_target
+        self.current_density_penalty = float(initial_density_penalty)
+        self.entropy_scheduler = entropy_scheduler
+        self.current_entropy_coef = float(initial_entropy_coef)
+        self.signals = signals
+        self._base_escape_boost_speed = float(initial_escape_boost_speed)
+        self.current_escape_boost_speed = float(initial_escape_boost_speed)
+        self.escape_boost_penalty_caps = sorted(list(escape_boost_penalty_caps or []), key=lambda item: item[0])
+        self.multi_eval_every = max(int(multi_eval_every or 0), 0)
+        self.multi_eval_kwargs = dict(multi_eval_kwargs or {})
+        self.multi_eval_history_path = multi_eval_history_path
+        self.multi_eval_plot_path = multi_eval_plot_path
+        self.multi_eval_history: List[Dict[str, Any]] = []
+        self.multi_eval_hist_dir = multi_eval_hist_dir
+        self.multi_eval_tb_writer = multi_eval_tb_writer
+        self.adaptive_boost_controller = adaptive_boost_controller
+
+    def _log(self, message: str):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        line = f"[{timestamp}] {message}\n"
+        self._log_file.write(line)
+        self._log_file.flush()
+        print(line, end="")
+
+    def _extract_metric(self, episodes: List[Dict], key: str, default: float = 0.0):
+        values = [ep[key] for ep in episodes if key in ep]
+        if not values:
+            return default
+        return float(np.mean(values))
+
+    def _gather_first_death_samples(self, episodes: List[Dict]) -> List[float]:
+        samples: List[float] = []
+        for ep in episodes:
+            candidate: Optional[float] = None
+            death_steps = ep.get("death_timesteps")
+            if death_steps is not None:
+                if isinstance(death_steps, np.ndarray):
+                    iterable = death_steps.tolist()
+                else:
+                    iterable = death_steps
+                valid = [float(step) for step in iterable if step is not None and step >= 0]
+                if valid:
+                    candidate = float(min(valid))
+            if candidate is None:
+                value = ep.get("first_death_step")
+                if value is not None and value >= 0:
+                    candidate = float(value)
+            if candidate is not None:
+                samples.append(candidate)
+        return samples
+
+    def _on_step(self) -> bool:
+        return True
+
+    def _on_rollout_start(self) -> None:
+        next_iteration = self.iteration + 1
+        base_changed = self._sync_base_escape_boost()
+        penalty_changed = self._maybe_update_density_penalty(next_iteration)
+        self._maybe_update_entropy(next_iteration)
+        self._apply_escape_boost_speed(force=base_changed or penalty_changed)
+
+    def _sync_base_escape_boost(self) -> bool:
+        if not self.signals:
+            return False
+        new_base = float(self.signals.escape_boost_speed)
+        if abs(new_base - self._base_escape_boost_speed) < 1e-6:
+            return False
+        self._base_escape_boost_speed = new_base
+        self._log(
+            f"escape_boost_base iteration={self.iteration + 1:03d} base={self._base_escape_boost_speed:.3f}"
+        )
+        return True
+
+    def _maybe_update_density_penalty(self, iteration_idx: int) -> bool:
+        if not self.density_penalty_scheduler:
+            self.logger.record("custom/density_penalty_coef", self.current_density_penalty)
+            return False
+        updated = False
+        new_penalty = self.density_penalty_scheduler.value_for_iteration(iteration_idx)
+        if new_penalty is not None:
+            env = self.model.get_env() if self.model is not None else None
+            if env is not None:
+                if self.density_target is not None:
+                    env.env_method("set_density_penalty", new_penalty, self.density_target)
+                else:
+                    env.env_method("set_density_penalty", new_penalty)
+            self.current_density_penalty = float(new_penalty)
+            self._log(
+                f"density_penalty_update iteration={iteration_idx:03d} value={self.current_density_penalty:.4f}"
+            )
+            updated = True
+        elif self.density_penalty_scheduler.current_value is not None:
+            current = float(self.density_penalty_scheduler.current_value)
+            if abs(current - self.current_density_penalty) > 1e-6:
+                self.current_density_penalty = current
+                updated = True
+        self.logger.record("custom/density_penalty_coef", self.current_density_penalty)
+        return updated
+
+    def _maybe_update_entropy(self, iteration_idx: int) -> bool:
+        if not self.entropy_scheduler:
+            return False
+        new_value = self.entropy_scheduler.value_for_iteration(iteration_idx)
+        if new_value is None:
+            return False
+        self.current_entropy_coef = float(new_value)
+        if self.model is not None:
+            self.model.ent_coef = float(new_value)
+        self._log(
+            f"entropy_coef_update iteration={iteration_idx:03d} value={self.current_entropy_coef:.4f}"
+        )
+        return True
+
+    def _resolve_escape_boost_speed(self, base_speed: float, penalty_value: float) -> float:
+        return apply_penalty_caps(base_speed, penalty_value, self.escape_boost_penalty_caps)
+
+    def _apply_escape_boost_speed(self, force: bool = False):
+        if self.model is None:
+            return
+        desired = self._resolve_escape_boost_speed(self._base_escape_boost_speed, self.current_density_penalty)
+        if not force and abs(desired - self.current_escape_boost_speed) < 1e-6:
+            return
+        self.current_escape_boost_speed = desired
+        self.model.get_env().env_method("set_escape_boost_speed", desired)
+        self._log(
+            f"escape_boost_apply iteration={self.iteration + 1:03d} speed={self.current_escape_boost_speed:.3f}"
+        )
+
+    def _on_rollout_end(self) -> bool:
+        self.iteration += 1
+        episodes = list(self.model.ep_info_buffer)
+        if not episodes:
+            return True
+
+        survival_rate = self._extract_metric(episodes, "survival_rate")
+        final_num_alive = self._extract_metric(episodes, "final_num_alive")
+        avg_num_alive = self._extract_metric(episodes, "avg_num_alive", final_num_alive)
+        avg_reward = self._extract_metric(episodes, "r")
+        avg_length = self._extract_metric(episodes, "l")
+        first_death_samples = self._gather_first_death_samples(episodes)
+        if first_death_samples:
+            first_death_step = float(np.mean(first_death_samples))
+            first_death_p10 = float(np.percentile(first_death_samples, 10))
+        else:
+            first_death_step = -1.0
+            first_death_p10 = None
+        first_death_sample_size = len(first_death_samples)
+        step_one_deaths = extract_step_one_deaths(episodes)
+
+        self.stats["iterations"].append(self.iteration)
+        self.stats["survival_rate"].append(survival_rate)
+        self.stats["avg_reward"].append(avg_reward)
+        self.stats["episode_length"].append(avg_length)
+        self.stats["avg_num_alive"].append(avg_num_alive)
+        self.stats["final_num_alive"].append(final_num_alive)
+        self.stats["first_death_step"].append(first_death_step)
+        self.stats["first_death_p10"].append(first_death_p10)
+        self.stats["first_death_sample_size"].append(first_death_sample_size)
+        self.stats["density_penalty_coef"].append(self.current_density_penalty)
+        self.stats["entropy_coef"].append(self.current_entropy_coef)
+        self.stats["escape_boost_speed"].append(self.current_escape_boost_speed)
+        self.stats["step_one_deaths"].append(step_one_deaths)
+
+        self.logger.record("custom/avg_survival_rate", survival_rate)
+        self.logger.record("custom/final_num_alive", final_num_alive)
+        self.logger.record("custom/avg_num_alive", avg_num_alive)
+        self.logger.record("custom/first_death_step", first_death_step)
+        if first_death_p10 is not None:
+            self.logger.record("custom/first_death_p10", first_death_p10)
+        self.logger.record("custom/first_death_sample_size", first_death_sample_size)
+        self.logger.record("custom/entropy_coef", self.current_entropy_coef)
+        self.logger.record("custom/escape_boost_speed", self.current_escape_boost_speed)
+        self.logger.record("custom/step_one_death_count", len(step_one_deaths))
+
+        self._log(
+            f"iter={self.iteration:03d} sr={survival_rate:6.2%} "
+            f"final_alive={final_num_alive:5.2f} reward={avg_reward:7.2f} steps={avg_length:6.1f}"
+        )
+
+        if self.iteration % self.save_every == 0:
+            self._save_checkpoint(self.iteration)
+            self._dump_stats()
+
+        if first_death_p10 is not None:
+            self._maybe_apply_adaptive_boost(first_death_p10)
+
+        if self.multi_eval_every and self.multi_eval_kwargs:
+            self._maybe_run_multi_eval()
+
+        return True
+
+    def _maybe_apply_adaptive_boost(self, first_death_p10: float):
+        if not self.adaptive_boost_controller or not self.signals:
+            return
+        result = self.adaptive_boost_controller.update(self.iteration, first_death_p10)
+        if result is None:
+            return
+        target_speed, window_metric = result
+        phase_base = getattr(self.signals, "phase_base_escape_boost_speed", self._base_escape_boost_speed)
+        desired_speed = min(phase_base, target_speed)
+        if abs(desired_speed - self.signals.escape_boost_speed) < 1e-6:
+            return
+        self.signals.escape_boost_speed = desired_speed
+        self._base_escape_boost_speed = desired_speed
+        self._log(
+            f"adaptive_boost iteration={self.iteration:03d} window_p10={window_metric:.2f} target={desired_speed:.3f}"
+        )
+        self._apply_escape_boost_speed(force=True)
+
+    def _save_checkpoint(self, iteration: int):
+        path = self.checkpoint_dir / f"model_iter_{iteration}"
+        self.model.save(path)
+        self._log(f"checkpoint_saved iteration={iteration}")
+
+    def _dump_stats(self):
+        with open(self.stats_path, "wb") as f:
+            pickle.dump(self.stats, f)
+        self._dump_schedule_trace()
+
+    def _dump_schedule_trace(self):
+        if not self.schedule_trace_path:
+            return
+        trace = []
+        total = len(self.stats["iterations"])
+        step_one_seq = self.stats.get("step_one_deaths", [])
+        for idx in range(total):
+            entry = {
+                "iteration": int(self.stats["iterations"][idx]),
+                "density_penalty_coef": self._safe_trace_value(self.stats["density_penalty_coef"], idx),
+                "entropy_coef": self._safe_trace_value(self.stats["entropy_coef"], idx),
+                "escape_boost_speed": self._safe_trace_value(self.stats["escape_boost_speed"], idx),
+                "survival_rate": self._safe_trace_value(self.stats["survival_rate"], idx),
+                "first_death_step": self._safe_trace_value(self.stats["first_death_step"], idx),
+                "first_death_p10": self._safe_trace_value(self.stats["first_death_p10"], idx),
+                "first_death_sample_size": self._safe_trace_value(self.stats["first_death_sample_size"], idx),
+            }
+            records = []
+            if idx < len(step_one_seq):
+                records = step_one_seq[idx] or []
+            entry["step_one_death_count"] = len(records)
+            if records:
+                entry["step_one_deaths"] = records
+            trace.append(entry)
+        payload = {
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+            "trace": trace,
+        }
+        self.schedule_trace_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(self.schedule_trace_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+
+    @staticmethod
+    def _safe_trace_value(seq: List[float], idx: int) -> Optional[float]:
+        if idx >= len(seq):
+            return None
+        value = seq[idx]
+        if value is None:
+            return None
+        return float(value)
+
+    def _on_training_end(self) -> None:
+        # 多阶段训练时保持日志句柄，最终由 finalize() 关闭
+        pass
+
+    def finalize(self):
+        self._dump_stats()
+        if not self._log_file.closed:
+            self._log_file.close()
+
+    def _maybe_run_multi_eval(self):
+        if self.iteration == 0:
+            return
+        if self.iteration % self.multi_eval_every != 0:
+            return
+        if self.model is None:
+            return
+        eval_kwargs = dict(self.multi_eval_kwargs)
+        eval_kwargs["escape_boost_speed"] = self.current_escape_boost_speed
+        eval_kwargs["density_penalty_coef"] = self.current_density_penalty
+        results = evaluate_multi_fish(self.model, **eval_kwargs)
+        summary = summarize_multi_eval(results, eval_kwargs.get("num_fish", 0))
+        death_stats = None
+        death_hist_path: Optional[Path] = None
+        death_steps: List[int] = []
+        if results:
+            death_steps = collect_death_timesteps(results, MAX_STEPS)
+            death_stats = summarize_death_timesteps(death_steps, MAX_STEPS)
+            if self.multi_eval_hist_dir and death_steps:
+                self.multi_eval_hist_dir.mkdir(parents=True, exist_ok=True)
+                death_hist_path = self.multi_eval_hist_dir / f"{self.run_name}_iter{self.iteration:03d}_death_hist.png"
+                plot_death_histogram(death_steps, self.run_name, death_hist_path, MAX_STEPS)
+        step_one_death_records = extract_step_one_deaths(results)
+        entry: Dict[str, Any] = {
+            "iteration": int(self.iteration),
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "summary": summary,
+            "death_stats": death_stats,
+            "density_penalty_coef": float(self.current_density_penalty),
+            "escape_boost_speed": float(self.current_escape_boost_speed),
+            "step_one_death_count": len(step_one_death_records),
+        }
+        if death_hist_path is not None:
+            entry["death_hist_path"] = str(death_hist_path)
+        if step_one_death_records:
+            entry["step_one_deaths"] = step_one_death_records
+        self.multi_eval_history.append(entry)
+        if self.multi_eval_history_path:
+            self.multi_eval_history_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.multi_eval_history_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry) + "\n")
+        if self.multi_eval_plot_path:
+            plot_multi_eval_history(self.multi_eval_history, self.multi_eval_plot_path)
+        if self.multi_eval_tb_writer and summary:
+            global_step = self.iteration
+            for key, value in summary.items():
+                if value is None:
+                    continue
+                self.multi_eval_tb_writer.add_scalar(f"multi_eval/{key}", float(value), global_step)
+            if death_stats:
+                for key, value in death_stats.items():
+                    if isinstance(value, (int, float)):
+                        self.multi_eval_tb_writer.add_scalar(f"multi_eval_death/{key}", float(value), global_step)
+            self.multi_eval_tb_writer.flush()
+
+
+def make_env_fns(
+    num_envs: int,
+    num_fish: int,
+    base_seed: Optional[int],
+    sampling_mode: str,
+    include_neighbor_features: bool,
+    neighbor_radius: float,
+    neighbor_average_count: int,
+    initial_escape_boost: bool,
+    escape_boost_speed: float,
+    escape_jitter_std: float,
+    divergence_reward_coef: float,
+    density_penalty_coef: float,
+    density_target: float,
+    predator_spawn_jitter_radius: float,
+    predator_pre_roll_steps: int,
+):
+    def _factory(rank: int):
+        def _init():
+            seed = None if base_seed is None else base_seed + rank
+            env = SingleFishEnv(
+                num_fish=num_fish,
+                seed=seed,
+                sampling_mode=sampling_mode,
+                include_neighbor_features=include_neighbor_features,
+                neighbor_radius=neighbor_radius,
+                neighbor_average_count=neighbor_average_count,
+                initial_escape_boost=initial_escape_boost,
+                escape_boost_speed=escape_boost_speed,
+                escape_jitter_std=escape_jitter_std,
+                divergence_reward_coef=divergence_reward_coef,
+                density_penalty_coef=density_penalty_coef,
+                density_target=density_target,
+                predator_spawn_jitter_radius=predator_spawn_jitter_radius,
+                predator_pre_roll_steps=predator_pre_roll_steps,
+            )
+            return env
+
+        return _init
+
+    return [_factory(r) for r in range(num_envs)]
+
+
+def plot_stats(stats: Dict[str, List[float]], run_name: str, plot_path: Path):
+    if not stats["iterations"]:
+        return
+    iterations = stats["iterations"]
+    plt.figure(figsize=(8, 5))
+    plt.plot(iterations, stats["survival_rate"], label="survival_rate")
+    plt.plot(iterations, stats["final_num_alive"], label="final_num_alive")
+    plt.xlabel("Iteration")
+    plt.ylabel("Value")
+    plt.title(f"Fish RL dev_v18 - {run_name}")
+    plt.legend()
+    plt.grid(True, linestyle="--", alpha=0.3)
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+
+def plot_first_death_curve(stats: Dict[str, List[float]], run_name: str, plot_path: Path):
+    if not stats["iterations"]:
+        return
+    iterations = stats["iterations"]
+    plt.figure(figsize=(8, 4))
+    plt.plot(iterations, stats["first_death_step"], color="tab:red", label="first_death_step")
+    first_death_p10 = stats.get("first_death_p10") or []
+    if first_death_p10:
+        p10_series = [np.nan if value is None else value for value in first_death_p10]
+        plt.plot(iterations[: len(p10_series)], p10_series, color="tab:orange", linestyle="--", label="first_death_p10")
+    plt.xlabel("Iteration")
+    plt.ylabel("First death step")
+    plt.title(f"First-death progression - {run_name}")
+    plt.grid(True, linestyle="--", alpha=0.3)
+    plt.legend()
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+
+def plot_penalty_alignment(stats: Dict[str, List[float]], run_name: str, plot_path: Path):
+    iterations = stats.get("iterations")
+    penalties = stats.get("density_penalty_coef")
+    first_death = stats.get("first_death_step")
+    if not iterations or not penalties or not first_death:
+        return
+    if len(penalties) != len(iterations) or len(first_death) != len(iterations):
+        return
+    plt.figure(figsize=(8, 4))
+    ax1 = plt.gca()
+    ax1.plot(iterations, penalties, color="tab:purple", label="density_penalty")
+    ax1.set_xlabel("Iteration")
+    ax1.set_ylabel("Density penalty coef", color="tab:purple")
+    ax1.tick_params(axis="y", labelcolor="tab:purple")
+    ax2 = ax1.twinx()
+    ax2.plot(iterations, first_death, color="tab:red", label="first_death")
+    ax2.set_ylabel("First death step", color="tab:red")
+    ax2.tick_params(axis="y", labelcolor="tab:red")
+    plt.title(f"Penalty vs first-death - {run_name}")
+    ax1.grid(True, linestyle="--", alpha=0.3)
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+
+def plot_penalty_entropy(stats: Dict[str, List[float]], run_name: str, plot_path: Path):
+    iterations = stats.get("iterations")
+    penalties = stats.get("density_penalty_coef")
+    entropy = stats.get("entropy_coef")
+    if not iterations or not penalties or not entropy:
+        return
+    if len(iterations) != len(penalties) or len(iterations) != len(entropy):
+        return
+    plt.figure(figsize=(8, 4))
+    ax1 = plt.gca()
+    ax1.plot(iterations, penalties, label="density_penalty", color="tab:purple")
+    ax1.set_xlabel("Iteration")
+    ax1.set_ylabel("Density penalty", color="tab:purple")
+    ax1.tick_params(axis="y", labelcolor="tab:purple")
+    ax2 = ax1.twinx()
+    ax2.plot(iterations, entropy, label="entropy_coef", color="tab:green")
+    ax2.set_ylabel("Entropy coef", color="tab:green")
+    ax2.tick_params(axis="y", labelcolor="tab:green")
+    plt.title(f"Penalty vs entropy - {run_name}")
+    ax1.grid(True, linestyle="--", alpha=0.3)
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+
+def plot_multi_eval_history(history: Sequence[Dict[str, Any]], plot_path: Path):
+    if not history:
+        return
+    iterations: List[int] = []
+    avg_final: List[float] = []
+    min_final: List[float] = []
+    first_death_p10: List[Optional[float]] = []
+    early_death_fraction_100: List[Optional[float]] = []
+    for entry in history:
+        summary = entry.get("summary") or {}
+        if not summary:
+            continue
+        iterations.append(int(entry.get("iteration", 0)))
+        avg_final.append(float(summary.get("avg_final_survival_rate", 0.0)))
+        min_final.append(float(summary.get("min_final_survival_rate", 0.0)))
+        death_stats = entry.get("death_stats") or {}
+        first_death_p10.append(death_stats.get("p10"))
+        early_death_fraction_100.append(death_stats.get("early_death_fraction_100"))
+    if not iterations:
+        return
+    fig, ax1 = plt.subplots(figsize=(8, 5))
+    ax1.plot(iterations, avg_final, marker="o", label="avg_final_survival_rate")
+    ax1.plot(iterations, min_final, marker="s", label="min_final_survival_rate")
+    early_curve = [np.nan if value is None else value for value in early_death_fraction_100]
+    ax1.plot(iterations, early_curve, marker="^", linestyle=":", label="early_death_frac_100")
+    ax1.set_xlabel("Iteration")
+    ax1.set_ylabel("Survival rate")
+    ax1.set_ylim(0.0, 1.05)
+    ax2 = ax1.twinx()
+    death_curve = [np.nan if value is None else value for value in first_death_p10]
+    ax2.plot(iterations, death_curve, color="tab:red", linestyle="--", marker="^", label="first_death_p10")
+    ax2.set_ylabel("First death p10 (steps)", color="tab:red")
+    ax2.tick_params(axis="y", labelcolor="tab:red")
+    ax1.set_title("Multi-fish eval timeline")
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines + lines2, labels + labels2, loc="best")
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(plot_path)
+    plt.close(fig)
+
+
+def stats_gif(stats: Dict[str, List[float]], run_name: str, media_path: Path):
+    if not stats["iterations"]:
+        return
+    frames = []
+    iterations = stats["iterations"]
+    survival = stats["survival_rate"]
+    final_alive = stats["final_num_alive"]
+    for idx in range(1, len(iterations) + 1):
+        fig, ax1 = plt.subplots(figsize=(6, 4))
+        ax1.plot(iterations[:idx], survival[:idx], color="tab:blue", label="survival")
+        ax1.set_ylim(0, 1.05)
+        ax1.set_xlabel("Iteration")
+        ax1.set_ylabel("Survival Rate")
+        ax2 = ax1.twinx()
+        ax2.plot(iterations[:idx], final_alive[:idx], color="tab:orange", label="final_alive")
+        ax2.set_ylabel("Final Alive")
+        ax1.set_title(f"dev_v18 progression ({run_name})")
+        fig.tight_layout()
+        fig.canvas.draw()
+        buffer = np.asarray(fig.canvas.buffer_rgba())
+        frame = buffer[:, :, :3]
+        frames.append(frame)
+        plt.close(fig)
+
+    media_path.parent.mkdir(parents=True, exist_ok=True)
+    imageio.mimsave(media_path, frames, duration=0.4)
+
+
+def make_lr_schedule(base_lr: float, mode: str):
+    if mode == "constant":
+        return base_lr
+    if mode == "cosine":
+        def _cosine_lr(progress_remaining: float) -> float:
+            cosine_component = 0.5 * (1 + np.cos(np.pi * (1 - progress_remaining)))
+            return base_lr * cosine_component
+
+        return _cosine_lr
+
+    if mode == "warm_cosine":
+        warm_frac = 0.2
+
+        def _warm_cosine(progress_remaining: float) -> float:
+            progress_elapsed = 1.0 - progress_remaining
+            if progress_elapsed <= warm_frac:
+                warm_ratio = progress_elapsed / max(warm_frac, 1e-6)
+                # 线性降速：base_lr -> 0.5 * base_lr
+                return base_lr * (1.0 - 0.5 * warm_ratio)
+            cosine_progress = (progress_elapsed - warm_frac) / max(1 - warm_frac, 1e-6)
+            cosine_progress = np.clip(cosine_progress, 0.0, 1.0)
+            cosine_component = 0.5 * (1 + np.cos(np.pi * cosine_progress))
+            return base_lr * 0.5 * cosine_component
+
+        return _warm_cosine
+
+    raise ValueError(f"Unsupported lr_schedule mode: {mode}")
+
+
+def parse_curriculum(
+    curriculum: str,
+    total_iterations: int,
+    fallback_num_fish: int,
+) -> List[Tuple[int, int]]:
+    if not curriculum:
+        return [(fallback_num_fish, total_iterations)]
+
+    phases: List[Tuple[int, int]] = []
+    for chunk in curriculum.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if ":" not in chunk:
+            raise ValueError(f"curriculum chunk '{chunk}' must be formatted as num_fish:iterations")
+        fish_str, iter_str = chunk.split(":", maxsplit=1)
+        num_fish = int(fish_str)
+        iterations = int(iter_str)
+        if num_fish <= 0 or iterations <= 0:
+            raise ValueError("num_fish and iterations in curriculum must be positive")
+        phases.append((num_fish, iterations))
+
+    total = sum(it for _, it in phases)
+    if total != total_iterations:
+        raise ValueError(
+            f"curriculum iterations sum ({total}) does not match --total_iterations ({total_iterations})"
+        )
+    return phases
+
+
+def parse_phase_value_map(spec: str, total_phases: int) -> Dict[int, float]:
+    mapping: Dict[int, float] = {}
+    if not spec:
+        return mapping
+    for chunk in spec.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if ":" not in chunk:
+            raise ValueError("phase value mapping 必须是 'phase:value' 形式")
+        phase_str, value_str = chunk.split(":", maxsplit=1)
+        try:
+            phase_idx = int(phase_str)
+        except ValueError as exc:
+            raise ValueError(f"非法 phase 索引: '{phase_str}'") from exc
+        if phase_idx < 1 or phase_idx > total_phases:
+            raise ValueError(f"phase 索引 {phase_idx} 超出范围 1..{total_phases}")
+        try:
+            value = float(value_str)
+        except ValueError as exc:
+            raise ValueError(f"非法数值: '{value_str}'") from exc
+        mapping[phase_idx] = value
+    return mapping
+
+
+def parse_penalty_caps(spec: str) -> List[Tuple[float, float]]:
+    caps: List[Tuple[float, float]] = []
+    if not spec:
+        return caps
+    for chunk in spec.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if ":" not in chunk:
+            raise ValueError("Penalty caps must be 'threshold:value' format")
+        threshold_str, cap_str = chunk.split(":", maxsplit=1)
+        try:
+            threshold = float(threshold_str)
+            cap_value = float(cap_str)
+        except ValueError as exc:
+            raise ValueError(f"Invalid penalty cap chunk '{chunk}'") from exc
+        caps.append((threshold, cap_value))
+    caps.sort(key=lambda item: item[0])
+    return caps
+
+
+def apply_penalty_caps(
+    base_speed: float,
+    penalty_value: float,
+    caps: Sequence[Tuple[float, float]],
+) -> float:
+    speed = float(base_speed)
+    if penalty_value is None:
+        return speed
+    for threshold, cap in caps:
+        if penalty_value >= threshold:
+            speed = min(speed, cap)
+    return speed
+
+
+def parse_ent_coef_schedule(schedule: str) -> List[Tuple[int, Optional[int], float]]:
+    windows: List[Tuple[int, Optional[int], float]] = []
+    if not schedule:
+        return windows
+    for chunk in schedule.split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if ":" not in chunk:
+            raise ValueError("Each ent_coef schedule chunk must be 'start-end:value'")
+        range_part, value_part = chunk.split(":", maxsplit=1)
+        try:
+            value = float(value_part)
+        except ValueError as exc:
+            raise ValueError(f"Invalid ent_coef value in chunk '{chunk}'") from exc
+        range_part = range_part.strip()
+        if not range_part:
+            raise ValueError(f"Empty range in ent_coef schedule chunk '{chunk}'")
+        if range_part.endswith("+"):
+            start = int(range_part[:-1])
+            end = None
+        elif "-" in range_part:
+            start_str, end_str = range_part.split("-", maxsplit=1)
+            start = int(start_str)
+            end = int(end_str)
+            if end < start:
+                raise ValueError(f"Invalid ent_coef range '{range_part}' (end < start)")
+        else:
+            start = int(range_part)
+            end = start
+        if start <= 0:
+            raise ValueError("ent_coef schedule iterations must be positive integers")
+        windows.append((start, end, value))
+    return windows
+
+
+def build_vectorized_env(
+    num_envs: int,
+    num_fish: int,
+    seed: Optional[int],
+    sampling_mode: str,
+    include_neighbor_features: bool,
+    neighbor_radius: float,
+    neighbor_average_count: int,
+    initial_escape_boost: bool,
+    escape_boost_speed: float,
+    escape_jitter_std: float,
+    divergence_reward_coef: float,
+    density_penalty_coef: float,
+    density_target: float,
+    predator_spawn_jitter_radius: float,
+    predator_pre_roll_steps: int,
+) -> VecMonitor:
+    env_fns = make_env_fns(
+        num_envs,
+        num_fish,
+        seed,
+        sampling_mode,
+        include_neighbor_features,
+        neighbor_radius,
+        neighbor_average_count,
+        initial_escape_boost,
+        escape_boost_speed,
+        escape_jitter_std,
+        divergence_reward_coef,
+        density_penalty_coef,
+        density_target,
+        predator_spawn_jitter_radius,
+        predator_pre_roll_steps,
+    )
+    vec_env = SubprocVecEnv(env_fns, start_method="spawn")
+    vec_env = VecMonitor(
+        vec_env,
+        info_keywords=(
+            "survival_rate",
+            "num_alive",
+            "final_num_alive",
+            "avg_survival_rate",
+            "avg_num_alive",
+            "sampled_fish_index",
+            "first_death_step",
+            "death_timesteps",
+        ),
+    )
+    return vec_env
+
+
+def evaluate_single_fish(
+    model: PPO,
+    num_fish: int,
+    episodes: int = 5,
+    sampling_mode: str = "round_robin",
+    include_neighbor_features: bool = False,
+    neighbor_radius: float = 2.0,
+    neighbor_average_count: int = 6,
+    initial_escape_boost: bool = False,
+    escape_boost_speed: float = 0.6,
+    escape_jitter_std: float = np.pi / 12,
+    divergence_reward_coef: float = 0.0,
+    density_penalty_coef: float = 0.0,
+    density_target: float = 0.4,
+    predator_spawn_jitter_radius: float = 0.0,
+    predator_pre_roll_steps: int = 0,
+):
+    results = []
+    for ep in range(episodes):
+        env = SingleFishEnv(
+            num_fish=num_fish,
+            sampling_mode=sampling_mode,
+            include_neighbor_features=include_neighbor_features,
+            neighbor_radius=neighbor_radius,
+            neighbor_average_count=neighbor_average_count,
+            initial_escape_boost=initial_escape_boost,
+            escape_boost_speed=escape_boost_speed,
+            escape_jitter_std=escape_jitter_std,
+            divergence_reward_coef=divergence_reward_coef,
+            density_penalty_coef=density_penalty_coef,
+            density_target=density_target,
+            predator_spawn_jitter_radius=predator_spawn_jitter_radius,
+            predator_pre_roll_steps=predator_pre_roll_steps,
+        )
+        obs, _ = env.reset()
+        done = False
+        total_reward = 0.0
+        steps = 0
+        final_alive = 0
+        while not done:
+            action, _ = model.predict(obs, deterministic=True)
+            obs, reward, terminated, truncated, info = env.step(action)
+            total_reward += float(reward)
+            steps += 1
+            done = terminated or truncated
+            final_alive = info.get("num_alive", final_alive)
+        env.close()
+        results.append({
+            "episode": int(ep),
+            "reward": float(total_reward),
+            "steps": int(steps),
+            "final_num_alive": int(final_alive)
+        })
+    return results
+
+
+def _predict_actions(model: PPO, obs_batch):
+    actions = []
+    for obs in obs_batch:
+        action, _ = model.predict(obs, deterministic=True)
+        actions.append(int(action))
+    return actions
+
+
+def evaluate_multi_fish(
+    model: PPO,
+    num_fish: int,
+    episodes: int = 3,
+    include_neighbor_features: bool = False,
+    neighbor_radius: float = 2.0,
+    neighbor_average_count: int = 6,
+    initial_escape_boost: bool = False,
+    escape_boost_speed: float = 0.6,
+    escape_jitter_std: float = np.pi / 12,
+    divergence_reward_coef: float = 0.0,
+    density_penalty_coef: float = 0.0,
+    density_target: float = 0.4,
+    predator_spawn_jitter_radius: float = 0.0,
+    predator_pre_roll_steps: int = 0,
+):
+    """Use a single-fish policy to control all fish in the base env."""
+
+    results = []
+    for ep in range(episodes):
+        env = FishEscapeEnv(
+            num_fish=num_fish,
+            include_neighbor_features=include_neighbor_features,
+            neighbor_radius=neighbor_radius,
+            neighbor_average_count=neighbor_average_count,
+            initial_escape_boost=initial_escape_boost,
+            escape_boost_speed=escape_boost_speed,
+            escape_jitter_std=escape_jitter_std,
+            divergence_reward_coef=divergence_reward_coef,
+            density_penalty_coef=density_penalty_coef,
+            density_target=density_target,
+            predator_spawn_jitter_radius=predator_spawn_jitter_radius,
+            predator_pre_roll_steps=predator_pre_roll_steps,
+        )
+        obs, _ = env.reset()
+        done = False
+        total_reward = 0.0
+        steps = 0
+        survival_trace = []
+        final_alive = num_fish
+        death_timesteps = None
+        step_one_deaths = None
+        while not done:
+            actions = _predict_actions(model, obs) if len(obs) > 0 else []
+            obs, rewards, terminated, truncated, info = env.step(actions)
+            avg_reward = float(np.mean(rewards)) if len(rewards) > 0 else 0.0
+            total_reward += avg_reward
+            steps += 1
+            survival = float(info.get("survival_rate", 0.0))
+            survival_trace.append(survival)
+            done = terminated or truncated
+            final_alive = int(info.get("num_alive", 0))
+            if done:
+                death_timesteps = info.get("death_timesteps")
+                step_one_deaths = info.get("step_one_deaths")
+        env.close()
+        results.append({
+            "episode": int(ep),
+            "avg_reward": float(total_reward / max(steps, 1)),
+            "total_reward": float(total_reward),
+            "steps": int(steps),
+            "final_num_alive": final_alive,
+            "min_survival_rate": float(min(survival_trace) if survival_trace else 0.0),
+            "death_timesteps": death_timesteps,
+            "step_one_deaths": step_one_deaths,
+        })
+    return results
+
+
+def record_multi_fish_video(
+    model: PPO,
+    num_fish: int,
+    video_path: Path,
+    max_steps: int = 500,
+    fps: int = 20,
+    include_neighbor_features: bool = False,
+    neighbor_radius: float = 2.0,
+    neighbor_average_count: int = 6,
+    initial_escape_boost: bool = False,
+    escape_boost_speed: float = 0.6,
+    escape_jitter_std: float = np.pi / 12,
+    divergence_reward_coef: float = 0.0,
+    density_penalty_coef: float = 0.0,
+    density_target: float = 0.4,
+    predator_spawn_jitter_radius: float = 0.0,
+    predator_pre_roll_steps: int = 0,
+):
+    """Render a deterministic multi-fish rollout to mp4 for qualitative review."""
+
+    video_path.parent.mkdir(parents=True, exist_ok=True)
+    env = FishEscapeEnv(
+        num_fish=num_fish,
+        render_mode="rgb_array",
+        include_neighbor_features=include_neighbor_features,
+        neighbor_radius=neighbor_radius,
+        neighbor_average_count=neighbor_average_count,
+        initial_escape_boost=initial_escape_boost,
+        escape_boost_speed=escape_boost_speed,
+        escape_jitter_std=escape_jitter_std,
+        divergence_reward_coef=divergence_reward_coef,
+        density_penalty_coef=density_penalty_coef,
+        density_target=density_target,
+        predator_spawn_jitter_radius=predator_spawn_jitter_radius,
+        predator_pre_roll_steps=predator_pre_roll_steps,
+    )
+    obs, _ = env.reset()
+    frames = []
+
+    frame = env.render()
+    if frame is not None:
+        frames.append(frame)
+
+    for _ in range(max_steps):
+        actions = _predict_actions(model, obs) if len(obs) > 0 else []
+        obs, _, terminated, truncated, _ = env.step(actions)
+        frame = env.render()
+        if frame is not None:
+            frames.append(frame)
+        if terminated or truncated:
+            break
+
+    env.close()
+    if not frames:
+        return None
+
+    imageio.mimsave(video_path, frames, fps=fps)
+    return video_path
+
+
+def collect_death_timesteps(eval_multi_results: Optional[Sequence[Dict]], max_steps: int) -> List[int]:
+    if not eval_multi_results:
+        return []
+    values: List[int] = []
+    for episode in eval_multi_results:
+        steps = episode.get("death_timesteps")
+        if not steps:
+            continue
+        for step in steps:
+            if step is None or step < 0:
+                values.append(max_steps)
+            else:
+                values.append(min(int(step), max_steps))
+    return values
+
+
+def _coerce_xy(value: Any) -> List[float]:
+    try:
+        iterable = list(value)
+    except TypeError:
+        return [0.0, 0.0]
+    if not iterable:
+        return [0.0, 0.0]
+    x = float(iterable[0]) if len(iterable) > 0 else 0.0
+    y = float(iterable[1]) if len(iterable) > 1 else 0.0
+    return [x, y]
+
+
+def extract_step_one_deaths(records: Optional[Sequence[Dict[str, Any]]]) -> List[Dict[str, Any]]:
+    if not records:
+        return []
+    events: List[Dict[str, Any]] = []
+    for entry in records:
+        raw_events = entry.get("step_one_deaths")
+        if not raw_events:
+            continue
+        for raw in raw_events:
+            if not isinstance(raw, dict):
+                continue
+            try:
+                timestep = int(raw.get("timestep", 0))
+            except (TypeError, ValueError):
+                continue
+            if timestep != 1:
+                continue
+            record = {
+                "fish_idx": int(raw.get("fish_idx", -1)),
+                "predator_index": int(raw.get("predator_index", 0)),
+                "fish_position": _coerce_xy(raw.get("fish_position")),
+                "predator_position": _coerce_xy(raw.get("predator_position")),
+                "predator_velocity": _coerce_xy(raw.get("predator_velocity")),
+            }
+            events.append(record)
+    return events
+
+
+def select_best_multi_eval_entry(
+    history: Optional[Sequence[Dict[str, Any]]]
+) -> Tuple[Optional[int], Optional[Dict[str, Any]]]:
+    if not history:
+        return None, None
+    best_entry: Optional[Dict[str, Any]] = None
+    best_key: Optional[Tuple[float, float, float]] = None
+    for entry in history:
+        summary = entry.get("summary") or {}
+        death_stats = entry.get("death_stats") or {}
+        step_one = entry.get("step_one_death_count")
+        try:
+            step_one_val = float(step_one)
+        except (TypeError, ValueError):
+            step_one_val = float("inf")
+        early = death_stats.get("early_death_fraction_100")
+        try:
+            early_val = float(early)
+        except (TypeError, ValueError):
+            early_val = float("inf")
+        avg_final = summary.get("avg_final_survival_rate")
+        try:
+            avg_final_val = float(avg_final)
+        except (TypeError, ValueError):
+            avg_final_val = 0.0
+        score = (step_one_val, early_val, -avg_final_val)
+        if best_key is None or score < best_key:
+            best_key = score
+            best_entry = entry
+    iteration = None
+    if best_entry is not None:
+        iteration = best_entry.get("iteration")
+        if iteration is not None:
+            iteration = int(iteration)
+    return iteration, best_entry
+
+
+def plot_death_histogram(death_timesteps: List[int], run_name: str, plot_path: Path, max_steps: int):
+    if not death_timesteps:
+        return
+    plot_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.figure(figsize=(8, 4))
+    bins = np.arange(0, max_steps + 25, 25)
+    plt.hist(death_timesteps, bins=bins, color="tab:red", alpha=0.85, edgecolor="black")
+    plt.xlabel("Death timestep (<= survives)")
+    plt.ylabel("Count")
+    plt.title(f"Death distribution - {run_name}")
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+
+def summarize_death_timesteps(death_timesteps: List[int], max_steps: int) -> Optional[Dict[str, float]]:
+    if not death_timesteps:
+        return None
+    arr = np.array(death_timesteps)
+    summary = {
+        "total_fish_samples": int(arr.size),
+        "survival_fraction": float(np.mean(arr >= max_steps)),
+        "mean_death_step": float(np.mean(arr)),
+        "median_death_step": float(np.median(arr)),
+        "p10": float(np.percentile(arr, 10)),
+        "p25": float(np.percentile(arr, 25)),
+        "p75": float(np.percentile(arr, 75)),
+        "p90": float(np.percentile(arr, 90)),
+        "early_death_fraction_100": float(np.mean(arr < 100)),
+        "early_death_fraction_150": float(np.mean(arr < 150)),
+    }
+    return summary
+
+
+def save_death_stats(death_timesteps: List[int], output_path: Path, max_steps: int):
+    summary = summarize_death_timesteps(death_timesteps, max_steps)
+    if summary is None:
+        return None
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2)
+    return summary
+
+
+def summarize_multi_eval(
+    eval_multi_results: Optional[Sequence[Dict]],
+    num_fish: int,
+) -> Optional[Dict[str, float]]:
+    if not eval_multi_results:
+        return None
+    final_alive = np.array([max(res.get("final_num_alive", 0), 0) for res in eval_multi_results], dtype=float)
+    min_survival_rates = np.array([max(res.get("min_survival_rate", 0.0), 0.0) for res in eval_multi_results], dtype=float)
+    final_rates = final_alive / max(num_fish, 1)
+    summary = {
+        "episodes": int(len(eval_multi_results)),
+        "avg_final_survival_rate": float(np.mean(final_rates)),
+        "min_final_survival_rate": float(np.min(final_rates)),
+        "avg_min_survival_rate": float(np.mean(min_survival_rates)),
+        "min_of_min_survival_rate": float(np.min(min_survival_rates)),
+        "median_min_survival_rate": float(np.median(min_survival_rates)),
+    }
+    return summary
+
+
+def train(args):
+    if args.num_envs < 64:
+        raise ValueError("SOP requires num_envs >= 64; please increase --num_envs.")
+
+    curriculum = parse_curriculum(args.curriculum, args.total_iterations, args.num_fish)
+    phase_iterations = [phase_iter for _, phase_iter in curriculum]
+    escape_boost_phase_speeds = parse_phase_value_map(
+        args.escape_boost_phase_speeds,
+        len(curriculum)
+    )
+    escape_boost_penalty_caps = parse_penalty_caps(args.escape_boost_penalty_caps)
+
+    penalty_scheduler: Optional[DensityPenaltyScheduler] = None
+    phase_plateaus: Optional[List[int]] = None
+    if args.density_penalty_phase_plateaus:
+        try:
+            plateau_values = [int(chunk.strip()) for chunk in args.density_penalty_phase_plateaus.split(",") if chunk.strip()]
+        except ValueError as exc:
+            raise ValueError("density_penalty_phase_plateaus must be comma-separated integers") from exc
+        if len(plateau_values) != len(curriculum):
+            raise ValueError("density_penalty_phase_plateaus length must match curriculum phases")
+        phase_plateaus = plateau_values
+    if args.density_penalty_phase_targets:
+        try:
+            phase_targets = [float(chunk.strip()) for chunk in args.density_penalty_phase_targets.split(",") if chunk.strip()]
+        except ValueError as exc:
+            raise ValueError("density_penalty_phase_targets must be comma-separated floats") from exc
+        if len(phase_targets) != len(curriculum):
+            raise ValueError("density_penalty_phase_targets length must match curriculum phases")
+        ramp_phases: Set[int] = set()
+        if args.density_penalty_ramp_phases:
+            try:
+                ramp_phases = {
+                    int(chunk.strip())
+                    for chunk in args.density_penalty_ramp_phases.split(",")
+                    if chunk.strip()
+                }
+            except ValueError as exc:
+                raise ValueError("density_penalty_ramp_phases must be comma-separated integers") from exc
+            invalid = [idx for idx in ramp_phases if idx < 1 or idx > len(curriculum)]
+            if invalid:
+                raise ValueError(f"density_penalty_ramp_phases contains invalid indices: {invalid}")
+        penalty_scheduler = DensityPenaltyScheduler(
+            base_value=args.density_penalty_coef,
+            phase_targets=phase_targets,
+            phase_iterations=phase_iterations,
+            ramp_phases=ramp_phases,
+            phase_plateaus=phase_plateaus,
+        )
+
+    initial_density_penalty = penalty_scheduler.initial_value() if penalty_scheduler else args.density_penalty_coef
+    entropy_scheduler: Optional[EntropyCoefScheduler] = None
+    if args.entropy_coef_schedule:
+        schedule_windows = parse_ent_coef_schedule(args.entropy_coef_schedule)
+        if schedule_windows:
+            entropy_scheduler = EntropyCoefScheduler(args.ent_coef, schedule_windows)
+    initial_entropy_coef = args.ent_coef
+    initial_escape_boost_speed = escape_boost_phase_speeds.get(1, args.escape_boost_speed)
+    initial_effective_boost = apply_penalty_caps(
+        initial_escape_boost_speed,
+        initial_density_penalty,
+        escape_boost_penalty_caps,
+    )
+
+    run_name = args.run_name or datetime.now().strftime("dev_v18_%Y%m%d_%H%M%S")
+    run_checkpoint_dir = CHECKPOINT_DIR / run_name
+    run_log_path = LOG_DIR / f"{run_name}.log"
+    stats_path = run_checkpoint_dir / "training_stats.pkl"
+    tb_run_dir = TB_LOG_DIR / run_name
+    tb_post_eval_dir = tb_run_dir / "post_eval"
+    tb_post_eval_dir.mkdir(parents=True, exist_ok=True)
+    post_eval_writer = SummaryWriter(log_dir=str(tb_post_eval_dir))
+
+    multi_eval_kwargs: Optional[Dict[str, Any]] = None
+    multi_eval_history_path: Optional[Path] = None
+    multi_eval_plot_path: Optional[Path] = None
+    multi_eval_hist_dir: Optional[Path] = None
+    multi_eval_tb_writer: Optional[SummaryWriter] = None
+    if args.multi_eval_interval > 0 and args.eval_multi_fish and args.eval_multi_fish > 1:
+        multi_eval_kwargs = {
+            "num_fish": args.eval_multi_fish,
+            "episodes": args.multi_eval_probe_episodes,
+            "include_neighbor_features": args.include_neighbor_features,
+            "neighbor_radius": args.neighbor_radius,
+            "neighbor_average_count": args.neighbor_average_count,
+            "initial_escape_boost": args.initial_escape_boost,
+            "escape_boost_speed": initial_effective_boost,
+            "escape_jitter_std": args.escape_jitter_std,
+            "divergence_reward_coef": args.divergence_reward_coef,
+            "density_penalty_coef": initial_density_penalty,
+            "density_target": args.density_target,
+            "predator_spawn_jitter_radius": args.predator_spawn_jitter_radius,
+            "predator_pre_roll_steps": args.predator_pre_roll_steps,
+        }
+        multi_eval_history_path = run_checkpoint_dir / "eval_multi_history.jsonl"
+        multi_eval_plot_path = PLOTS_DIR / f"{run_name}_multi_eval_timeline.png"
+        multi_eval_hist_dir = PLOTS_DIR / f"{run_name}_multi_eval_hist"
+        probe_tb_dir = tb_run_dir / "multi_eval_probes"
+        probe_tb_dir.mkdir(parents=True, exist_ok=True)
+        multi_eval_tb_writer = SummaryWriter(log_dir=str(probe_tb_dir))
+
+    lr_schedule = make_lr_schedule(args.learning_rate, args.lr_schedule)
+
+    adaptive_boost_controller: Optional[AdaptiveBoostController] = None
+    if not args.disable_adaptive_boost:
+        adaptive_boost_controller = AdaptiveBoostController(
+            window=args.adaptive_boost_window,
+            lower_p10=args.adaptive_boost_lower_p10,
+            upper_p10=args.adaptive_boost_upper_p10,
+            low_speed=args.adaptive_boost_low_speed,
+            high_speed=args.adaptive_boost_high_speed,
+            min_iteration=args.adaptive_boost_min_iteration,
+        )
+
+    vec_env = build_vectorized_env(
+        args.num_envs,
+        curriculum[0][0],
+        args.seed,
+        args.obs_sampling,
+        args.include_neighbor_features,
+        args.neighbor_radius,
+        args.neighbor_average_count,
+        args.initial_escape_boost,
+        initial_effective_boost,
+        args.escape_jitter_std,
+        args.divergence_reward_coef,
+        initial_density_penalty,
+        args.density_target,
+        args.predator_spawn_jitter_radius,
+        args.predator_pre_roll_steps,
+    )
+    if penalty_scheduler:
+        vec_env.env_method("set_density_penalty", initial_density_penalty, args.density_target)
+    vec_env.env_method("set_escape_boost_speed", initial_effective_boost)
+
+    training_signals = TrainingSignals(initial_escape_boost_speed)
+    training_signals.phase_base_escape_boost_speed = initial_escape_boost_speed
+
+    try:
+        policy_layers = [int(size.strip()) for size in args.policy_hidden_sizes.split(",") if size.strip()]
+    except ValueError as exc:
+        raise ValueError("policy_hidden_sizes must be comma-separated integers") from exc
+    if not policy_layers:
+        raise ValueError("policy_hidden_sizes must include at least one layer size")
+
+    model = PPO(
+        "MlpPolicy",
+        vec_env,
+        learning_rate=lr_schedule,
+        n_steps=args.n_steps,
+        batch_size=args.batch_size,
+        n_epochs=args.n_epochs,
+        gamma=0.99,
+        gae_lambda=0.95,
+        clip_range=0.2,
+        ent_coef=args.ent_coef,
+        vf_coef=0.5,
+        max_grad_norm=0.5,
+        verbose=0,
+        tensorboard_log=str(tb_run_dir),
+        policy_kwargs=dict(net_arch=dict(pi=policy_layers, vf=list(policy_layers)))
+    )
+
+    callback = IterationStatsCallback(
+        run_name=run_name,
+        stats_path=stats_path,
+        log_path=run_log_path,
+        checkpoint_dir=run_checkpoint_dir,
+        save_every=args.checkpoint_interval,
+        density_penalty_scheduler=penalty_scheduler,
+        density_target=args.density_target,
+        initial_density_penalty=initial_density_penalty,
+        entropy_scheduler=entropy_scheduler,
+        initial_entropy_coef=initial_entropy_coef,
+        signals=training_signals,
+        initial_escape_boost_speed=initial_escape_boost_speed,
+        schedule_trace_path=run_checkpoint_dir / "schedule_trace.json",
+        escape_boost_penalty_caps=escape_boost_penalty_caps,
+        multi_eval_every=args.multi_eval_interval,
+        multi_eval_kwargs=multi_eval_kwargs,
+        multi_eval_history_path=multi_eval_history_path,
+        multi_eval_plot_path=multi_eval_plot_path,
+        multi_eval_hist_dir=multi_eval_hist_dir,
+        multi_eval_tb_writer=multi_eval_tb_writer,
+        adaptive_boost_controller=adaptive_boost_controller,
+    )
+
+    current_density_penalty = initial_density_penalty
+
+    for idx, (phase_num_fish, phase_iterations) in enumerate(curriculum):
+        phase_idx = idx + 1
+        phase_escape_boost_speed = escape_boost_phase_speeds.get(phase_idx, args.escape_boost_speed)
+        training_signals.phase_base_escape_boost_speed = phase_escape_boost_speed
+        training_signals.escape_boost_speed = phase_escape_boost_speed
+        phase_effective_boost = apply_penalty_caps(
+            phase_escape_boost_speed,
+            current_density_penalty,
+            escape_boost_penalty_caps,
+        )
+        if idx > 0:
+            vec_env.close()
+            current_density_penalty = initial_density_penalty
+            if penalty_scheduler and penalty_scheduler.current_value is not None:
+                current_density_penalty = penalty_scheduler.current_value
+            phase_effective_boost = apply_penalty_caps(
+                phase_escape_boost_speed,
+                current_density_penalty,
+                escape_boost_penalty_caps,
+            )
+            vec_env = build_vectorized_env(
+                args.num_envs,
+                phase_num_fish,
+                args.seed,
+                args.obs_sampling,
+                args.include_neighbor_features,
+                args.neighbor_radius,
+                args.neighbor_average_count,
+                args.initial_escape_boost,
+                phase_effective_boost,
+                args.escape_jitter_std,
+                args.divergence_reward_coef,
+                current_density_penalty,
+                args.density_target,
+                args.predator_spawn_jitter_radius,
+                args.predator_pre_roll_steps,
+            )
+            if penalty_scheduler:
+                vec_env.env_method("set_density_penalty", current_density_penalty, args.density_target)
+            model.set_env(vec_env)
+        vec_env.env_method("set_escape_boost_speed", phase_effective_boost)
+        phase_timesteps = phase_iterations * args.n_steps * args.num_envs
+        print(
+            f"[dev_v20] Phase {idx + 1}/{len(curriculum)}: num_fish={phase_num_fish}, iterations={phase_iterations},"
+            f" timesteps={phase_timesteps}"
+        )
+        model.learn(
+            total_timesteps=phase_timesteps,
+            callback=callback,
+            progress_bar=True,
+            reset_num_timesteps=(idx == 0)
+        )
+
+    final_model_path = run_checkpoint_dir / "model_final"
+    model.save(final_model_path)
+    vec_env.close()
+    callback.finalize()
+    final_escape_boost_speed = callback.current_escape_boost_speed
+
+    plot_path = PLOTS_DIR / f"{run_name}_survival.png"
+    gif_path = MEDIA_DIR / f"{run_name}_curve.gif"
+    plot_stats(callback.stats, run_name, plot_path)
+    first_death_plot_path = PLOTS_DIR / f"{run_name}_first_death.png"
+    plot_first_death_curve(callback.stats, run_name, first_death_plot_path)
+    penalty_alignment_plot_path = PLOTS_DIR / f"{run_name}_penalty_vs_first_death.png"
+    plot_penalty_alignment(callback.stats, run_name, penalty_alignment_plot_path)
+    penalty_entropy_plot_path = PLOTS_DIR / f"{run_name}_penalty_vs_entropy.png"
+    plot_penalty_entropy(callback.stats, run_name, penalty_entropy_plot_path)
+    stats_gif(callback.stats, run_name, gif_path)
+
+    eval_density_penalty = penalty_scheduler.final_value if penalty_scheduler else args.density_penalty_coef
+
+    eval_results_single = evaluate_single_fish(
+        model,
+        num_fish=curriculum[-1][0],
+        episodes=args.eval_episodes,
+        sampling_mode=args.obs_sampling,
+        include_neighbor_features=args.include_neighbor_features,
+        neighbor_radius=args.neighbor_radius,
+        neighbor_average_count=args.neighbor_average_count,
+        initial_escape_boost=args.initial_escape_boost,
+        escape_boost_speed=final_escape_boost_speed,
+        escape_jitter_std=args.escape_jitter_std,
+        divergence_reward_coef=args.divergence_reward_coef,
+        density_penalty_coef=eval_density_penalty,
+        density_target=args.density_target,
+        predator_spawn_jitter_radius=args.predator_spawn_jitter_radius,
+        predator_pre_roll_steps=args.predator_pre_roll_steps,
+    )
+    eval_path_single = run_checkpoint_dir / "eval_single_fish.json"
+    with open(eval_path_single, "w", encoding="utf-8") as f:
+        json.dump({"results": eval_results_single}, f, indent=2)
+
+    eval_multi = None
+    eval_path_multi = None
+    eval_multi_summary = None
+    eval_multi_summary_path = None
+    if args.eval_multi_fish and args.eval_multi_fish > 1:
+        eval_multi = evaluate_multi_fish(
+            model,
+            num_fish=args.eval_multi_fish,
+            episodes=args.eval_multi_episodes,
+            include_neighbor_features=args.include_neighbor_features,
+            neighbor_radius=args.neighbor_radius,
+            neighbor_average_count=args.neighbor_average_count,
+            initial_escape_boost=args.initial_escape_boost,
+            escape_boost_speed=final_escape_boost_speed,
+            escape_jitter_std=args.escape_jitter_std,
+            divergence_reward_coef=args.divergence_reward_coef,
+            density_penalty_coef=eval_density_penalty,
+            density_target=args.density_target,
+            predator_spawn_jitter_radius=args.predator_spawn_jitter_radius,
+            predator_pre_roll_steps=args.predator_pre_roll_steps,
+        )
+        eval_path_multi = run_checkpoint_dir / "eval_multi_fish.json"
+        with open(eval_path_multi, "w", encoding="utf-8") as f:
+            json.dump({
+                "num_fish": args.eval_multi_fish,
+                "results": eval_multi
+            }, f, indent=2)
+        eval_multi_summary = summarize_multi_eval(eval_multi, args.eval_multi_fish)
+        if eval_multi_summary:
+            eval_multi_summary_path = run_checkpoint_dir / "eval_multi_summary.json"
+            with open(eval_multi_summary_path, "w", encoding="utf-8") as f:
+                json.dump(eval_multi_summary, f, indent=2)
+
+    death_plot_path = None
+    death_stats_path = None
+    death_stats_summary = None
+    step_one_death_path = None
+    best_checkpoint_iteration: Optional[int] = None
+    best_checkpoint_entry_path: Optional[Path] = None
+    best_eval_path: Optional[Path] = None
+    best_eval_summary: Optional[Dict[str, Any]] = None
+    best_eval_summary_path: Optional[Path] = None
+    best_video_best_path: Optional[Path] = None
+    if eval_multi:
+        death_timesteps = collect_death_timesteps(eval_multi, MAX_STEPS)
+        death_plot_path = PLOTS_DIR / f"{run_name}_death_histogram.png"
+        death_stats_path = run_checkpoint_dir / "death_stats.json"
+        plot_death_histogram(death_timesteps, run_name, death_plot_path, MAX_STEPS)
+        death_stats_summary = save_death_stats(death_timesteps, death_stats_path, MAX_STEPS)
+        step_one_records = extract_step_one_deaths(eval_multi)
+        if step_one_records:
+            step_one_death_path = run_checkpoint_dir / "eval_step_one_deaths.json"
+            with open(step_one_death_path, "w", encoding="utf-8") as f:
+                json.dump(step_one_records, f, indent=2)
+
+    if args.eval_multi_fish and args.eval_multi_fish > 1 and callback.multi_eval_history:
+        candidate_iter, candidate_entry = select_best_multi_eval_entry(callback.multi_eval_history)
+        if candidate_iter is not None and candidate_entry is not None:
+            checkpoint_base = run_checkpoint_dir / f"model_iter_{candidate_iter}"
+            checkpoint_zip = checkpoint_base.with_suffix(".zip")
+            if checkpoint_zip.exists():
+                best_checkpoint_iteration = candidate_iter
+                best_checkpoint_entry_path = run_checkpoint_dir / f"multi_eval_best_iter_{candidate_iter}.json"
+                with open(best_checkpoint_entry_path, "w", encoding="utf-8") as f:
+                    json.dump(candidate_entry, f, indent=2)
+                best_model = PPO.load(str(checkpoint_base), device=model.device)
+                best_eval_path = run_checkpoint_dir / f"eval_multi_best_iter_{candidate_iter}.json"
+                best_eval_results = evaluate_multi_fish(
+                    best_model,
+                    num_fish=args.eval_multi_fish,
+                    episodes=args.best_checkpoint_eval_episodes,
+                    include_neighbor_features=args.include_neighbor_features,
+                    neighbor_radius=args.neighbor_radius,
+                    neighbor_average_count=args.neighbor_average_count,
+                    initial_escape_boost=args.initial_escape_boost,
+                    escape_boost_speed=callback.current_escape_boost_speed,
+                    escape_jitter_std=args.escape_jitter_std,
+                    divergence_reward_coef=args.divergence_reward_coef,
+                    density_penalty_coef=eval_density_penalty,
+                    density_target=args.density_target,
+                    predator_spawn_jitter_radius=args.predator_spawn_jitter_radius,
+                    predator_pre_roll_steps=args.predator_pre_roll_steps,
+                )
+                with open(best_eval_path, "w", encoding="utf-8") as f:
+                    json.dump({
+                        "iteration": candidate_iter,
+                        "results": best_eval_results,
+                    }, f, indent=2)
+                best_eval_summary = summarize_multi_eval(best_eval_results, args.eval_multi_fish)
+                if best_eval_summary:
+                    best_eval_summary_path = run_checkpoint_dir / f"eval_multi_best_iter_{candidate_iter}_summary.json"
+                    with open(best_eval_summary_path, "w", encoding="utf-8") as f:
+                        json.dump(best_eval_summary, f, indent=2)
+                best_video_target = MEDIA_DIR / f"{run_name}_best_iter_{candidate_iter:02d}_multi.mp4"
+                best_video_best_path = record_multi_fish_video(
+                    best_model,
+                    num_fish=(args.video_num_fish if args.video_num_fish and args.video_num_fish > 0 else args.eval_multi_fish),
+                    video_path=best_video_target,
+                    max_steps=args.video_max_steps,
+                    fps=args.video_fps,
+                    include_neighbor_features=args.include_neighbor_features,
+                    neighbor_radius=args.neighbor_radius,
+                    neighbor_average_count=args.neighbor_average_count,
+                    initial_escape_boost=args.initial_escape_boost,
+                    escape_boost_speed=callback.current_escape_boost_speed,
+                    escape_jitter_std=args.escape_jitter_std,
+                    divergence_reward_coef=args.divergence_reward_coef,
+                    density_penalty_coef=eval_density_penalty,
+                    density_target=args.density_target,
+                    predator_spawn_jitter_radius=args.predator_spawn_jitter_radius,
+                    predator_pre_roll_steps=args.predator_pre_roll_steps,
+                )
+
+    video_path = None
+    if args.video_num_fish and args.video_num_fish > 0:
+        video_path = MEDIA_DIR / f"{run_name}_multi_fish_eval.mp4"
+        record_multi_fish_video(
+            model,
+            num_fish=args.video_num_fish,
+            video_path=video_path,
+            max_steps=args.video_max_steps,
+            fps=args.video_fps,
+            include_neighbor_features=args.include_neighbor_features,
+            neighbor_radius=args.neighbor_radius,
+            neighbor_average_count=args.neighbor_average_count,
+            initial_escape_boost=args.initial_escape_boost,
+            escape_boost_speed=final_escape_boost_speed,
+            escape_jitter_std=args.escape_jitter_std,
+            divergence_reward_coef=args.divergence_reward_coef,
+            density_penalty_coef=eval_density_penalty,
+            density_target=args.density_target,
+            predator_spawn_jitter_radius=args.predator_spawn_jitter_radius,
+            predator_pre_roll_steps=args.predator_pre_roll_steps,
+        )
+
+    print("Training finished")
+    print(f"Run name: {run_name}")
+    print(f"Checkpoints: {run_checkpoint_dir}")
+    print(f"TensorBoard: {tb_run_dir}")
+    print(f"Plot saved to: {plot_path}")
+    print(f"GIF saved to: {gif_path}")
+    print(f"First-death curve: {first_death_plot_path}")
+    print(f"Penalty vs first-death: {penalty_alignment_plot_path}")
+    print(f"Penalty vs entropy: {penalty_entropy_plot_path}")
+    print(f"Single-fish eval: {eval_path_single}")
+    if eval_path_multi:
+        print(f"Multi-fish eval: {eval_path_multi}")
+    if eval_multi_summary_path:
+        print(f"Multi-fish summary: {eval_multi_summary_path}")
+    if death_plot_path:
+        print(f"Death histogram: {death_plot_path}")
+        print(f"Death stats JSON: {death_stats_path}")
+    if step_one_death_path:
+        print(f"Step=1 death samples: {step_one_death_path}")
+    if video_path:
+        print(f"Multi-fish video: {video_path}")
+    if best_checkpoint_iteration is not None and best_eval_path:
+        print(f"Best-iter ({best_checkpoint_iteration}) eval: {best_eval_path}")
+    if best_video_best_path:
+        print(f"Best-iter video: {best_video_best_path}")
+
+    tb_global_step = callback.iteration
+    if eval_results_single:
+        single_rewards = np.array([res.get("reward", 0.0) for res in eval_results_single], dtype=float)
+        single_alive = np.array([res.get("final_num_alive", 0) for res in eval_results_single], dtype=float)
+        single_steps = np.array([res.get("steps", 0) for res in eval_results_single], dtype=float)
+        post_eval_writer.add_scalar("eval_single/avg_reward", float(np.mean(single_rewards)), tb_global_step)
+        post_eval_writer.add_scalar("eval_single/avg_final_alive", float(np.mean(single_alive)), tb_global_step)
+        post_eval_writer.add_scalar("eval_single/avg_steps", float(np.mean(single_steps)), tb_global_step)
+
+    if eval_multi_summary:
+        for key, value in eval_multi_summary.items():
+            post_eval_writer.add_scalar(f"eval_multi/{key}", float(value), tb_global_step)
+
+    if death_stats_summary:
+        for key, value in death_stats_summary.items():
+            if isinstance(value, (int, float)):
+                post_eval_writer.add_scalar(f"eval_multi_death/{key}", float(value), tb_global_step)
+
+    post_eval_writer.flush()
+    post_eval_writer.close()
+
+    if multi_eval_tb_writer:
+        multi_eval_tb_writer.flush()
+        multi_eval_tb_writer.close()
+
+    return {
+        "run_name": run_name,
+        "stats": callback.stats,
+        "plot_path": plot_path,
+        "gif_path": gif_path,
+        "first_death_plot": first_death_plot_path,
+        "penalty_alignment_plot": penalty_alignment_plot_path,
+        "penalty_entropy_plot": penalty_entropy_plot_path,
+        "checkpoint_dir": run_checkpoint_dir,
+        "eval_single": eval_path_single,
+        "eval_multi": eval_path_multi,
+        "eval_multi_summary": eval_multi_summary_path,
+        "death_plot": death_plot_path,
+        "death_stats": death_stats_path,
+        "death_stats_summary": death_stats_summary,
+        "step_one_deaths": step_one_death_path,
+        "log_path": run_log_path,
+        "tb_log_dir": tb_run_dir,
+        "video_path": video_path,
+        "multi_eval_history": multi_eval_history_path,
+        "multi_eval_plot": multi_eval_plot_path,
+        "multi_eval_hist_dir": multi_eval_hist_dir,
+        "best_checkpoint_iteration": best_checkpoint_iteration,
+        "best_checkpoint_entry": best_checkpoint_entry_path,
+        "best_eval_path": best_eval_path,
+        "best_eval_summary": best_eval_summary_path,
+        "best_eval_video": best_video_best_path,
+    }
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Train PPO agent for Fish RL dev_v20")
+    parser.add_argument("--total_iterations", type=int, default=30, help="迭代次数 (rollout count)")
+    parser.add_argument("--num_envs", type=int, default=128, help="并行环境数量 (>=64 per SOP)")
+    parser.add_argument("--num_fish", type=int, default=25, help="默认训练时的鱼数量 (无 curriculum 时生效)")
+    parser.add_argument(
+        "--curriculum",
+        type=str,
+        default="15:6,20:7,25:4,25:4,25:5,25:2,25:2",
+        help="逗号分隔的 num_fish:iterations 阶段定义，留空表示禁用"
+    )
+    parser.add_argument("--n_steps", type=int, default=512, help="每个环境的 rollout 步数")
+    parser.add_argument("--batch_size", type=int, default=1024, help="PPO 批大小")
+    parser.add_argument("--n_epochs", type=int, default=10)
+    parser.add_argument("--learning_rate", type=float, default=3e-4)
+    parser.add_argument("--lr_schedule", type=str, choices=("constant", "cosine", "warm_cosine"), default="warm_cosine", help="学习率日程")
+    parser.add_argument("--policy_hidden_sizes", type=str, default="384,384", help="逗号分隔的 MLP 隐层尺寸，如 '384,384'")
+    parser.add_argument("--ent_coef", type=float, default=0.02, help="PPO entropy 系数")
+    parser.add_argument(
+        "--entropy_coef_schedule",
+        type=str,
+        default="16-24:0.03,25-32:0.02",
+        help="迭代区间的 entropy 系数覆盖，格式 start-end:value，例如 '16-24:0.03,25+:0.015'"
+    )
+    parser.add_argument("--checkpoint_interval", type=int, default=5, help="保存 checkpoint 的 iteration 间隔")
+    parser.add_argument("--eval_episodes", type=int, default=5, help="训练结束后 deterministic 评估 EP 数")
+    parser.add_argument("--eval_multi_fish", type=int, default=25, help="多鱼评估时的鱼数量 (>1 启用)")
+    parser.add_argument("--eval_multi_episodes", type=int, default=10, help="多鱼 deterministic 评估 EP 数 (>=10 推荐)")
+    parser.add_argument("--best_checkpoint_eval_episodes", type=int, default=20, help="best checkpoint 复核用的 deterministic EP 数")
+    parser.add_argument(
+        "--multi_eval_interval",
+        type=int,
+        default=4,
+        help="训练过程中触发多鱼探针评估的 iteration 间隔 (<=0 表示关闭)"
+    )
+    parser.add_argument(
+        "--multi_eval_probe_episodes",
+        type=int,
+        default=12,
+        help="每次训练期中多鱼评估的 episodes 数 (>=10 推荐)"
+    )
+    parser.add_argument("--adaptive_boost_window", type=int, default=4, help="first_death_p10 滑窗长度 (iteration)")
+    parser.add_argument("--adaptive_boost_lower_p10", type=float, default=12.0, help="低于该 first_death_p10 时强制降速")
+    parser.add_argument("--adaptive_boost_upper_p10", type=float, default=18.0, help="高于该 first_death_p10 时放宽 clamp")
+    parser.add_argument("--adaptive_boost_low_speed", type=float, default=0.76, help="降速后的 escape boost 上限")
+    parser.add_argument("--adaptive_boost_high_speed", type=float, default=0.8, help="放宽后的 escape boost 上限")
+    parser.add_argument("--adaptive_boost_min_iteration", type=int, default=12, help="自适应 clamp 生效的最小 iteration")
+    parser.add_argument("--disable_adaptive_boost", action="store_true", help="禁用 first_death_p10 驱动的 escape boost 调整")
+    parser.add_argument(
+        "--obs_sampling",
+        type=str,
+        default="round_robin",
+        choices=("round_robin", "random"),
+        help="单策略训练时的观测采样方式"
+    )
+    parser.add_argument("--include_neighbor_features", dest="include_neighbor_features", action="store_true", help="启用邻居特征")
+    parser.add_argument("--no_neighbor_features", dest="include_neighbor_features", action="store_false", help="禁用邻居特征")
+    parser.set_defaults(include_neighbor_features=True)
+    parser.add_argument("--neighbor_radius", type=float, default=3.0, help="邻居感知半径 (世界坐标)")
+    parser.add_argument("--neighbor_average_count", type=int, default=6, help="统计平均的邻居数量上限")
+    parser.add_argument("--initial_escape_boost", dest="initial_escape_boost", action="store_true", help="启用开局逃逸脉冲")
+    parser.add_argument("--no_initial_escape_boost", dest="initial_escape_boost", action="store_false", help="禁用开局逃逸脉冲")
+    parser.set_defaults(initial_escape_boost=True)
+    parser.add_argument("--escape_boost_speed", type=float, default=0.75, help="初始逃逸脉冲系数 (乘以 FISH_MAX_SPEED)")
+    parser.add_argument(
+        "--escape_boost_phase_speeds",
+        type=str,
+        default="3:0.76,4:0.78,5:0.82,6:0.82,7:0.82",
+        help="按阶段覆盖 escape boost 速度，例如 '3:0.76,4:0.78,5:0.82,6:0.82,7:0.82'"
+    )
+    parser.add_argument(
+        "--escape_boost_penalty_caps",
+        type=str,
+        default="0.05:0.8",
+        help="当密度 penalty 超过阈值时的 escape boost 上限，格式 threshold:value，如 '0.05:0.8,0.075:0.78'"
+    )
+    parser.add_argument("--escape_jitter_std", type=float, default=0.35, help="初始逃逸方向噪声 (弧度标准差)")
+    parser.add_argument("--divergence_reward_coef", type=float, default=0.0, help="邻居散度正向奖励系数")
+    parser.add_argument("--density_penalty_coef", type=float, default=0.0, help="邻居密度惩罚系数 (penalize > target)")
+    parser.add_argument("--density_target", type=float, default=0.4, help="密度惩罚触发的归一化阈值 (0~1)")
+    parser.add_argument("--predator_spawn_jitter_radius", type=float, default=0.0, help="初始化时大鱼在圆心附近的随机半径 (世界坐标)")
+    parser.add_argument("--predator_pre_roll_steps", type=int, default=0, help="reset 后仅移动大鱼的预热步数，缓解 step=1 碰撞")
+    parser.add_argument(
+        "--density_penalty_phase_targets",
+        type=str,
+        default="0.0,0.02,0.04,0.05,0.06,0.065,0.08",
+        help="逗号分隔的 per-phase penalty 目标值 (长度需等于 curriculum 阶段)"
+    )
+    parser.add_argument(
+        "--density_penalty_ramp_phases",
+        type=str,
+        default="3,4,5,6,7",
+        help="需要线性 ramp 的阶段编号 (1-based, 逗号分隔)"
+    )
+    parser.add_argument(
+        "--density_penalty_phase_plateaus",
+        type=str,
+        default="0,0,4,4,6,2,2",
+        help="per-phase plateau 迭代数 (逗号分隔, 与 curriculum 长度一致)，用于延迟 ramp"
+    )
+    parser.add_argument("--video_num_fish", type=int, default=25, help="录制 mp4 时的鱼数量 (<=0 跳过)")
+    parser.add_argument("--video_max_steps", type=int, default=500, help="视频最多录制的步数")
+    parser.add_argument("--video_fps", type=int, default=20, help="输出 mp4 的帧率")
+    parser.add_argument("--seed", type=int, default=None, help="随机种子")
+    parser.add_argument("--run_name", type=str, default=None, help="自定义 run 名称 (可选)")
+
+    args = parser.parse_args()
+    train(args)

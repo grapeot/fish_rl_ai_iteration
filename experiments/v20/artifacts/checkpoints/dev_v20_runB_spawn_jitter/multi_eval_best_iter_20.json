@@ -1,0 +1,126 @@
+{
+  "iteration": 20,
+  "timestamp": "2025-11-11T12:50:29.223604Z",
+  "summary": {
+    "episodes": 12,
+    "avg_final_survival_rate": 0.8133333333333335,
+    "min_final_survival_rate": 0.68,
+    "avg_min_survival_rate": 0.8133333333333335,
+    "min_of_min_survival_rate": 0.68,
+    "median_min_survival_rate": 0.8
+  },
+  "death_stats": {
+    "total_fish_samples": 300,
+    "survival_fraction": 0.8133333333333334,
+    "mean_death_step": 429.82,
+    "median_death_step": 500.0,
+    "p10": 123.10000000000002,
+    "p25": 500.0,
+    "p75": 500.0,
+    "p90": 500.0,
+    "early_death_fraction_100": 0.09333333333333334,
+    "early_death_fraction_150": 0.12
+  },
+  "density_penalty_coef": 0.04,
+  "escape_boost_speed": 0.74,
+  "step_one_death_count": 6,
+  "death_hist_path": "/Users/grapeot/co/fish_rl/experiments/v20/artifacts/plots/dev_v20_runB_spawn_jitter_multi_eval_hist/dev_v20_runB_spawn_jitter_iter020_death_hist.png",
+  "step_one_deaths": [
+    {
+      "fish_idx": 4,
+      "predator_index": 0,
+      "fish_position": [
+        0.9197750091552734,
+        -0.11822573095560074
+      ],
+      "predator_position": [
+        0.7117916345596313,
+        0.2577320337295532
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    },
+    {
+      "fish_idx": 22,
+      "predator_index": 0,
+      "fish_position": [
+        1.3000569343566895,
+        0.31426694989204407
+      ],
+      "predator_position": [
+        0.7117916345596313,
+        0.2577320337295532
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    },
+    {
+      "fish_idx": 9,
+      "predator_index": 0,
+      "fish_position": [
+        0.6702788472175598,
+        -0.33584004640579224
+      ],
+      "predator_position": [
+        0.966930627822876,
+        0.13269299268722534
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    },
+    {
+      "fish_idx": 8,
+      "predator_index": 0,
+      "fish_position": [
+        0.874588131904602,
+        0.22483304142951965
+      ],
+      "predator_position": [
+        0.9338312149047852,
+        0.41114795207977295
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    },
+    {
+      "fish_idx": 9,
+      "predator_index": 0,
+      "fish_position": [
+        1.0193095207214355,
+        -0.012348446063697338
+      ],
+      "predator_position": [
+        0.592896580696106,
+        -0.08840944617986679
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    },
+    {
+      "fish_idx": 14,
+      "predator_index": 0,
+      "fish_position": [
+        0.48173788189888,
+        0.3069792687892914
+      ],
+      "predator_position": [
+        0.8489059209823608,
+        0.8239498734474182
+      ],
+      "predator_velocity": [
+        1.5,
+        0.3500000238418579
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1220 @@
+{
+  "iteration": 20,
+  "results": [
+    {
+      "episode": 0,
+      "avg_reward": 0.626074049949646,
+      "total_reward": 313.037024974823,
+      "steps": 500,
+      "final_num_alive": 22,
+      "min_survival_rate": 0.88,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        149,
+        -1,
+        -1,
+        -1,
+        1,
+        224
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 23,
+          "predator_index": 0,
+          "fish_position": [
+            1.575995683670044,
+            0.2994857132434845
+          ],
+          "predator_position": [
+            1.2745534181594849,
+            0.006070151925086975
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 1,
+      "avg_reward": 0.501400552034378,
+      "total_reward": 250.70027601718903,
+      "steps": 500,
+      "final_num_alive": 17,
+      "min_survival_rate": 0.68,
+      "death_timesteps": [
+        125,
+        -1,
+        -1,
+        229,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        22,
+        -1,
+        -1,
+        369,
+        -1,
+        -1,
+        -1,
+        1,
+        132,
+        -1,
+        -1,
+        -1,
+        -1,
+        142,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 4,
+          "predator_index": 0,
+          "fish_position": [
+            0.7463380694389343,
+            -0.25570011138916016
+          ],
+          "predator_position": [
+            1.0381945371627808,
+            0.18636944890022278
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 16,
+          "predator_index": 0,
+          "fish_position": [
+            1.0253585577011108,
+            0.5799190402030945
+          ],
+          "predator_position": [
+            1.0381945371627808,
+            0.18636944890022278
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 2,
+      "avg_reward": 0.6181105786561966,
+      "total_reward": 309.0552893280983,
+      "steps": 500,
+      "final_num_alive": 22,
+      "min_survival_rate": 0.88,
+      "death_timesteps": [
+        -1,
+        -1,
+        59,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        54,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 15,
+          "predator_index": 0,
+          "fish_position": [
+            0.8475898504257202,
+            -0.2396748811006546
+          ],
+          "predator_position": [
+            0.9165353775024414,
+            0.05966966599225998
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 3,
+      "avg_reward": 0.6231647788286209,
+      "total_reward": 311.58238941431046,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        67,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        320,
+        -1,
+        -1,
+        -1,
+        -1,
+        125,
+        150
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 4,
+      "avg_reward": 0.5113650667071342,
+      "total_reward": 255.68253335356712,
+      "steps": 500,
+      "final_num_alive": 17,
+      "min_survival_rate": 0.68,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        19,
+        -1,
+        -1,
+        111,
+        -1,
+        314,
+        -1,
+        -1,
+        137,
+        199,
+        -1,
+        83,
+        -1,
+        -1,
+        88,
+        119,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 5,
+      "avg_reward": 0.5483121937513351,
+      "total_reward": 274.1560968756676,
+      "steps": 500,
+      "final_num_alive": 18,
+      "min_survival_rate": 0.72,
+      "death_timesteps": [
+        -1,
+        -1,
+        160,
+        -1,
+        -1,
+        -1,
+        254,
+        -1,
+        -1,
+        -1,
+        -1,
+        290,
+        -1,
+        -1,
+        -1,
+        173,
+        32,
+        -1,
+        23,
+        -1,
+        295,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 6,
+      "avg_reward": 0.5333329280018806,
+      "total_reward": 266.6664640009403,
+      "steps": 500,
+      "final_num_alive": 18,
+      "min_survival_rate": 0.72,
+      "death_timesteps": [
+        248,
+        -1,
+        85,
+        239,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        230,
+        -1,
+        -1,
+        189,
+        -1,
+        15,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 9,
+          "predator_index": 0,
+          "fish_position": [
+            0.17626532912254333,
+            -0.07479823380708694
+          ],
+          "predator_position": [
+            0.722313404083252,
+            -0.31361228227615356
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 7,
+      "avg_reward": 0.5571614079475403,
+      "total_reward": 278.58070397377014,
+      "steps": 500,
+      "final_num_alive": 20,
+      "min_survival_rate": 0.8,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        51,
+        81,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        110,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        79
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 12,
+          "predator_index": 0,
+          "fish_position": [
+            0.9277150630950928,
+            -0.45779478549957275
+          ],
+          "predator_position": [
+            1.1218839883804321,
+            0.13960278034210205
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 8,
+      "avg_reward": 0.6180229136943817,
+      "total_reward": 309.01145684719086,
+      "steps": 500,
+      "final_num_alive": 22,
+      "min_survival_rate": 0.88,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        61,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 4,
+          "predator_index": 0,
+          "fish_position": [
+            0.5684629082679749,
+            -0.7618037462234497
+          ],
+          "predator_position": [
+            1.0651277303695679,
+            -0.596998393535614
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 10,
+          "predator_index": 0,
+          "fish_position": [
+            1.3919696807861328,
+            -0.19467777013778687
+          ],
+          "predator_position": [
+            1.0651277303695679,
+            -0.596998393535614
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 9,
+      "avg_reward": 0.49285678642988207,
+      "total_reward": 246.42839321494102,
+      "steps": 500,
+      "final_num_alive": 16,
+      "min_survival_rate": 0.64,
+      "death_timesteps": [
+        41,
+        140,
+        4,
+        1,
+        -1,
+        11,
+        -1,
+        250,
+        86,
+        327,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        344,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 3,
+          "predator_index": 0,
+          "fish_position": [
+            0.5697600841522217,
+            0.35564684867858887
+          ],
+          "predator_position": [
+            0.8543846607208252,
+            0.4126003384590149
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 10,
+      "avg_reward": 0.547405148267746,
+      "total_reward": 273.702574133873,
+      "steps": 500,
+      "final_num_alive": 18,
+      "min_survival_rate": 0.72,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        210,
+        307,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        74,
+        -1,
+        -1,
+        -1,
+        326,
+        -1,
+        117,
+        76,
+        191,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 11,
+      "avg_reward": 0.5727119902372361,
+      "total_reward": 286.355995118618,
+      "steps": 500,
+      "final_num_alive": 20,
+      "min_survival_rate": 0.8,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        137,
+        -1,
+        232,
+        -1,
+        -1,
+        21,
+        -1,
+        -1,
+        -1,
+        31,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        83
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 12,
+      "avg_reward": 0.5502229911088944,
+      "total_reward": 275.1114955544472,
+      "steps": 500,
+      "final_num_alive": 19,
+      "min_survival_rate": 0.76,
+      "death_timesteps": [
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        17,
+        394,
+        -1,
+        -1,
+        -1,
+        239,
+        142,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 0,
+          "predator_index": 0,
+          "fish_position": [
+            1.2552831172943115,
+            0.4064192771911621
+          ],
+          "predator_position": [
+            1.6110361814498901,
+            0.5610968470573425
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 13,
+      "avg_reward": 0.5941255939006805,
+      "total_reward": 297.06279695034027,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84,
+      "death_timesteps": [
+        -1,
+        -1,
+        28,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        17,
+        -1,
+        -1,
+        -1,
+        195,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        108
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 14,
+      "avg_reward": 0.5893972371816635,
+      "total_reward": 294.69861859083176,
+      "steps": 500,
+      "final_num_alive": 20,
+      "min_survival_rate": 0.8,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        77,
+        -1,
+        -1,
+        419,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        120,
+        81,
+        169
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 15,
+      "avg_reward": 0.49029385221004484,
+      "total_reward": 245.14692610502243,
+      "steps": 500,
+      "final_num_alive": 16,
+      "min_survival_rate": 0.64,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        1,
+        60,
+        -1,
+        -1,
+        -1,
+        -1,
+        280,
+        491,
+        -1,
+        23,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        1,
+        306,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 3,
+          "predator_index": 0,
+          "fish_position": [
+            0.6513088941574097,
+            0.07996976375579834
+          ],
+          "predator_position": [
+            0.5999497175216675,
+            -0.2102993130683899
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 6,
+          "predator_index": 0,
+          "fish_position": [
+            0.7295559048652649,
+            -0.13250888884067535
+          ],
+          "predator_position": [
+            0.5999497175216675,
+            -0.2102993130683899
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 20,
+          "predator_index": 0,
+          "fish_position": [
+            0.19708579778671265,
+            -0.08711962401866913
+          ],
+          "predator_position": [
+            0.5999497175216675,
+            -0.2102993130683899
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 22,
+          "predator_index": 0,
+          "fish_position": [
+            0.21011030673980713,
+            -0.47608083486557007
+          ],
+          "predator_position": [
+            0.5999497175216675,
+            -0.2102993130683899
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 16,
+      "avg_reward": 0.6989557183980942,
+      "total_reward": 349.4778591990471,
+      "steps": 500,
+      "final_num_alive": 25,
+      "min_survival_rate": 1.0,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 17,
+      "avg_reward": 0.4624088670015335,
+      "total_reward": 231.20443350076675,
+      "steps": 500,
+      "final_num_alive": 17,
+      "min_survival_rate": 0.68,
+      "death_timesteps": [
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        14,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        117,
+        1,
+        -1,
+        -1,
+        36
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 1,
+          "predator_index": 0,
+          "fish_position": [
+            0.6041499376296997,
+            -0.43173637986183167
+          ],
+          "predator_position": [
+            0.7009254693984985,
+            0.07859303057193756
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 6,
+          "predator_index": 0,
+          "fish_position": [
+            0.18763259053230286,
+            0.5195525288581848
+          ],
+          "predator_position": [
+            0.7009254693984985,
+            0.07859303057193756
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 12,
+          "predator_index": 0,
+          "fish_position": [
+            0.48009857535362244,
+            0.41112613677978516
+          ],
+          "predator_position": [
+            0.7009254693984985,
+            0.07859303057193756
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 13,
+          "predator_index": 0,
+          "fish_position": [
+            0.8425553441047668,
+            -0.1771029829978943
+          ],
+          "predator_position": [
+            0.7009254693984985,
+            0.07859303057193756
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        },
+        {
+          "fish_idx": 21,
+          "predator_index": 0,
+          "fish_position": [
+            0.8817359805107117,
+            0.0061008259654045105
+          ],
+          "predator_position": [
+            0.7009254693984985,
+            0.07859303057193756
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 18,
+      "avg_reward": 0.661882562994957,
+      "total_reward": 330.9412814974785,
+      "steps": 500,
+      "final_num_alive": 22,
+      "min_survival_rate": 0.88,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        400,
+        -1,
+        -1,
+        180,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        406,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 19,
+      "avg_reward": 0.6013465453386306,
+      "total_reward": 300.67327266931534,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        72,
+        -1,
+        -1,
+        -1,
+        -1,
+        188,
+        -1,
+        121,
+        -1,
+        127,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 20,
+      "avg_reward": 0.676752638578415,
+      "total_reward": 338.37631928920746,
+      "steps": 500,
+      "final_num_alive": 24,
+      "min_survival_rate": 0.96,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": [
+        {
+          "fish_idx": 16,
+          "predator_index": 0,
+          "fish_position": [
+            0.4729536175727844,
+            0.25144198536872864
+          ],
+          "predator_position": [
+            0.7711635828018188,
+            0.5022489428520203
+          ],
+          "predator_velocity": [
+            1.5,
+            0.3500000238418579
+          ],
+          "timestep": 1
+        }
+      ]
+    },
+    {
+      "episode": 21,
+      "avg_reward": 0.6032301073074341,
+      "total_reward": 301.61505365371704,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        65,
+        -1,
+        -1,
+        240,
+        217,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        15,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 22,
+      "avg_reward": 0.6071281069517136,
+      "total_reward": 303.5640534758568,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        64,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        35,
+        -1,
+        245,
+        -1,
+        -1,
+        -1,
+        -1,
+        122,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "step_one_deaths": []
+    },
+    {
+      "episode": 23,
+      "avg_reward": 0.5241562166810035,
+      "total_reward": 262.0781083405018,
+      "steps": 500,
+      "final_num_alive": 18,
+      "min_survival_rate": 0.72,
+      "death_timesteps": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        18,
+        118,
+        -1,
+        -1,
+        -1,
+        131,
+        269,
+        -1,
+        -1,
+        -1,
+        37,
+        -1,
+        -1,
+        -1,
+        -1,
+        145,
+        21
+      ],
+      "step_one_deaths": []
+    }
+  ]
+}
