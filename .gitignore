@@ -49,6 +49,7 @@ experiments/*/artifacts/checkpoints/
 experiments/*/artifacts/logs/
 experiments/*/artifacts/tb_logs/
 experiments/*/artifacts/plots/
+experiments/*/artifacts/media/
 
 # Legacy fallbacks
 checkpoints/

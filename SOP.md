@@ -32,7 +32,8 @@
 
 6. **收尾与交接**
    - 在 `dev_v{X+1}.md` 补全 “本轮 Learning / 下一步计划”，供下一轮开场阅读。
-    - 提交相关代码（`experiments/v{X+1}/train.py` 及其他改动）、文档、依赖；提供日志/曲线/检查点路径，确保可复现。
+   - 将关键产物写入 `experiments/v{X+1}/artifacts/plots/`（曲线）与 `.../media/`（mp4/gif，即便 500 帧），在文档中引用。
+   - 提交相关代码（`experiments/v{X+1}/train.py` 等）、文档和可追溯的元数据，并推送到 `origin/master`，保证远端随时反映最新状态。
    - 下一轮启动时回到步骤 0，形成闭环。
 
 ## 目录结构
@@ -47,7 +48,8 @@ fish_rl/
 │             ├── checkpoints/
 │             ├── logs/
 │             ├── tb_logs/
-│             └── plots/      # 可选：训练曲线、可视化
+│             ├── plots/      # 训练曲线、PNG、SVG
+│             └── media/      # 视频/GIF（建议 mp4 以减小体积）
 ├── docs/（可选）
 ├── requirements.txt
 └── SOP.md
@@ -60,4 +62,5 @@ fish_rl/
 - 日志渠道可混用（TensorBoard、文本、JSON）；但每轮至少保存一种易于 diff 的格式。
 - `experiments/vX/train.py` 与 `experiments/vX/dev_vX.md` 的版本号保持同步：一次 major 迭代 +1。
 - `experiments/vX/artifacts/` 下的历史模型视为不可变，只追加新目录。
-- 本机资源：16 物理核 / 128 GB RAM，可稳定支撑 64~128 个并行环境；在 v2+ 迭代中优先把 `--num_envs` 设为 ≥64 以提升 sample throughput。
+- 本机资源：32 物理核 / 512 GB RAM，可稳定支撑 64~128 个并行环境；在 v2+ 迭代中默认把 `--num_envs` 设为 ≥64（建议 128）。
+- 每轮结束必须 `git status` 检查、`git add` 相关文件、`git commit -m "..."` 并 `git push origin master`，形成远端可见的追溯链。

@@ -44,13 +44,13 @@ for (( VERSION=START_VER; VERSION<=END_VER; VERSION++ )); do
            "${CUR_EXP_DIR}/artifacts/plots"
 
   PROMPT=$(cat <<EOF
-你现在扮演 Codex CLI，负责按照 `SOP.md` 的工作流，把 Fish RL 项目从 dev_v${PREV} 推进到 dev_v${VERSION}。请遵守以下硬性要求：
+按照 `SOP.md` 的循环流程，把 Fish RL 项目从 dev_v${PREV} 推进到 dev_v${VERSION}。硬性要求：
 1. 在任何 Python 操作前，检查仓库根目录是否存在 `venv`，若无则使用 `uv venv venv` 创建，若有则 `source venv/bin/activate` 并使用 `uv pip install` 安装依赖。
 2. 阅读 `SOP.md` 与 ${PREV_FILE}，总结上一轮的 Learning/计划，写入新的 ${DEV_FILE} 的“启动”“观察”“实验计划”部分。
-3. 规划并执行必要的训练/可视化脚本（通常位于 `experiments/v*/train.py`）。所有实验输出（日志、TensorBoard、曲线、检查点）写入 `${CUR_EXP_DIR}/artifacts/`。
-4. 建议充分利用本机 16 核 / 128GB 资源：默认把 `--num_envs` 设为 ≥64，除非文档明确要求更小规模。
-5. 完成后，在 ${DEV_FILE} 记录：运行命令、关键指标、输出路径、下一步计划；必要时复制训练曲线到 `${CUR_EXP_DIR}/artifacts/plots/`。
-6. 保持仓库整洁：可复制上一版本的 `train.py` 做基础，但不要删除历史数据；运行结束前给出 `git status` 摘要。
+3. 规划并执行必要的训练/可视化脚本（通常位于 `experiments/v*/train.py`）。所有实验输出（日志、TensorBoard、曲线、检查点、媒体）写入 `${CUR_EXP_DIR}/artifacts/`。
+4. 本机为 32 核 CPU / 512GB RAM，默认把 `--num_envs` 设为 ≥64（推荐 128），除非任务明确要求更低并行度。
+5. 完成后，在 ${DEV_FILE} 记录：运行命令、关键指标、输出路径、媒体（mp4/gif）位置、下一步计划；必要时复制训练曲线/视频到 `${CUR_EXP_DIR}/artifacts/plots|media/`。
+6. 保持仓库整洁：可复制上一版本的 `train.py` 做基础，但不要删除历史数据；运行结束前给出 `git status` 摘要，并将所有文本/脚本/plot 更新提交 (`git commit`) 且推送到 `origin`。
 
 目标：让 dev_v${VERSION} 的文档、代码、日志完整可交接。完成后输出“v${VERSION} done”。
 EOF
