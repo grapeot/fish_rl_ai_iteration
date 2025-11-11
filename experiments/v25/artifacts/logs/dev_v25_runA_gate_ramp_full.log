@@ -1,0 +1,7 @@
+[2025-11-11 08:29:29] density_penalty_update iteration=001 value=0.0000
+[2025-11-11 08:29:29] entropy_coef_update iteration=001 value=0.0200
+[2025-11-11 08:29:29] escape_boost_apply iteration=001 speed=0.750
+[2025-11-11 08:29:32] iter=001 sr=74.60% final_alive=11.19 reward= 274.08 steps= 500.0
+[2025-11-11 08:29:40] iter=002 sr=75.67% final_alive=11.35 reward= 279.43 steps= 500.0
+[2025-11-11 08:29:49] iter=003 sr=73.80% final_alive=11.07 reward= 268.11 steps= 500.0
+[2025-11-11 08:29:57] iter=004 sr=75.13% final_alive=11.27 reward= 276.48 steps= 500.0

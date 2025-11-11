@@ -1,0 +1,226 @@
+{
+  "iteration": 16,
+  "timestamp": "2025-11-11T16:52:29.166175Z",
+  "summary": {
+    "episodes": 24,
+    "avg_final_survival_rate": 0.7050000000000001,
+    "min_final_survival_rate": 0.52,
+    "avg_min_survival_rate": 0.7050000000000001,
+    "min_of_min_survival_rate": 0.52,
+    "median_min_survival_rate": 0.68
+  },
+  "death_stats": {
+    "total_fish_samples": 600,
+    "survival_fraction": 0.705,
+    "mean_death_step": 411.905,
+    "median_death_step": 500.0,
+    "p10": 112.60000000000002,
+    "p25": 365.75,
+    "p75": 500.0,
+    "p90": 500.0,
+    "early_death_fraction_100": 0.09,
+    "early_death_fraction_150": 0.12
+  },
+  "density_penalty_coef": 0.02,
+  "escape_boost_speed": 0.75,
+  "step_one_death_count": 4,
+  "death_hist_path": "/Users/grapeot/co/fish_rl/experiments/v25/artifacts/plots/dev_v25_runA_gate_ramp_main_multi_eval_hist/dev_v25_runA_gate_ramp_main_iter016_death_hist.png",
+  "step_one_deaths": [
+    {
+      "fish_idx": 4,
+      "predator_index": 0,
+      "fish_position": [
+        1.7535488605499268,
+        -1.3125677108764648
+      ],
+      "predator_position": [
+        1.5000449419021606,
+        -1.4057536125183105
+      ],
+      "predator_velocity": [
+        1.1551655530929565,
+        -0.22557927668094635
+      ]
+    },
+    {
+      "fish_idx": 15,
+      "predator_index": 0,
+      "fish_position": [
+        1.6340136528015137,
+        1.1143907308578491
+      ],
+      "predator_position": [
+        1.4334688186645508,
+        1.04585862159729
+      ],
+      "predator_velocity": [
+        1.1438566446304321,
+        0.4219648540019989
+      ]
+    },
+    {
+      "fish_idx": 3,
+      "predator_index": 0,
+      "fish_position": [
+        1.2852226495742798,
+        -0.22726775705814362
+      ],
+      "predator_position": [
+        1.3995951414108276,
+        0.1317274570465088
+      ],
+      "predator_velocity": [
+        0.6304059028625488,
+        0.6299846172332764
+      ]
+    },
+    {
+      "fish_idx": 11,
+      "predator_index": 0,
+      "fish_position": [
+        1.8221423625946045,
+        2.7996559143066406
+      ],
+      "predator_position": [
+        1.6011112928390503,
+        2.1947877407073975
+      ],
+      "predator_velocity": [
+        1.5095038414001465,
+        1.6454882621765137
+      ]
+    }
+  ],
+  "step_one_clusters": {
+    "total": 4,
+    "angle_bin_deg": 30.0,
+    "speed_bin": 0.4,
+    "clusters": [
+      {
+        "angle_deg_start": 330.0,
+        "angle_deg_end": 360.0,
+        "speed_bin_start": 0.8,
+        "speed_bin_end": 1.2000000000000002,
+        "count": 1,
+        "share": 0.25
+      },
+      {
+        "angle_deg_start": 0.0,
+        "angle_deg_end": 30.0,
+        "speed_bin_start": 1.2000000000000002,
+        "speed_bin_end": 1.6,
+        "count": 1,
+        "share": 0.25
+      },
+      {
+        "angle_deg_start": 30.0,
+        "angle_deg_end": 60.0,
+        "speed_bin_start": 0.8,
+        "speed_bin_end": 1.2000000000000002,
+        "count": 1,
+        "share": 0.25
+      },
+      {
+        "angle_deg_start": 30.0,
+        "angle_deg_end": 60.0,
+        "speed_bin_start": 2.0,
+        "speed_bin_end": 2.4000000000000004,
+        "count": 1,
+        "share": 0.25
+      }
+    ]
+  },
+  "pre_roll_stats_summary": {
+    "sampled_episodes": 24,
+    "spawn_radius": {
+      "count": 24,
+      "mean": 0.8006465223928293,
+      "std": 0.3798429445637253,
+      "p10": 0.16172788739204408,
+      "p50": 0.9276791214942932,
+      "p90": 1.2021376848220824,
+      "min": 0.10900171101093292,
+      "max": 1.3250539302825928
+    },
+    "spawn_angle_deg": {
+      "count": 24,
+      "mean": -5.353004723787308,
+      "std": 117.89727181999848,
+      "p10": -140.8388687133789,
+      "p50": -6.781010985374451,
+      "p90": 157.1602828979492,
+      "min": -169.1105194091797,
+      "max": 173.59385681152344
+    },
+    "initial_heading_deg": {
+      "count": 24,
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "final_heading_deg": {
+      "count": 24,
+      "mean": 14.672076153258482,
+      "std": 31.017544978121823,
+      "p10": -26.525587463378905,
+      "p50": 19.865169525146484,
+      "p90": 51.58822174072265,
+      "min": -37.08845901489258,
+      "max": 68.77449798583984
+    },
+    "initial_speed": {
+      "count": 24,
+      "mean": 1.5,
+      "std": 0.0,
+      "p10": 1.5,
+      "p50": 1.5,
+      "p90": 1.5,
+      "min": 1.5,
+      "max": 1.5
+    },
+    "final_speed": {
+      "count": 24,
+      "mean": 1.656663437684377,
+      "std": 0.5557864297809321,
+      "p10": 0.9839924454689026,
+      "p50": 1.5616948008537292,
+      "p90": 2.251498079299927,
+      "min": 0.8067452311515808,
+      "max": 3.007521152496338
+    },
+    "angle_jitter_deg": {
+      "count": 384,
+      "mean": -0.83288872315592,
+      "std": 9.462446032382882,
+      "p10": -14.120986047337318,
+      "p50": -0.6952592821321704,
+      "p90": 12.208962012134085,
+      "min": -17.080881858136316,
+      "max": 17.01565675937754
+    },
+    "speed_scale": {
+      "count": 384,
+      "mean": 1.004484433343914,
+      "std": 0.1185348056769453,
+      "p10": 0.8350645999687297,
+      "p50": 1.019282611824937,
+      "p90": 1.1619471983197809,
+      "min": 0.8021857320312683,
+      "max": 1.1981892208264004
+    }
+  },
+  "best_model_path": "/Users/grapeot/co/fish_rl/experiments/v25/artifacts/checkpoints/dev_v25_runA_gate_ramp_main/model_iter_16.zip",
+  "best_checkpoint_saved": true,
+  "penalty_gate": {
+    "event": "failure_hold",
+    "stage": 0,
+    "phase_limit": 3,
+    "success_streak": 0,
+    "freeze_until": 20,
+    "failure_detected": true
+  }
+}

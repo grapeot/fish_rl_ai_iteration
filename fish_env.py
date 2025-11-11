@@ -2,7 +2,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 import pygame
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Dict, Any
 
 
 class FishEscapeEnv(gym.Env):
@@ -104,6 +104,7 @@ class FishEscapeEnv(gym.Env):
         self.predator_vel = None
         self.fish_death_timesteps = None
         self.step_one_death_records = []
+        self._last_pre_roll_stats: Optional[Dict[str, float]] = None
         
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
         super().reset(seed=seed)
@@ -116,6 +117,7 @@ class FishEscapeEnv(gym.Env):
         self.fish_alive = np.ones(self.NUM_FISH, dtype=bool)
         self.fish_death_timesteps = np.full(self.NUM_FISH, -1, dtype=np.int32)
         self.step_one_death_records = []
+        self._last_pre_roll_stats = None
         
         for i in range(self.NUM_FISH):
             # 随机角度和半径
@@ -157,27 +159,53 @@ class FishEscapeEnv(gym.Env):
             ], dtype=np.float32)
             self.predator_pos = offset
         self.predator_vel = np.array([self.PREDATOR_INITIAL_VX, self.PREDATOR_INITIAL_VY], dtype=np.float32)
+        spawn_radius = float(np.linalg.norm(self.predator_pos))
+        spawn_angle = float(np.degrees(np.arctan2(self.predator_pos[1], self.predator_pos[0]))) if spawn_radius > 1e-6 else 0.0
+        initial_speed = float(np.linalg.norm(self.predator_vel))
+        initial_heading = float(np.degrees(np.arctan2(self.predator_vel[1], self.predator_vel[0]))) if initial_speed > 1e-6 else 0.0
+        pre_roll_trace: Dict[str, Any] = {
+            "spawn_radius": spawn_radius,
+            "spawn_angle_deg": spawn_angle,
+            "pre_roll_steps": int(self.predator_pre_roll_steps),
+            "angle_jitter_deg": [],
+            "speed_scale": [],
+            "initial_velocity": self.predator_vel.astype(float).tolist(),
+            "initial_speed": initial_speed,
+            "initial_heading_deg": initial_heading,
+        }
+        self._apply_predator_pre_roll(self.predator_pre_roll_steps, pre_roll_trace)
+        final_speed = float(np.linalg.norm(self.predator_vel))
+        final_heading = float(np.degrees(np.arctan2(self.predator_vel[1], self.predator_vel[0]))) if final_speed > 1e-6 else 0.0
+        pre_roll_trace["final_velocity"] = self.predator_vel.astype(float).tolist()
+        pre_roll_trace["final_speed"] = final_speed
+        pre_roll_trace["final_heading_deg"] = final_heading
+        self._last_pre_roll_stats = pre_roll_trace
 
-        if self.predator_pre_roll_steps > 0:
-            self._apply_predator_pre_roll(self.predator_pre_roll_steps)
-        
         # 获取初始观测
         observations = self._get_observations()
         
         if self.render_mode == "human":
             self._render_frame()
+        info: Dict[str, Any] = {}
+        if self._last_pre_roll_stats:
+            info["pre_roll_stats"] = {
+                key: (list(value) if isinstance(value, list) else value)
+                for key, value in self._last_pre_roll_stats.items()
+            }
 
-        return observations, {}
+        return observations, info
 
-    def _apply_predator_pre_roll(self, steps: int):
+    def _apply_predator_pre_roll(self, steps: int, trace: Optional[Dict[str, Any]] = None):
         """Advance predator only before正式计时，避免 step=1 的空间重叠。"""
         for _ in range(max(int(steps), 0)):
             if self.predator_vel is not None:
+                angle_delta = 0.0
                 if self.predator_pre_roll_angle_jitter > 0.0:
                     angle = self.np_random.uniform(
                         -self.predator_pre_roll_angle_jitter,
                         self.predator_pre_roll_angle_jitter,
                     )
+                    angle_delta = angle
                     cos_a = np.cos(angle)
                     sin_a = np.sin(angle)
                     vx, vy = float(self.predator_vel[0]), float(self.predator_vel[1])
@@ -186,13 +214,18 @@ class FishEscapeEnv(gym.Env):
                         dtype=np.float32,
                     )
                     self.predator_vel = rotated
+                speed_scale = 1.0
                 if self.predator_pre_roll_speed_jitter > 0.0:
                     jitter = self.np_random.uniform(
                         -self.predator_pre_roll_speed_jitter,
                         self.predator_pre_roll_speed_jitter,
                     )
                     scale = max(0.05, 1.0 + jitter)
-                    self.predator_vel = self.predator_vel * float(scale)
+                    speed_scale = float(scale)
+                    self.predator_vel = self.predator_vel * speed_scale
+                if trace is not None:
+                    trace.setdefault("angle_jitter_deg", []).append(float(np.degrees(angle_delta)))
+                    trace.setdefault("speed_scale", []).append(float(speed_scale))
             self._update_predator()
 
     def set_density_penalty(self, coef: float, target: Optional[float] = None):
