@@ -95,6 +95,7 @@ class FishEscapeEnv(gym.Env):
         self.predator_pos = None
         self.predator_vel = None
         self.fish_death_timesteps = None
+        self.step_one_death_records = []
         
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
         super().reset(seed=seed)
@@ -106,6 +107,7 @@ class FishEscapeEnv(gym.Env):
         self.fish_velocities = np.zeros((self.NUM_FISH, 2), dtype=np.float32)
         self.fish_alive = np.ones(self.NUM_FISH, dtype=bool)
         self.fish_death_timesteps = np.full(self.NUM_FISH, -1, dtype=np.int32)
+        self.step_one_death_records = []
         
         for i in range(self.NUM_FISH):
             # 随机角度和半径
@@ -179,6 +181,11 @@ class FishEscapeEnv(gym.Env):
         
         # 碰撞检测
         self._check_collisions()
+
+        just_died = np.where(np.logical_and(prev_alive, np.logical_not(self.fish_alive)))[0]
+        if self.timestep == 1 and just_died.size > 0:
+            for fish_idx in just_died:
+                self._record_step_one_death(fish_idx)
         
         # 计算奖励（包括死亡惩罚）
         rewards = self._compute_rewards()
@@ -214,6 +221,8 @@ class FishEscapeEnv(gym.Env):
             info["death_timesteps"] = (
                 self.fish_death_timesteps.tolist() if self.fish_death_timesteps is not None else None
             )
+
+        info["step_one_deaths"] = [dict(record) for record in (self.step_one_death_records or [])]
 
         return observations, rewards, terminated, truncated, info
     
@@ -349,6 +358,21 @@ class FishEscapeEnv(gym.Env):
                         rewards[i] += self.divergence_reward_coef * float(np.mean(neighbor_divergence))
 
         return rewards * self.REWARD_SCALE
+
+    def _record_step_one_death(self, fish_idx: int):
+        if self.step_one_death_records is None:
+            self.step_one_death_records = []
+        fish_pos = self.fish_positions[fish_idx].astype(float).tolist()
+        predator_pos = self.predator_pos.astype(float).tolist() if self.predator_pos is not None else [0.0, 0.0]
+        predator_vel = self.predator_vel.astype(float).tolist() if self.predator_vel is not None else [0.0, 0.0]
+        self.step_one_death_records.append({
+            "fish_idx": int(fish_idx),
+            "predator_index": 0,
+            "fish_position": fish_pos,
+            "predator_position": predator_pos,
+            "predator_velocity": predator_vel,
+            "timestep": int(self.timestep),
+        })
     
     def _get_observations(self) -> np.ndarray:
         """获取所有存活小鱼的观测"""
