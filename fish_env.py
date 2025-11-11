@@ -30,6 +30,7 @@ class FishEscapeEnv(gym.Env):
         density_target: float = 0.4,
         predator_spawn_jitter_radius: float = 0.0,
         predator_pre_roll_steps: int = 0,
+        predator_pre_roll_angle_jitter: float = 0.0,
     ):
         super().__init__()
         
@@ -69,6 +70,7 @@ class FishEscapeEnv(gym.Env):
         self.density_target = float(np.clip(density_target, 0.0, 1.0))
         self.predator_spawn_jitter_radius = max(float(predator_spawn_jitter_radius), 0.0)
         self.predator_pre_roll_steps = max(int(predator_pre_roll_steps), 0)
+        self.predator_pre_roll_angle_jitter = max(float(predator_pre_roll_angle_jitter), 0.0)
 
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
@@ -168,6 +170,19 @@ class FishEscapeEnv(gym.Env):
     def _apply_predator_pre_roll(self, steps: int):
         """Advance predator only before正式计时，避免 step=1 的空间重叠。"""
         for _ in range(max(int(steps), 0)):
+            if self.predator_pre_roll_angle_jitter > 0.0 and self.predator_vel is not None:
+                angle = self.np_random.uniform(
+                    -self.predator_pre_roll_angle_jitter,
+                    self.predator_pre_roll_angle_jitter,
+                )
+                cos_a = np.cos(angle)
+                sin_a = np.sin(angle)
+                vx, vy = float(self.predator_vel[0]), float(self.predator_vel[1])
+                rotated = np.array(
+                    [vx * cos_a - vy * sin_a, vx * sin_a + vy * cos_a],
+                    dtype=np.float32,
+                )
+                self.predator_vel = rotated
             self._update_predator()
 
     def set_density_penalty(self, coef: float, target: Optional[float] = None):

@@ -118,4 +118,7 @@ codex_runs/
 # Track dev_v20 artifacts as well
 !experiments/v20/artifacts/
 !experiments/v20/artifacts/**
+# Track dev_v21 artifacts as well
+!experiments/v21/artifacts/
+!experiments/v21/artifacts/**
 *.bak

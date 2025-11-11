@@ -1,0 +1,12 @@
+{
+  "total_fish_samples": 400,
+  "survival_fraction": 0.8475,
+  "mean_death_step": 457.6625,
+  "median_death_step": 500.0,
+  "p10": 310.70000000000016,
+  "p25": 500.0,
+  "p75": 500.0,
+  "p90": 500.0,
+  "early_death_fraction_100": 0.0575,
+  "early_death_fraction_150": 0.0575
+}

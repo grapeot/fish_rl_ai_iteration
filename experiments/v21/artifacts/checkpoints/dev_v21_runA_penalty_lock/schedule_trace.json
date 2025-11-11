@@ -1,0 +1,60 @@
+{
+  "generated_at": "2025-11-11T13:12:10.080698Z",
+  "trace": [
+    {
+      "iteration": 1,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.704,
+      "first_death_step": 61.95959595959596,
+      "first_death_p10": 1.0,
+      "first_death_sample_size": 99.0,
+      "step_one_death_count": 0
+    },
+    {
+      "iteration": 2,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.71,
+      "first_death_step": 60.49,
+      "first_death_p10": 1.0,
+      "first_death_sample_size": 100.0,
+      "step_one_death_count": 0
+    },
+    {
+      "iteration": 3,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.7340000000000001,
+      "first_death_step": 75.77551020408163,
+      "first_death_p10": 1.0,
+      "first_death_sample_size": 98.0,
+      "step_one_death_count": 0
+    },
+    {
+      "iteration": 4,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.7406666666666666,
+      "first_death_step": 64.22,
+      "first_death_p10": 1.0,
+      "first_death_sample_size": 100.0,
+      "step_one_death_count": 0
+    },
+    {
+      "iteration": 5,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.7500000000000001,
+      "first_death_step": 60.07070707070707,
+      "first_death_p10": 1.0,
+      "first_death_sample_size": 99.0,
+      "step_one_death_count": 0
+    }
+  ]
+}

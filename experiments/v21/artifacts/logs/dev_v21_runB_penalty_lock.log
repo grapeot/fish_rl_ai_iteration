@@ -1,0 +1,8 @@
+[2025-11-11 05:13:31] entropy_coef_update iteration=001 value=0.0200
+[2025-11-11 05:13:34] iter=001 sr=72.27% final_alive=10.84 reward= 265.63 steps= 500.0
+[2025-11-11 05:13:43] iter=002 sr=74.27% final_alive=11.14 reward= 273.32 steps= 500.0
+[2025-11-11 05:13:51] iter=003 sr=73.20% final_alive=10.98 reward= 268.05 steps= 500.0
+[2025-11-11 05:13:59] iter=004 sr=76.20% final_alive=11.43 reward= 276.93 steps= 500.0
+[2025-11-11 05:14:32] iter=005 sr=75.53% final_alive=11.33 reward= 276.82 steps= 500.0
+[2025-11-11 05:14:33] checkpoint_saved iteration=5
+[2025-11-11 05:14:41] iter=006 sr=75.47% final_alive=11.32 reward= 274.92 steps= 500.0

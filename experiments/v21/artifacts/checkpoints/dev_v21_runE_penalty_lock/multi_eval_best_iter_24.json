@@ -1,0 +1,127 @@
+{
+  "iteration": 24,
+  "timestamp": "2025-11-11T13:40:17.138916Z",
+  "summary": {
+    "episodes": 16,
+    "avg_final_survival_rate": 0.8574999999999999,
+    "min_final_survival_rate": 0.6,
+    "avg_min_survival_rate": 0.8574999999999999,
+    "min_of_min_survival_rate": 0.6,
+    "median_min_survival_rate": 0.88
+  },
+  "death_stats": {
+    "total_fish_samples": 400,
+    "survival_fraction": 0.8575,
+    "mean_death_step": 465.2025,
+    "median_death_step": 500.0,
+    "p10": 433.6,
+    "p25": 500.0,
+    "p75": 500.0,
+    "p90": 500.0,
+    "early_death_fraction_100": 0.0575,
+    "early_death_fraction_150": 0.0575
+  },
+  "density_penalty_coef": 0.04,
+  "escape_boost_speed": 0.74,
+  "step_one_death_count": 6,
+  "death_hist_path": "/Users/grapeot/co/fish_rl/experiments/v21/artifacts/plots/dev_v21_runE_penalty_lock_multi_eval_hist/dev_v21_runE_penalty_lock_iter024_death_hist.png",
+  "step_one_deaths": [
+    {
+      "fish_idx": 2,
+      "predator_index": 0,
+      "fish_position": [
+        0.726853609085083,
+        0.48184114694595337
+      ],
+      "predator_position": [
+        0.8438997268676758,
+        0.5784764289855957
+      ],
+      "predator_velocity": [
+        0.5767050981521606,
+        1.6291471719741821
+      ]
+    },
+    {
+      "fish_idx": 21,
+      "predator_index": 0,
+      "fish_position": [
+        0.2950650155544281,
+        0.48951196670532227
+      ],
+      "predator_position": [
+        0.8438997268676758,
+        0.5784764289855957
+      ],
+      "predator_velocity": [
+        0.5767050981521606,
+        1.6291471719741821
+      ]
+    },
+    {
+      "fish_idx": 17,
+      "predator_index": 0,
+      "fish_position": [
+        1.31666898727417,
+        0.3310275971889496
+      ],
+      "predator_position": [
+        1.9465419054031372,
+        0.6267485618591309
+      ],
+      "predator_velocity": [
+        1.0562833547592163,
+        1.3478013277053833
+      ]
+    },
+    {
+      "fish_idx": 4,
+      "predator_index": 0,
+      "fish_position": [
+        0.28368037939071655,
+        0.4386361241340637
+      ],
+      "predator_position": [
+        0.46580901741981506,
+        0.11122692376375198
+      ],
+      "predator_velocity": [
+        1.3284912109375,
+        -0.4847390055656433
+      ]
+    },
+    {
+      "fish_idx": 4,
+      "predator_index": 0,
+      "fish_position": [
+        0.7355093955993652,
+        0.42103850841522217
+      ],
+      "predator_position": [
+        0.8170164823532104,
+        0.24156948924064636
+      ],
+      "predator_velocity": [
+        1.425815224647522,
+        0.7133911848068237
+      ]
+    },
+    {
+      "fish_idx": 13,
+      "predator_index": 0,
+      "fish_position": [
+        0.33381569385528564,
+        -0.09277866780757904
+      ],
+      "predator_position": [
+        0.8170164823532104,
+        0.24156948924064636
+      ],
+      "predator_velocity": [
+        1.425815224647522,
+        0.7133911848068237
+      ]
+    }
+  ],
+  "best_model_path": "/Users/grapeot/co/fish_rl/experiments/v21/artifacts/checkpoints/dev_v21_runE_penalty_lock/model_iter_24.zip"
+}
