@@ -2,6 +2,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 import pygame
+from collections import deque
 from typing import Optional, Tuple, List, Dict, Any, Sequence
 
 
@@ -33,6 +34,8 @@ class FishEscapeEnv(gym.Env):
         predator_pre_roll_angle_jitter: float = 0.0,
         predator_pre_roll_speed_jitter: float = 0.0,
         predator_heading_bias: Optional[Sequence[Dict[str, float]]] = None,
+        predator_pre_roll_speed_bias: Optional[Sequence[Dict[str, float]]] = None,
+        prewarm_predator_velocity_queue: Optional[Sequence[Sequence[float]]] = None,
     ):
         super().__init__()
         
@@ -75,6 +78,14 @@ class FishEscapeEnv(gym.Env):
         self.predator_pre_roll_angle_jitter = max(float(predator_pre_roll_angle_jitter), 0.0)
         self.predator_pre_roll_speed_jitter = max(float(predator_pre_roll_speed_jitter), 0.0)
         self.predator_heading_bias = self._normalize_heading_bias_config(predator_heading_bias)
+        self.predator_pre_roll_speed_bias = self._normalize_speed_bias_config(predator_pre_roll_speed_bias)
+        self._prewarm_velocity_queue = deque()
+        if prewarm_predator_velocity_queue:
+            for item in prewarm_predator_velocity_queue:
+                if item is None or len(item) < 2:
+                    continue
+                vx, vy = float(item[0]), float(item[1])
+                self._prewarm_velocity_queue.append(np.array([vx, vy], dtype=np.float32))
 
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
@@ -160,16 +171,21 @@ class FishEscapeEnv(gym.Env):
                 jitter_radius * np.sin(jitter_angle),
             ], dtype=np.float32)
             self.predator_pos = offset
-        self.predator_vel = np.array([self.PREDATOR_INITIAL_VX, self.PREDATOR_INITIAL_VY], dtype=np.float32)
-        heading_bias_angle = self._sample_heading_bias_angle()
-        if heading_bias_angle is not None:
-            speed = np.linalg.norm(self.predator_vel)
-            if speed > 1e-9:
-                rad = np.deg2rad(heading_bias_angle)
-                self.predator_vel = np.array(
-                    [np.cos(rad) * speed, np.sin(rad) * speed],
-                    dtype=np.float32,
-                )
+        override_velocity = self._pop_prewarm_velocity()
+        if override_velocity is not None:
+            self.predator_vel = override_velocity.astype(np.float32)
+            heading_bias_angle = None
+        else:
+            self.predator_vel = np.array([self.PREDATOR_INITIAL_VX, self.PREDATOR_INITIAL_VY], dtype=np.float32)
+            heading_bias_angle = self._sample_heading_bias_angle()
+            if heading_bias_angle is not None:
+                speed = np.linalg.norm(self.predator_vel)
+                if speed > 1e-9:
+                    rad = np.deg2rad(heading_bias_angle)
+                    self.predator_vel = np.array(
+                        [np.cos(rad) * speed, np.sin(rad) * speed],
+                        dtype=np.float32,
+                    )
         spawn_radius = float(np.linalg.norm(self.predator_pos))
         spawn_angle = float(np.degrees(np.arctan2(self.predator_pos[1], self.predator_pos[0]))) if spawn_radius > 1e-6 else 0.0
         initial_speed = float(np.linalg.norm(self.predator_vel))
@@ -184,7 +200,10 @@ class FishEscapeEnv(gym.Env):
             "initial_speed": initial_speed,
             "initial_heading_deg": initial_heading,
             "heading_bias_angle_deg": float(heading_bias_angle) if heading_bias_angle is not None else None,
+            "prewarm_velocity_override": bool(override_velocity is not None),
         }
+        if override_velocity is not None:
+            pre_roll_trace["prewarm_velocity"] = override_velocity.astype(float).tolist()
         self._apply_predator_pre_roll(self.predator_pre_roll_steps, pre_roll_trace)
         final_speed = float(np.linalg.norm(self.predator_vel))
         final_heading = float(np.degrees(np.arctan2(self.predator_vel[1], self.predator_vel[0]))) if final_speed > 1e-6 else 0.0
@@ -227,6 +246,7 @@ class FishEscapeEnv(gym.Env):
                     )
                     self.predator_vel = rotated
                 speed_scale = 1.0
+                speed_scale = 1.0
                 if self.predator_pre_roll_speed_jitter > 0.0:
                     jitter = self.np_random.uniform(
                         -self.predator_pre_roll_speed_jitter,
@@ -235,9 +255,22 @@ class FishEscapeEnv(gym.Env):
                     scale = max(0.05, 1.0 + jitter)
                     speed_scale = float(scale)
                     self.predator_vel = self.predator_vel * speed_scale
+                bias_target = self._sample_speed_bias_target()
+                if bias_target is not None:
+                    speed_before = float(np.linalg.norm(self.predator_vel))
+                    if speed_before > 1e-9:
+                        scale_bias = bias_target / speed_before
+                        self.predator_vel = self.predator_vel * scale_bias
+                        speed_scale *= scale_bias
+                    else:
+                        direction = np.array([1.0, 0.0], dtype=np.float32)
+                        self.predator_vel = direction * bias_target
+                        speed_scale = float(bias_target)
                 if trace is not None:
                     trace.setdefault("angle_jitter_deg", []).append(float(np.degrees(angle_delta)))
                     trace.setdefault("speed_scale", []).append(float(speed_scale))
+                    if bias_target is not None:
+                        trace.setdefault("speed_bias_target", []).append(float(bias_target))
             self._update_predator()
 
     def set_density_penalty(self, coef: float, target: Optional[float] = None):
@@ -344,6 +377,55 @@ class FishEscapeEnv(gym.Env):
                 continue
             normalized.append((start_f, end_f, weight_f))
         return normalized
+
+    def _normalize_speed_bias_config(
+        self,
+        config: Optional[Sequence[Dict[str, float]]],
+    ) -> Optional[List[Dict[str, float]]]:
+        if not config:
+            return None
+        normalized: List[Dict[str, float]] = []
+        for entry in config:
+            if not entry:
+                continue
+            try:
+                min_speed = float(entry.get("min_speed", 0.0))
+                max_speed = float(entry.get("max_speed", 0.0))
+                weight = float(entry.get("weight", 0.0))
+            except (TypeError, ValueError):
+                continue
+            if max_speed <= min_speed or weight <= 0:
+                continue
+            normalized.append(
+                {
+                    "min_speed": min_speed,
+                    "max_speed": max_speed,
+                    "weight": weight,
+                }
+            )
+        return normalized if normalized else None
+
+    def _sample_speed_bias_target(self) -> Optional[float]:
+        if not self.predator_pre_roll_speed_bias:
+            return None
+        total = sum(entry["weight"] for entry in self.predator_pre_roll_speed_bias)
+        if total <= 0:
+            return None
+        threshold = self.np_random.uniform(0.0, total)
+        cumulative = 0.0
+        for entry in self.predator_pre_roll_speed_bias:
+            cumulative += entry["weight"]
+            if threshold <= cumulative:
+                low = float(entry["min_speed"])
+                high = float(entry["max_speed"])
+                return self.np_random.uniform(low, high)
+        last = self.predator_pre_roll_speed_bias[-1]
+        return self.np_random.uniform(float(last["min_speed"]), float(last["max_speed"]))
+
+    def _pop_prewarm_velocity(self) -> Optional[np.ndarray]:
+        if not self._prewarm_velocity_queue:
+            return None
+        return self._prewarm_velocity_queue.popleft()
 
     def _sample_heading_bias_angle(self) -> Optional[float]:
         if not self.predator_heading_bias:
