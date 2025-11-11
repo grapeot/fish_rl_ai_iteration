@@ -242,7 +242,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         return VectorizedFishEnv(num_fish=num_fish)
     
     envs = SubprocVecEnv([make_env for _ in range(num_envs)], start_method='spawn')
-    envs = VecMonitor(envs)
+    envs = VecMonitor(envs, info_keywords=('survival_rate', 'num_alive', 'final_num_alive'))
     
     print("Initializing PPO model...")
     model = PPO(
