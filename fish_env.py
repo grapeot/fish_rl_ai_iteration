@@ -32,8 +32,8 @@ class FishEscapeEnv(gym.Env):
         
         # 大鱼参数
         self.PREDATOR_SIZE = 0.5
-        self.PREDATOR_GRAVITY = 0.3  # 降低重力，让大鱼慢一点
-        self.PREDATOR_INITIAL_VX = 0.8  # 降低初始速度
+        self.PREDATOR_GRAVITY = 0.5  # 增加重力，让大鱼更快
+        self.PREDATOR_INITIAL_VX = 1.5  # 增加初始速度
         self.PREDATOR_INITIAL_VY = 0.0
         self.PREDATOR_BOUNCE_DAMPING = 0.85
         
@@ -325,8 +325,13 @@ class FishEscapeEnv(gym.Env):
             return (x, y)
         
         # 绘制舞台边界
+        # 世界坐标边界 STAGE_RADIUS 应该映射到屏幕边缘
+        # 坐标转换: x = (pos[0] / STAGE_RADIUS + 1) * screen_size / 2
+        # 当 pos[0] = STAGE_RADIUS 时，x = screen_size
+        # 当 pos[0] = 0 时，x = screen_size / 2
+        # 所以边界圆的半径应该是 screen_size / 2
         center = (self.screen_size // 2, self.screen_size // 2)
-        radius = int(self.screen_size / 2 * 0.95)
+        radius = int(self.screen_size / 2)
         pygame.draw.circle(canvas, (200, 200, 200), center, radius, 2)
         
         # 绘制小鱼

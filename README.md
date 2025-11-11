@@ -10,25 +10,17 @@
 
 ```
 fish_rl/
-├── fish_env.py              # 原始环境（250条鱼，较难）
-├── fish_env_easy.py         # 简化环境（10条鱼，已验证有效）
-├── train.py                 # 原始训练脚本
-├── train_v2.py              # 改进的训练脚本
-├── train_easy.py            # 简化环境训练脚本（推荐使用）
-├── train_quick.py           # 快速训练脚本
-├── test_env.py              # 环境测试脚本
-├── test_model.py            # 模型测试和对比脚本
-├── visualize.py             # 可视化工具
+├── fish_env.py              # 环境定义（支持自定义小鱼数量）
+├── train_v2.py              # 训练脚本（推荐使用，支持多进程并行）
+├── watch.py                 # 实时可视化脚本（观看小鱼躲避行为）
+├── visualize.py             # 可视化工具（训练曲线、GIF生成）
 ├── checkpoints/             # 训练好的模型检查点
 │   ├── model_iter_10.zip
 │   ├── model_iter_20.zip
 │   ├── ...
-│   ├── model_iter_60.zip
+│   ├── model_final.zip
 │   └── training_stats.pkl
-├── training_curves.png      # 训练曲线图
-├── model_comparison.png     # 模型对比图
-├── demo_iter_10.gif         # 训练初期演示动画
-└── demo_iter_60.gif         # 训练后期演示动画
+└── training_curves.png       # 训练曲线图
 ```
 
 ## 环境要求
@@ -71,43 +63,53 @@ uv pip install -r requirements.txt
 python test_env.py
 ```
 
-### 3. 训练模型（简化版，推荐）
+### 3. 训练模型
 
 ```bash
-python train_easy.py
+python train_v2.py
 ```
 
-这将训练60个iteration，使用10条小鱼，大约需要2-3分钟。
+默认配置：
+- 100 个 iterations
+- 25 条小鱼
+- 32 个并行环境
+- 训练过程中每 5 个 iteration 自动保存统计信息
 
-### 4. 测试训练好的模型
+### 4. 实时观看训练好的模型
 
 ```bash
-python test_model.py
+# 使用最新模型
+python watch.py
+
+# 指定特定迭代的模型
+python watch.py --model ./checkpoints/model_iter_60
+
+# 自定义小鱼数量
+python watch.py --num-fish 50
+
+# 观看多个episode
+python watch.py --episodes 3
 ```
 
-这将对比不同训练阶段的模型性能，并生成对比图表。
+### 5. 查看训练曲线
+
+```bash
+python visualize.py
+```
+
+这将生成训练曲线图，显示存活率、奖励等指标的变化。
 
 ## 环境参数
 
-### 简化环境 (fish_env_easy.py)
-
 - **舞台半径**: 10.0
-- **小鱼数量**: 10
-- **Episode长度**: 300步
-- **小鱼最大速度**: 2.5
-- **小鱼视野半径**: 5.0 (舞台半径的1/2)
-- **大鱼初始速度**: 0.4 (非常慢)
-- **大鱼重力**: 0.15
-
-### 原始环境 (fish_env.py)
-
-- **舞台半径**: 10.0
-- **小鱼数量**: 250
+- **小鱼数量**: 可自定义（默认 25，训练时使用）
 - **Episode长度**: 500步
 - **小鱼最大速度**: 2.0
 - **小鱼视野半径**: 3.33 (舞台半径的1/3)
-- **大鱼初始速度**: 0.8
-- **大鱼重力**: 0.3
+- **小鱼最大转向角度**: 30度
+- **大鱼初始速度**: 1.5 (vx), 0.0 (vy)
+- **大鱼重力**: 0.5
+- **大鱼反弹阻尼**: 0.85
 
 ## 训练结果
 
@@ -168,27 +170,35 @@ python test_model.py
 
 ### 修改训练参数
 
-编辑 `train_easy.py`:
+编辑 `train_v2.py`:
 
 ```python
-model, stats = train_easy(
-    total_iterations=100,  # 增加训练轮数
-    num_fish=20,           # 增加小鱼数量
-    num_envs=4             # 并行环境数量
-)
+if __name__ == "__main__":
+    TOTAL_ITERATIONS = 100  # 训练轮数
+    NUM_FISH = 25           # 小鱼数量
+    NUM_ENVS = 32           # 并行环境数量（多进程）
+    
+    model, stats = train_ppo_v2(
+        total_iterations=TOTAL_ITERATIONS,
+        num_fish=NUM_FISH,
+        num_envs=NUM_ENVS
+    )
 ```
 
 ### 调整环境难度
 
-编辑 `fish_env_easy.py`:
+编辑 `fish_env.py`:
 
 ```python
 # 增加大鱼速度
-self.PREDATOR_INITIAL_VX = 0.8  # 从0.4增加到0.8
-self.PREDATOR_GRAVITY = 0.3     # 从0.15增加到0.3
+self.PREDATOR_INITIAL_VX = 2.0  # 增加初始速度
+self.PREDATOR_GRAVITY = 0.7     # 增加重力
 
 # 减少小鱼视野
-self.FISH_VISION_RADIUS = self.STAGE_RADIUS / 3  # 从1/2减少到1/3
+self.FISH_VISION_RADIUS = self.STAGE_RADIUS / 4  # 减少视野范围
+
+# 调整小鱼速度
+self.FISH_MAX_SPEED = 2.5  # 增加小鱼最大速度
 ```
 
 ## 可视化
@@ -209,20 +219,30 @@ plt.title('Training Progress')
 plt.show()
 ```
 
-### 渲染Episode
+### 实时观看模型行为
+
+使用 `watch.py` 脚本（推荐）：
+
+```bash
+python watch.py --model ./checkpoints/model_iter_60 --num-fish 25
+```
+
+或使用 Python 代码：
 
 ```python
 from stable_baselines3 import PPO
-from fish_env_easy import FishEscapeEnvEasy
+from fish_env import FishEscapeEnv
 
-model = PPO.load('./checkpoints/model_iter_60.zip')
-env = FishEscapeEnvEasy(num_fish=10, render_mode='human')
+model = PPO.load('./checkpoints/model_iter_60')
+env = FishEscapeEnv(num_fish=25, render_mode='human')
 
 obs, _ = env.reset()
-for _ in range(300):
+for _ in range(500):
+    if len(obs) == 0:
+        break
     actions = [model.predict(ob, deterministic=True)[0] for ob in obs]
-    obs, _, terminated, _, _ = env.step(actions)
-    if terminated:
+    obs, _, terminated, truncated, _ = env.step(actions)
+    if terminated or truncated:
         break
 
 env.close()
@@ -256,10 +276,10 @@ env.close()
 ### Q: 训练后存活率仍然是0%？
 
 A: 这通常是因为环境太难。建议：
-1. 使用 `fish_env_easy.py` 而不是 `fish_env.py`
-2. 减少小鱼数量（从10开始）
-3. 降低大鱼速度
-4. 增加小鱼视野范围
+1. 减少小鱼数量（从10-15条开始）
+2. 降低大鱼速度（修改 `PREDATOR_INITIAL_VX` 和 `PREDATOR_GRAVITY`）
+3. 增加小鱼视野范围（修改 `FISH_VISION_RADIUS`）
+4. 增加小鱼最大速度（修改 `FISH_MAX_SPEED`）
 
 ### Q: 训练时间太长？
 
@@ -281,6 +301,10 @@ from stable_baselines3 import PPO
 model = PPO.load("my_model")
 ```
 
+### Q: 如何查看训练进度？
+
+A: 训练过程中会自动保存统计信息到 `checkpoints/training_stats.pkl`（每5个iteration保存一次）。运行 `python visualize.py` 可以查看训练曲线。
+
 ## 技术细节
 
 ### 多智能体训练策略
@@ -289,28 +313,43 @@ model = PPO.load("my_model")
 - 所有小鱼共享同一个策略网络
 - 每条小鱼有独立的观测和奖励
 - 训练时汇总所有小鱼的经验
+- 使用多进程并行环境（SubprocVecEnv）提高训练效率
 
-### 网络架构
+### 大鱼运动机制
 
-```
-Policy Network:
-  Input (11) → Dense(128) → Dense(128) → Dense(64) → Output(5)
+大鱼使用**确定性物理模拟**：
+- 从圆心 (0, 0) 开始，初始速度向右
+- 每步施加重力（向下加速）
+- 碰到圆形边界时反弹，并施加阻尼
+- 不追踪小鱼，轨迹完全由物理规律决定
 
-Value Network:
-  Input (11) → Dense(128) → Dense(128) → Dense(64) → Output(1)
-```
+### 小鱼边界处理
 
-### PPO超参数
+- **物理反弹**: 碰到边界时，法向速度反向并减半，切向速度保持不变
+- **奖励惩罚**: 距离边界小于1.0时，根据距离给予惩罚（最多-2.0）
+
 
 ```python
 learning_rate = 3e-4
-n_steps = 512
-batch_size = 128
-n_epochs = 10
-gamma = 0.99
-gae_lambda = 0.95
-clip_range = 0.2
-ent_coef = 0.05
+n_steps = 1024          # 每次rollout的步数
+batch_size = 256        # 批大小
+n_epochs = 10           # 每次更新的epoch数
+gamma = 0.99            # 折扣因子
+gae_lambda = 0.95       # GAE lambda参数
+clip_range = 0.2        # PPO clip范围
+ent_coef = 0.02         # 熵系数（鼓励探索）
+vf_coef = 0.5           # 价值函数系数
+max_grad_norm = 0.5     # 梯度裁剪
+```
+
+### 网络架构
+
+```python
+Policy Network:
+  Input (11) → Dense(128) → Dense(128) → Output(5)
+
+Value Network:
+  Input (11) → Dense(128) → Dense(128) → Output(1)
 ```
 
 ## 参考资料
