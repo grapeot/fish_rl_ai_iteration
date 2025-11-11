@@ -2,7 +2,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 import pygame
-from typing import Optional, Tuple, List, Dict, Any
+from typing import Optional, Tuple, List, Dict, Any, Sequence
 
 
 class FishEscapeEnv(gym.Env):
@@ -32,6 +32,7 @@ class FishEscapeEnv(gym.Env):
         predator_pre_roll_steps: int = 0,
         predator_pre_roll_angle_jitter: float = 0.0,
         predator_pre_roll_speed_jitter: float = 0.0,
+        predator_heading_bias: Optional[Sequence[Dict[str, float]]] = None,
     ):
         super().__init__()
         
@@ -73,6 +74,7 @@ class FishEscapeEnv(gym.Env):
         self.predator_pre_roll_steps = max(int(predator_pre_roll_steps), 0)
         self.predator_pre_roll_angle_jitter = max(float(predator_pre_roll_angle_jitter), 0.0)
         self.predator_pre_roll_speed_jitter = max(float(predator_pre_roll_speed_jitter), 0.0)
+        self.predator_heading_bias = self._normalize_heading_bias_config(predator_heading_bias)
 
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
@@ -159,6 +161,15 @@ class FishEscapeEnv(gym.Env):
             ], dtype=np.float32)
             self.predator_pos = offset
         self.predator_vel = np.array([self.PREDATOR_INITIAL_VX, self.PREDATOR_INITIAL_VY], dtype=np.float32)
+        heading_bias_angle = self._sample_heading_bias_angle()
+        if heading_bias_angle is not None:
+            speed = np.linalg.norm(self.predator_vel)
+            if speed > 1e-9:
+                rad = np.deg2rad(heading_bias_angle)
+                self.predator_vel = np.array(
+                    [np.cos(rad) * speed, np.sin(rad) * speed],
+                    dtype=np.float32,
+                )
         spawn_radius = float(np.linalg.norm(self.predator_pos))
         spawn_angle = float(np.degrees(np.arctan2(self.predator_pos[1], self.predator_pos[0]))) if spawn_radius > 1e-6 else 0.0
         initial_speed = float(np.linalg.norm(self.predator_vel))
@@ -172,6 +183,7 @@ class FishEscapeEnv(gym.Env):
             "initial_velocity": self.predator_vel.astype(float).tolist(),
             "initial_speed": initial_speed,
             "initial_heading_deg": initial_heading,
+            "heading_bias_angle_deg": float(heading_bias_angle) if heading_bias_angle is not None else None,
         }
         self._apply_predator_pre_roll(self.predator_pre_roll_steps, pre_roll_trace)
         final_speed = float(np.linalg.norm(self.predator_vel))
@@ -304,6 +316,49 @@ class FishEscapeEnv(gym.Env):
         info["step_one_deaths"] = [dict(record) for record in (self.step_one_death_records or [])]
 
         return observations, rewards, terminated, truncated, info
+
+    def _normalize_heading_bias_config(
+        self,
+        config: Optional[Sequence[Dict[str, float]]],
+    ) -> List[Tuple[float, float, float]]:
+        normalized: List[Tuple[float, float, float]] = []
+        if not config:
+            return normalized
+        for entry in config:
+            if not entry:
+                continue
+            start = entry.get("start_deg") if isinstance(entry, dict) else None
+            end = entry.get("end_deg") if isinstance(entry, dict) else None
+            weight = entry.get("weight") if isinstance(entry, dict) else None
+            try:
+                start_f = float(start)
+                end_f = float(end)
+                weight_f = float(weight)
+            except (TypeError, ValueError):
+                continue
+            start_f = start_f % 360.0
+            end_f = end_f % 360.0
+            if weight_f <= 0:
+                continue
+            if end_f <= start_f:
+                continue
+            normalized.append((start_f, end_f, weight_f))
+        return normalized
+
+    def _sample_heading_bias_angle(self) -> Optional[float]:
+        if not self.predator_heading_bias:
+            return None
+        total_weight = sum(weight for _, _, weight in self.predator_heading_bias)
+        if total_weight <= 0:
+            return None
+        draw = self.np_random.uniform(0.0, total_weight)
+        cumulative = 0.0
+        for start, end, weight in self.predator_heading_bias:
+            cumulative += weight
+            if draw <= cumulative:
+                return float(self.np_random.uniform(start, end))
+        start, end, _ = self.predator_heading_bias[-1]
+        return float(self.np_random.uniform(start, end))
     
     def _update_fish(self, fish_idx: int, action: int):
         """更新单条小鱼的状态"""
