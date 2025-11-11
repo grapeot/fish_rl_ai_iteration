@@ -15,7 +15,7 @@
 该脚本可自动对指定版本区间运行 Codex Exec 流程：
 
 ```bash
-scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex --json
+scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex
 ```
 
 脚本行为：
@@ -23,9 +23,15 @@ scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex --json
 - 生成提示，要求 Codex 阅读 `SOP.md` 与上一版 `experiments/v{X-1}/dev_v{X-1}.md`，然后在 `experiments/vX/` 内记录新的 dev 文档、训练脚本与输出；
 - 强制遵守 `venv` 约定、利用 ≥64 个并行环境，并在结束时输出 `git status` 摘要；
 - 提醒在 `experiments/vX/artifacts/plots|media` 存放曲线/视频（这些目录入库），并 `git commit && git push origin master`。
-- 所有 Exec 日志写到 `codex_runs/`（可通过 `CODEX_RUN_LOG_DIR` 覆盖）。
+- 默认附带 `--json`，终端立即看到事件流，同时把 JSONL 写入 `codex_runs/`（可通过 `CODEX_RUN_LOG_DIR` 覆盖）；需要关闭时设置 `CODEX_JSON_FLAGS=""`。
 
-如需单轮手动运行，可设置 `START_VER=END_VER`。可以通过环境变量覆盖 `CODEX_BIN`、`CODEX_APPROVAL_FLAGS`（默认 `--dangerously-bypass-approvals-and-sandbox`）或 `EXPERIMENTS_ROOT`。
+如需单轮手动运行，可设置 `START_VER=END_VER`。可以通过环境变量覆盖 `CODEX_BIN`、`CODEX_APPROVAL_FLAGS`（默认 `--dangerously-bypass-approvals-and-sandbox`）、`CODEX_JSON_FLAGS` 以及 `EXPERIMENTS_ROOT`。
+
+### 解析 JSON 中间结果
+- 快速查看命令：`jq 'select(.type=="command") | .command' codex_runs/xxx.jsonl`
+- 观察命令输出：`jq 'select(.type=="command_output" and .stream=="stdout") | .data' codex_runs/xxx.jsonl`
+- 只看总结：`jq 'select(.type=="message" and .role=="assistant") | .content' codex_runs/xxx.jsonl`
+- 若只需要最终回答，可额外传入 `--output-last-message summaries/vX.md`；JSONL 仍保留所有中间事件，支持后续审计或可视化。
 
 ## 单次 Exec Demo
 若只需快速验证 Codex 能否遵守 `venv` 约定，可使用：

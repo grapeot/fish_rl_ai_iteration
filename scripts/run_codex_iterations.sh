@@ -28,6 +28,22 @@ mkdir -p "$LOG_DIR"
 
 CODEX_BIN=${CODEX_BIN:-codex}
 CODEX_APPROVAL_FLAGS=${CODEX_APPROVAL_FLAGS:---dangerously-bypass-approvals-and-sandbox}
+CODEX_JSON_FLAGS=${CODEX_JSON_FLAGS:---json}
+
+APPROVAL_ARGS=()
+JSON_ARGS=()
+
+if [[ -n "${CODEX_APPROVAL_FLAGS}" ]]; then
+  # shellcheck disable=SC2206
+  APPROVAL_ARGS=(${CODEX_APPROVAL_FLAGS})
+fi
+
+if [[ -n "${CODEX_JSON_FLAGS}" ]]; then
+  # shellcheck disable=SC2206
+  JSON_ARGS=(${CODEX_JSON_FLAGS})
+fi
+
+EXTRA_ARGS=("$@")
 
 for (( VERSION=START_VER; VERSION<=END_VER; VERSION++ )); do
   PREV=$(( VERSION - 1 ))
@@ -36,7 +52,7 @@ for (( VERSION=START_VER; VERSION<=END_VER; VERSION++ )); do
   DEV_FILE="${CUR_EXP_DIR}/dev_v${VERSION}.md"
   PREV_FILE="${PREV_EXP_DIR}/dev_v${PREV}.md"
   RUN_ID="v${PREV}-to-v${VERSION}-$(date +%Y%m%d-%H%M%S)"
-  LOG_FILE="$LOG_DIR/${RUN_ID}.log"
+  LOG_FILE="$LOG_DIR/${RUN_ID}.jsonl"
 
   mkdir -p "${CUR_EXP_DIR}/artifacts/checkpoints" \
            "${CUR_EXP_DIR}/artifacts/logs" \
@@ -58,6 +74,7 @@ EOF
 
   echo "[INFO] Running iteration v${PREV} -> v${VERSION} (log: ${LOG_FILE})"
   printf '%s\n' "$PROMPT" | \
-    "$CODEX_BIN" exec $CODEX_APPROVAL_FLAGS -C "$WORKDIR" "$@" | tee "$LOG_FILE"
+    "$CODEX_BIN" exec "${APPROVAL_ARGS[@]}" "${JSON_ARGS[@]}" -C "$WORKDIR" "${EXTRA_ARGS[@]}" \
+    | tee "$LOG_FILE"
 
 done
