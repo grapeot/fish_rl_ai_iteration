@@ -97,4 +97,7 @@ codex_runs/
 # Track dev_v13 artifacts as well
 !experiments/v13/artifacts/
 !experiments/v13/artifacts/**
+# Track dev_v14 artifacts as well
+!experiments/v14/artifacts/
+!experiments/v14/artifacts/**
 *.bak

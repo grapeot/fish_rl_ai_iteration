@@ -144,8 +144,18 @@ class FishEscapeEnv(gym.Env):
         
         if self.render_mode == "human":
             self._render_frame()
-        
+
         return observations, {}
+
+    def set_density_penalty(self, coef: float, target: Optional[float] = None):
+        """动态更新密度惩罚参数，供训练过程中调整 ramp。"""
+        self.density_penalty_coef = float(coef)
+        if target is not None:
+            self.density_target = float(np.clip(target, 0.0, 1.0))
+    
+    def set_escape_boost_speed(self, speed: float):
+        """允许训练过程中调整初始逃逸速度，便于做 gating 实验。"""
+        self.escape_boost_speed = float(np.clip(speed, 0.0, 1.0))
     
     def step(self, actions):
         """
