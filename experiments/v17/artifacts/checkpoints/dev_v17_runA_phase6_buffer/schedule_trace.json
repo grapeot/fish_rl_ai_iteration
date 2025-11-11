@@ -1,0 +1,275 @@
+{
+  "generated_at": "2025-11-11T11:12:47.957154Z",
+  "trace": [
+    {
+      "iteration": 1,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6579999999999999,
+      "first_death_step": 19.15,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 2,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6686666666666666,
+      "first_death_step": 22.31,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 3,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6726666666666666,
+      "first_death_step": 25.38,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 4,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6639999999999999,
+      "first_death_step": 28.97,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 5,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6806666666666668,
+      "first_death_step": 22.8,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 6,
+      "density_penalty_coef": 0.0,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6846666666666665,
+      "first_death_step": 22.54,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 7,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6709999999999999,
+      "first_death_step": 23.21,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 8,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6855000000000001,
+      "first_death_step": 12.93,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 9,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6884999999999999,
+      "first_death_step": 12.07,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 10,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6790000000000002,
+      "first_death_step": 14.66,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 11,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6935000000000001,
+      "first_death_step": 12.69,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 12,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6769999999999999,
+      "first_death_step": 9.94,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 13,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.75,
+      "survival_rate": 0.6725000000000001,
+      "first_death_step": 8.87,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 14,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.76,
+      "survival_rate": 0.6728000000000001,
+      "first_death_step": 9.2,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 15,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.76,
+      "survival_rate": 0.6772000000000002,
+      "first_death_step": 4.97,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 16,
+      "density_penalty_coef": 0.02,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.76,
+      "survival_rate": 0.6744000000000001,
+      "first_death_step": 13.64,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 17,
+      "density_penalty_coef": 0.04,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.76,
+      "survival_rate": 0.6644,
+      "first_death_step": 8.33,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 18,
+      "density_penalty_coef": 0.04,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.78,
+      "survival_rate": 0.6888000000000001,
+      "first_death_step": 9.44,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 19,
+      "density_penalty_coef": 0.04,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.78,
+      "survival_rate": 0.6896000000000001,
+      "first_death_step": 8.95,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 20,
+      "density_penalty_coef": 0.04,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.78,
+      "survival_rate": 0.6611999999999999,
+      "first_death_step": 9.13,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 21,
+      "density_penalty_coef": 0.05,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.78,
+      "survival_rate": 0.6896000000000001,
+      "first_death_step": 13.14,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 22,
+      "density_penalty_coef": 0.05,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6828,
+      "first_death_step": 7.66,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 23,
+      "density_penalty_coef": 0.05,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6704000000000001,
+      "first_death_step": 7.85,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 24,
+      "density_penalty_coef": 0.05,
+      "entropy_coef": 0.03,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6679999999999999,
+      "first_death_step": 10.53,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 25,
+      "density_penalty_coef": 0.05,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6759999999999999,
+      "first_death_step": 9.86,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 26,
+      "density_penalty_coef": 0.06,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6587999999999999,
+      "first_death_step": 5.92,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 27,
+      "density_penalty_coef": 0.06,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6728000000000001,
+      "first_death_step": 5.6,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 28,
+      "density_penalty_coef": 0.065,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6896000000000001,
+      "first_death_step": 14.44,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 29,
+      "density_penalty_coef": 0.065,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.8,
+      "survival_rate": 0.6603999999999999,
+      "first_death_step": 6.89,
+      "first_death_p10": 1.0
+    },
+    {
+      "iteration": 30,
+      "density_penalty_coef": 0.08,
+      "entropy_coef": 0.02,
+      "escape_boost_speed": 0.78,
+      "survival_rate": 0.6696000000000002,
+      "first_death_step": 6.65,
+      "first_death_p10": 1.0
+    }
+  ]
+}
