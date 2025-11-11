@@ -64,4 +64,5 @@ fish_rl/
 - `experiments/vX/train.py` 与 `experiments/vX/dev_vX.md` 的版本号保持同步：一次 major 迭代 +1。
 - `experiments/vX/artifacts/` 下的历史模型视为不可变，只追加新目录。
 - 本机资源：32 物理核 / 512 GB RAM，可稳定支撑 64~128 个并行环境；在 v2+ 迭代中默认把 `--num_envs` 设为 ≥64（建议 128）。
+- 训练迭代数：推荐至少训练 60 个 iteration 以确保策略充分收敛；小规模快速验证时可适当降低，但完整实验应达到此标准。
 - 每轮结束必须 `git status` 检查、`git add` 相关文件、`git commit -m "..."` 并 `git push origin master`，形成远端可见的追溯链。
