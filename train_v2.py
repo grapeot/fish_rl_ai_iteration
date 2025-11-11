@@ -291,7 +291,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         max_grad_norm=0.5,
         verbose=0,
         tensorboard_log="./tb_logs",
-        policy_kwargs=dict(net_arch=[dict(pi=[128, 128], vf=[128, 128])])
+        policy_kwargs=dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
     )
     
     print(f"Starting training for {total_iterations} iterations...")
