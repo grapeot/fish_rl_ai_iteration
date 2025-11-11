@@ -1,0 +1,96 @@
+{
+  "iteration": 28,
+  "timestamp": "2025-11-11T14:15:11.638820Z",
+  "summary": {
+    "episodes": 16,
+    "avg_final_survival_rate": 0.6799999999999999,
+    "min_final_survival_rate": 0.52,
+    "avg_min_survival_rate": 0.6799999999999999,
+    "min_of_min_survival_rate": 0.52,
+    "median_min_survival_rate": 0.7
+  },
+  "death_stats": {
+    "total_fish_samples": 400,
+    "survival_fraction": 0.68,
+    "mean_death_step": 408.045,
+    "median_death_step": 500.0,
+    "p10": 158.1000000000001,
+    "p25": 336.0,
+    "p75": 500.0,
+    "p90": 500.0,
+    "early_death_fraction_100": 0.0925,
+    "early_death_fraction_150": 0.1
+  },
+  "density_penalty_coef": 0.04,
+  "escape_boost_speed": 0.76,
+  "step_one_death_count": 4,
+  "death_hist_path": "/Users/grapeot/co/fish_rl/experiments/v22/artifacts/plots/dev_v22_runB_penalty_lock28_multi_eval_hist/dev_v22_runB_penalty_lock28_iter028_death_hist.png",
+  "step_one_deaths": [
+    {
+      "fish_idx": 0,
+      "predator_index": 0,
+      "fish_position": [
+        0.9871326088905334,
+        2.0945334434509277
+      ],
+      "predator_position": [
+        0.7402617335319519,
+        1.644363522529602
+      ],
+      "predator_velocity": [
+        0.5164504051208496,
+        1.1185611486434937
+      ]
+    },
+    {
+      "fish_idx": 13,
+      "predator_index": 0,
+      "fish_position": [
+        2.070328950881958,
+        0.7738453149795532
+      ],
+      "predator_position": [
+        1.9516541957855225,
+        0.3515298366546631
+      ],
+      "predator_velocity": [
+        1.2696070671081543,
+        0.28428223729133606
+      ]
+    },
+    {
+      "fish_idx": 12,
+      "predator_index": 0,
+      "fish_position": [
+        1.0143191814422607,
+        0.2954331636428833
+      ],
+      "predator_position": [
+        1.1379244327545166,
+        0.25988179445266724
+      ],
+      "predator_velocity": [
+        0.5562140941619873,
+        0.2365507185459137
+      ]
+    },
+    {
+      "fish_idx": 0,
+      "predator_index": 0,
+      "fish_position": [
+        1.9693520069122314,
+        0.6154820919036865
+      ],
+      "predator_position": [
+        1.9349095821380615,
+        0.7520466446876526
+      ],
+      "predator_velocity": [
+        2.1626522541046143,
+        1.1915420293807983
+      ]
+    }
+  ],
+  "best_model_path": "/Users/grapeot/co/fish_rl/experiments/v22/artifacts/checkpoints/dev_v22_runB_penalty_lock28/model_iter_28.zip",
+  "best_checkpoint_saved": true
+}
