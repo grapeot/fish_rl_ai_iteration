@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "episode": 0,
+      "reward": 274.10575979948044,
+      "steps": 500,
+      "final_num_alive": 20
+    },
+    {
+      "episode": 1,
+      "reward": 250.1819725036621,
+      "steps": 500,
+      "final_num_alive": 16
+    },
+    {
+      "episode": 2,
+      "reward": 253.80151948332787,
+      "steps": 500,
+      "final_num_alive": 19
+    },
+    {
+      "episode": 3,
+      "reward": 289.10797572135925,
+      "steps": 500,
+      "final_num_alive": 21
+    },
+    {
+      "episode": 4,
+      "reward": 265.33406656980515,
+      "steps": 500,
+      "final_num_alive": 19
+    }
+  ]
+}
