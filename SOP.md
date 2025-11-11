@@ -32,7 +32,7 @@
 
 6. **收尾与交接**
    - 在 `dev_v{X+1}.md` 补全 “本轮 Learning / 下一步计划”，供下一轮开场阅读。
-   - 将关键产物写入 `experiments/v{X+1}/artifacts/plots/`（曲线）与 `.../media/`（mp4/gif，即便 500 帧），在文档中引用。
+   - 将关键产物写入 `experiments/v{X+1}/artifacts/plots/`（曲线）与 `.../media/`（mp4/gif，即便 500 帧），这些目录是被版本控制的，需随代码一并提交并在文档中引用。
    - 提交相关代码（`experiments/v{X+1}/train.py` 等）、文档和可追溯的元数据，并推送到 `origin/master`，保证远端随时反映最新状态。
    - 下一轮启动时回到步骤 0，形成闭环。
 

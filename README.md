@@ -19,8 +19,8 @@ fish_rl/
 │             ├── checkpoints/    # SB3 模型与 stats.pkl、曲线
 │             ├── logs/           # 训练日志（txt）
 │             ├── tb_logs/        # TensorBoard events
-│             ├── plots/          # PNG/SVG 等静态图（training_curve 等）
-│             └── media/          # mp4/gif（500 帧以内即可）
+│             ├── plots/          # PNG/SVG 等静态图（training_curve 等，纳入 git）
+│             └── media/          # mp4/gif（500 帧以内，纳入 git 以远程查看）
 ├── scripts/run_codex_iterations.sh # 自动迭代脚本
 ├── SOP.md                        # 操作手册
 ├── codex_usage.md                # Codex CLI 指南

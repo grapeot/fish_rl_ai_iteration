@@ -22,7 +22,7 @@ scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex --json
 - 为目标版本创建 `experiments/vX/` 骨架及 `artifacts/` 子目录；
 - 生成提示，要求 Codex 阅读 `SOP.md` 与上一版 `experiments/v{X-1}/dev_v{X-1}.md`，然后在 `experiments/vX/` 内记录新的 dev 文档、训练脚本与输出；
 - 强制遵守 `venv` 约定、利用 ≥64 个并行环境，并在结束时输出 `git status` 摘要；
-- 提醒在 `experiments/vX/artifacts/plots|media` 存放曲线/视频，并 `git commit && git push origin master`。
+- 提醒在 `experiments/vX/artifacts/plots|media` 存放曲线/视频（这些目录入库），并 `git commit && git push origin master`。
 - 所有 Exec 日志写到 `codex_runs/`（可通过 `CODEX_RUN_LOG_DIR` 覆盖）。
 
 如需单轮手动运行，可设置 `START_VER=END_VER`。可以通过环境变量覆盖 `CODEX_BIN`、`CODEX_APPROVAL_FLAGS`（默认 `--dangerously-bypass-approvals-and-sandbox`）或 `EXPERIMENTS_ROOT`。
