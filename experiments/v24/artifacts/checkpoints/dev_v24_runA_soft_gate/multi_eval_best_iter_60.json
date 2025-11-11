@@ -1,0 +1,88 @@
+{
+  "iteration": 60,
+  "timestamp": "2025-11-11T16:08:16.669177Z",
+  "summary": {
+    "episodes": 24,
+    "avg_final_survival_rate": 0.7599999999999999,
+    "min_final_survival_rate": 0.56,
+    "avg_min_survival_rate": 0.7599999999999999,
+    "min_of_min_survival_rate": 0.56,
+    "median_min_survival_rate": 0.76
+  },
+  "death_stats": {
+    "total_fish_samples": 600,
+    "survival_fraction": 0.76,
+    "mean_death_step": 427.255,
+    "median_death_step": 500.0,
+    "p10": 135.30000000000004,
+    "p25": 500.0,
+    "p75": 500.0,
+    "p90": 500.0,
+    "early_death_fraction_100": 0.07833333333333334,
+    "early_death_fraction_150": 0.10666666666666667
+  },
+  "density_penalty_coef": 0.04,
+  "escape_boost_speed": 0.76,
+  "step_one_death_count": 3,
+  "death_hist_path": "/Users/grapeot/co/fish_rl/experiments/v24/artifacts/plots/dev_v24_runA_soft_gate_multi_eval_hist/dev_v24_runA_soft_gate_iter060_death_hist.png",
+  "step_one_deaths": [
+    {
+      "fish_idx": 16,
+      "predator_index": 0,
+      "fish_position": [
+        2.506359100341797,
+        0.36396366357803345
+      ],
+      "predator_position": [
+        1.8695639371871948,
+        0.5904606580734253
+      ],
+      "predator_velocity": [
+        1.5936944484710693,
+        0.8978012204170227
+      ]
+    },
+    {
+      "fish_idx": 6,
+      "predator_index": 0,
+      "fish_position": [
+        1.6295909881591797,
+        1.2696259021759033
+      ],
+      "predator_position": [
+        1.7149412631988525,
+        1.0936577320098877
+      ],
+      "predator_velocity": [
+        0.5786074995994568,
+        1.1265795230865479
+      ]
+    },
+    {
+      "fish_idx": 11,
+      "predator_index": 0,
+      "fish_position": [
+        1.9645549058914185,
+        1.2373713254928589
+      ],
+      "predator_position": [
+        1.7149412631988525,
+        1.0936577320098877
+      ],
+      "predator_velocity": [
+        0.5786074995994568,
+        1.1265795230865479
+      ]
+    }
+  ],
+  "best_model_path": "/Users/grapeot/co/fish_rl/experiments/v24/artifacts/checkpoints/dev_v24_runA_soft_gate/model_iter_60.zip",
+  "best_checkpoint_saved": true,
+  "penalty_gate": {
+    "event": "noop",
+    "stage": 0,
+    "phase_limit": 3,
+    "success_streak": 0,
+    "freeze_until": 60,
+    "failure_detected": false
+  }
+}
