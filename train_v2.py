@@ -78,12 +78,17 @@ class VectorizedFishEnv(gym.Env):
         self.current_obs = None
         self.step_count = 0
         self.episode_reward = 0
+        # 用于跟踪整个episode的存活率
+        self.episode_survival_sum = 0.0
+        self.episode_steps = 0
         
     def reset(self, **kwargs):
         obs, info = self.base_env.reset(**kwargs)
         self.current_obs = obs
         self.step_count = 0
         self.episode_reward = 0
+        self.episode_survival_sum = 0.0
+        self.episode_steps = 0
         
         # 返回第一条鱼的观测
         if len(obs) > 0:
@@ -98,9 +103,12 @@ class VectorizedFishEnv(gym.Env):
         num_alive = len(self.current_obs)
         
         if num_alive == 0:
+            # 计算平均存活率
+            avg_survival_rate = self.episode_survival_sum / max(self.episode_steps, 1)
             return np.zeros(self.observation_space.shape, dtype=np.float32), 0.0, True, False, {
                 'num_alive': 0,
-                'survival_rate': 0.0
+                'survival_rate': avg_survival_rate,  # 使用平均存活率
+                'final_num_alive': 0
             }
         
         # 所有活着的鱼使用相同的策略，但观测不同
@@ -112,6 +120,11 @@ class VectorizedFishEnv(gym.Env):
         self.current_obs = obs
         self.step_count += 1
         
+        # 累计存活率（用于计算平均值）
+        current_survival_rate = info.get('num_alive', 0) / self.num_fish
+        self.episode_survival_sum += current_survival_rate
+        self.episode_steps += 1
+        
         # 计算平均奖励
         avg_reward = np.mean(rewards) if len(rewards) > 0 else -100.0
         self.episode_reward += avg_reward
@@ -122,9 +135,12 @@ class VectorizedFishEnv(gym.Env):
         else:
             next_obs = np.zeros(self.observation_space.shape, dtype=np.float32)
         
-        # 更新info
+        # 更新info - 使用平均存活率而不是当前存活率
+        avg_survival_rate = self.episode_survival_sum / self.episode_steps
         info['episode_reward'] = self.episode_reward
-        info['survival_rate'] = info.get('num_alive', 0) / self.num_fish
+        info['survival_rate'] = avg_survival_rate  # 平均存活率
+        info['final_num_alive'] = info.get('num_alive', 0)  # 保存最终存活数
+        info['num_alive'] = int(avg_survival_rate * self.num_fish)  # 为了兼容性，使用平均存活数
         
         return next_obs, avg_reward, terminated, truncated, info
     
@@ -260,8 +276,8 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
 
 if __name__ == "__main__":
     TOTAL_ITERATIONS = 100
-    NUM_FISH = 100  # 增加鱼数量，提高每个环境的计算量
-    NUM_ENVS = 32   # 增加并行环境数（可以超过CPU核心数，因为进程可以重叠I/O等待）
+    NUM_FISH = 25
+    NUM_ENVS = 32
     
     model, stats = train_ppo_v2(
         total_iterations=TOTAL_ITERATIONS,
