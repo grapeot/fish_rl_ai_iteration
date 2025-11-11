@@ -1,0 +1,45 @@
+{
+  "num_fish": 25,
+  "results": [
+    {
+      "episode": 0,
+      "avg_reward": 0.6170727237462997,
+      "total_reward": 308.5363618731499,
+      "steps": 500,
+      "final_num_alive": 22,
+      "min_survival_rate": 0.88
+    },
+    {
+      "episode": 1,
+      "avg_reward": 0.5311935602426529,
+      "total_reward": 265.59678012132645,
+      "steps": 500,
+      "final_num_alive": 19,
+      "min_survival_rate": 0.76
+    },
+    {
+      "episode": 2,
+      "avg_reward": 0.5918562148809433,
+      "total_reward": 295.92810744047165,
+      "steps": 500,
+      "final_num_alive": 21,
+      "min_survival_rate": 0.84
+    },
+    {
+      "episode": 3,
+      "avg_reward": 0.5218586210012436,
+      "total_reward": 260.9293105006218,
+      "steps": 500,
+      "final_num_alive": 19,
+      "min_survival_rate": 0.76
+    },
+    {
+      "episode": 4,
+      "avg_reward": 0.4672935110926628,
+      "total_reward": 233.6467555463314,
+      "steps": 500,
+      "final_num_alive": 17,
+      "min_survival_rate": 0.68
+    }
+  ]
+}

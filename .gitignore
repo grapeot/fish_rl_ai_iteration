@@ -67,4 +67,7 @@ codex_runs/
 # Track dev_v3 artifacts despite the generic ignore rules
 !experiments/v3/artifacts/
 !experiments/v3/artifacts/**
+# Track dev_v4 artifacts as well
+!experiments/v4/artifacts/
+!experiments/v4/artifacts/**
 *.bak
