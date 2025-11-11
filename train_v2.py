@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import gymnasium as gym
 from stable_baselines3 import PPO
@@ -105,9 +106,12 @@ class VectorizedFishEnv(gym.Env):
         if num_alive == 0:
             # 计算平均存活率
             avg_survival_rate = self.episode_survival_sum / max(self.episode_steps, 1)
+            avg_num_alive = avg_survival_rate * self.num_fish
             return np.zeros(self.observation_space.shape, dtype=np.float32), 0.0, True, False, {
                 'num_alive': 0,
-                'survival_rate': avg_survival_rate,  # 使用平均存活率
+                'survival_rate': avg_survival_rate,
+                'avg_survival_rate': avg_survival_rate,
+                'avg_num_alive': avg_num_alive,
                 'final_num_alive': 0
             }
         
@@ -117,6 +121,7 @@ class VectorizedFishEnv(gym.Env):
         actions = [action] * num_alive  # 简化：所有鱼执行相同动作
         
         obs, rewards, terminated, truncated, info = self.base_env.step(actions)
+        real_num_alive = info.get('num_alive', len(obs))
         self.current_obs = obs
         self.step_count += 1
         
@@ -137,16 +142,14 @@ class VectorizedFishEnv(gym.Env):
         
         # 更新info - 使用平均存活率而不是当前存活率
         avg_survival_rate = self.episode_survival_sum / self.episode_steps
+        avg_num_alive = avg_survival_rate * self.num_fish
         info['episode_reward'] = self.episode_reward
-        info['survival_rate'] = avg_survival_rate  # 平均存活率
-        info['final_num_alive'] = info.get('num_alive', 0)  # 保存最终存活数
-        info['num_alive'] = int(avg_survival_rate * self.num_fish)  # 为了兼容性，使用平均存活数
-        
-        # 如果episode结束，确保使用平均存活率
+        info['avg_survival_rate'] = avg_survival_rate
+        info['avg_num_alive'] = avg_num_alive
+        info['num_alive'] = real_num_alive
         if terminated or truncated:
-            info['survival_rate'] = avg_survival_rate
-            info['num_alive'] = int(avg_survival_rate * self.num_fish)
-        
+            info['final_num_alive'] = real_num_alive
+
         return next_obs, avg_reward, terminated, truncated, info
     
     def render(self):
@@ -168,7 +171,9 @@ class CheckpointCallback(BaseCallback):
             'survival_rates': [],
             'avg_rewards': [],
             'avg_timesteps': [],
-            'num_alive': []
+            'num_alive': [],
+            'avg_num_alive': [],
+            'final_num_alive': []
         }
         
         os.makedirs(save_path, exist_ok=True)
@@ -185,22 +190,37 @@ class CheckpointCallback(BaseCallback):
             
             survival_rates = []
             num_alives = []
+            avg_num_alives = []
+            final_num_alives = []
             for ep in recent_episodes:
                 if 'survival_rate' in ep:
                     survival_rates.append(ep['survival_rate'])
                 if 'num_alive' in ep:
                     num_alives.append(ep['num_alive'])
+                if 'avg_num_alive' in ep:
+                    avg_num_alives.append(ep['avg_num_alive'])
+                if 'final_num_alive' in ep and ep['final_num_alive'] is not None:
+                    final_num_alives.append(ep['final_num_alive'])
             
             survival_rate = np.mean(survival_rates) if survival_rates else 0.0
             avg_reward = np.mean([ep['r'] for ep in recent_episodes])
             avg_timestep = np.mean([ep['l'] for ep in recent_episodes])
             avg_num_alive = np.mean(num_alives) if num_alives else 0.0
+            mean_avg_num_alive = np.mean(avg_num_alives) if avg_num_alives else avg_num_alive
+            final_num_alive = np.mean(final_num_alives) if final_num_alives else avg_num_alive
             
             self.stats['iterations'].append(self.iteration)
             self.stats['survival_rates'].append(survival_rate)
             self.stats['avg_rewards'].append(avg_reward)
             self.stats['avg_timesteps'].append(avg_timestep)
             self.stats['num_alive'].append(avg_num_alive)
+            self.stats['avg_num_alive'].append(mean_avg_num_alive)
+            self.stats['final_num_alive'].append(final_num_alive)
+
+            # 记录到 TensorBoard/logger，方便后续调试
+            self.logger.record("custom/avg_survival_rate", float(survival_rate))
+            self.logger.record("custom/avg_num_alive", float(mean_avg_num_alive))
+            self.logger.record("custom/final_num_alive", float(final_num_alive))
             
             if self.verbose > 0 and self.iteration % 5 == 0:
                 # 调试：打印第一个episode的详细信息
@@ -211,11 +231,13 @@ class CheckpointCallback(BaseCallback):
                         debug_info += f"sr={first_ep['survival_rate']:.3f}, "
                     if 'num_alive' in first_ep:
                         debug_info += f"na={first_ep['num_alive']}]"
-                    print(f"Iter {self.iteration:3d}: Survival={survival_rate:6.2%}, "
-                          f"Alive={avg_num_alive:5.1f}, Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}{debug_info}")
+                    print(f"Iter {self.iteration:3d}: Survival(avg)={survival_rate:6.2%}, "
+                          f"Alive(avg)={mean_avg_num_alive:5.1f}, Final={final_num_alive:5.1f}, "
+                          f"Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}{debug_info}")
                 else:
-                    print(f"Iter {self.iteration:3d}: Survival={survival_rate:6.2%}, "
-                          f"Alive={avg_num_alive:5.1f}, Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}")
+                    print(f"Iter {self.iteration:3d}: Survival(avg)={survival_rate:6.2%}, "
+                          f"Alive(avg)={mean_avg_num_alive:5.1f}, Final={final_num_alive:5.1f}, "
+                          f"Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}")
         
         if self.iteration in self.checkpoint_iterations:
             model_path = os.path.join(self.save_path, f"model_iter_{self.iteration}")
@@ -248,7 +270,10 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         return VectorizedFishEnv(num_fish=num_fish)
     
     envs = SubprocVecEnv([make_env for _ in range(num_envs)], start_method='spawn')
-    envs = VecMonitor(envs, info_keywords=('survival_rate', 'num_alive', 'final_num_alive'))
+    envs = VecMonitor(
+        envs,
+        info_keywords=('survival_rate', 'num_alive', 'final_num_alive', 'avg_survival_rate', 'avg_num_alive')
+    )
     
     print("Initializing PPO model...")
     model = PPO(
@@ -265,6 +290,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         vf_coef=0.5,
         max_grad_norm=0.5,
         verbose=0,
+        tensorboard_log="./tb_logs",
         policy_kwargs=dict(net_arch=[dict(pi=[128, 128], vf=[128, 128])])
     )
     
@@ -297,12 +323,14 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
 
 
 if __name__ == "__main__":
-    TOTAL_ITERATIONS = 100
-    NUM_FISH = 25
-    NUM_ENVS = 32
-    
+    parser = argparse.ArgumentParser(description="Train PPO agent for FishEscapeEnv")
+    parser.add_argument("--total_iterations", type=int, default=100, help="训练迭代次数")
+    parser.add_argument("--num_fish", type=int, default=25, help="每个环境中的小鱼数量")
+    parser.add_argument("--num_envs", type=int, default=32, help="并行环境数量")
+    args = parser.parse_args()
+
     model, stats = train_ppo_v2(
-        total_iterations=TOTAL_ITERATIONS,
-        num_fish=NUM_FISH,
-        num_envs=NUM_ENVS
+        total_iterations=args.total_iterations,
+        num_fish=args.num_fish,
+        num_envs=args.num_envs
     )

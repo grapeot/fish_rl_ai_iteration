@@ -47,6 +47,7 @@ ENV/
 # Training outputs
 checkpoints/
 logs/
+tb_logs/
 *.png
 *.gif
 *.jpg
@@ -69,4 +70,3 @@ Thumbs.db
 *.tmp
 *.log
 *.bak
-

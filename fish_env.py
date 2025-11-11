@@ -39,6 +39,8 @@ class FishEscapeEnv(gym.Env):
         
         # 时间步长
         self.dt = 0.1
+        # 奖励缩放，降低单步奖励量级，便于稳定训练
+        self.REWARD_SCALE = 0.1
         
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离, 
@@ -265,7 +267,7 @@ class FishEscapeEnv(gym.Env):
             if dist_to_boundary < 1.0:
                 rewards[i] -= 2.0 * (1.0 - dist_to_boundary)
         
-        return rewards
+        return rewards * self.REWARD_SCALE
     
     def _get_observations(self) -> np.ndarray:
         """获取所有存活小鱼的观测"""
