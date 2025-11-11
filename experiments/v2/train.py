@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 import numpy as np
 import gymnasium as gym
 from stable_baselines3 import PPO
@@ -7,6 +8,16 @@ from stable_baselines3.common.callbacks import BaseCallback
 import os
 import pickle
 from fish_env import FishEscapeEnv
+
+
+EXPERIMENT_DIR = Path(__file__).resolve().parent
+ARTIFACTS_DIR = EXPERIMENT_DIR / "artifacts"
+CHECKPOINT_DIR = ARTIFACTS_DIR / "checkpoints"
+LOG_DIR = ARTIFACTS_DIR / "logs"
+TB_LOG_DIR = ARTIFACTS_DIR / "tb_logs"
+
+for _dir in (CHECKPOINT_DIR, LOG_DIR, TB_LOG_DIR):
+    _dir.mkdir(parents=True, exist_ok=True)
 
 
 class SingleFishEnv(gym.Env):
@@ -290,7 +301,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         vf_coef=0.5,
         max_grad_norm=0.5,
         verbose=0,
-        tensorboard_log="./tb_logs",
+        tensorboard_log=str(TB_LOG_DIR),
         policy_kwargs=dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
     )
     
@@ -298,7 +309,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
     print("=" * 80)
     
     callback = CheckpointCallback(
-        save_path="./checkpoints/",
+        save_path=str(CHECKPOINT_DIR),
         checkpoint_iterations=checkpoint_iterations,
         verbose=1
     )
@@ -307,9 +318,9 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
     total_timesteps = total_iterations * 1024 * num_envs
     model.learn(total_timesteps=total_timesteps, callback=callback, progress_bar=True)
     
-    model.save("./checkpoints/model_final")
+    model.save(str(CHECKPOINT_DIR / "model_final"))
     
-    with open("./checkpoints/training_stats.pkl", "wb") as f:
+    with open(CHECKPOINT_DIR / "training_stats.pkl", "wb") as f:
         pickle.dump(callback.stats, f)
     
     print("=" * 80)

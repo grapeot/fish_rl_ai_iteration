@@ -11,7 +11,7 @@
    - 把 `dev_v{X+1}.md` 当作工作文档：先写“本轮计划/假设/待验证列表”，后续每一步实时更新。
 
 1. **复现上一轮基线**
-   - 参考上一轮记录的命令，在开始前确认对应 `train_vX.py` 和检查点可跑通；必要时快速 sanity run，确保问题来自新改动而非旧环境漂移。
+   - 参考上一轮记录的命令，在开始前确认对应 `experiments/vX/train.py` 和检查点可跑通；必要时快速 sanity run，确保问题来自新改动而非旧环境漂移。
 
 2. **观察 & 记录现状**
    - 对比最新基线数据与上一轮结论；若缺乏信心，先跑小规模实验。
@@ -27,16 +27,37 @@
 
 5. **实施改动与验证**
    - 小规模测试：例如降低迭代数、减小并行度；把结论写进工作文档。
-   - 若结果符合预期，升级到目标规模；所有完整实验输出存于 `checkpoints/v{X+1}/` 专属目录，并生成曲线图/参数摘要。
+   - 若结果符合预期，升级到目标规模；所有完整实验输出存于 `experiments/v{X+1}/artifacts/` 专属目录（`checkpoints/、logs/、tb_logs/、plots/`），并生成曲线图/参数摘要。
    - 若发现 Bug，优先在 `dev_v{X+1}.md` 标注，修复后重复小规模->大规模流程。
 
 6. **收尾与交接**
    - 在 `dev_v{X+1}.md` 补全 “本轮 Learning / 下一步计划”，供下一轮开场阅读。
-   - 提交相关代码（`train_v{X+1}.py` 及其他改动）、文档、依赖；提供日志/曲线/检查点路径，确保可复现。
+    - 提交相关代码（`experiments/v{X+1}/train.py` 及其他改动）、文档、依赖；提供日志/曲线/检查点路径，确保可复现。
    - 下一轮启动时回到步骤 0，形成闭环。
+
+## 目录结构
+```
+fish_rl/
+├── src/                       # （预留）通用库/环境，当前 `fish_env.py` 等仍在根目录
+├── experiments/
+│   └── vX/
+│        ├── train.py         # 当前版本的训练脚本
+│        ├── dev_vX.md        # 工作文档
+│        └── artifacts/
+│             ├── checkpoints/
+│             ├── logs/
+│             ├── tb_logs/
+│             └── plots/      # 可选：训练曲线、可视化
+├── docs/（可选）
+├── requirements.txt
+└── SOP.md
+```
+- 历史版本只追加 `experiments/v{X}/` 文件夹，旧 artifacts 保持只读。
+- 通用读取路径需以 `Path(__file__).resolve().parent` 为基准，避免硬编码根目录。
 
 ## 约定
 - 任何 Python 操作前检查/创建/激活 `uv` 虚拟环境，并用 `uv pip install` 管理依赖。
 - 日志渠道可混用（TensorBoard、文本、JSON）；但每轮至少保存一种易于 diff 的格式。
-- `train_vX.py` 与 `dev_vX.md` 的版本号保持同步：一次 major 迭代 +1。
-- `checkpoints/` 下的历史模型视为不可变，只追加新目录。
+- `experiments/vX/train.py` 与 `experiments/vX/dev_vX.md` 的版本号保持同步：一次 major 迭代 +1。
+- `experiments/vX/artifacts/` 下的历史模型视为不可变，只追加新目录。
+- 本机资源：16 物理核 / 128 GB RAM，可稳定支撑 64~128 个并行环境；在 v2+ 迭代中优先把 `--num_envs` 设为 ≥64 以提升 sample throughput。

@@ -45,22 +45,15 @@ ENV/
 *.pkl
 
 # Training outputs
+experiments/*/artifacts/checkpoints/
+experiments/*/artifacts/logs/
+experiments/*/artifacts/tb_logs/
+experiments/*/artifacts/plots/
+
+# Legacy fallbacks
 checkpoints/
 logs/
 tb_logs/
-*.png
-*.gif
-*.jpg
-*.jpeg
-
-# Model files (keep structure but ignore large files)
-checkpoints/*.zip
-checkpoints/*.pkl
-
-# Training statistics
-training_curves.png
-model_comparison.png
-demo_*.gif
 
 # OS
 .DS_Store

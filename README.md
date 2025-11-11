@@ -10,17 +10,21 @@
 
 ```
 fish_rl/
-├── fish_env.py              # 环境定义（支持自定义小鱼数量）
-├── train_v2.py              # 训练脚本（推荐使用，支持多进程并行）
-├── watch.py                 # 实时可视化脚本（观看小鱼躲避行为）
-├── visualize.py             # 可视化工具（训练曲线、GIF生成）
-├── checkpoints/             # 训练好的模型检查点
-│   ├── model_iter_10.zip
-│   ├── model_iter_20.zip
-│   ├── ...
-│   ├── model_final.zip
-│   └── training_stats.pkl
-└── training_curves.png       # 训练曲线图
+├── fish_env.py                    # 环境定义（所有版本共用）
+├── experiments/
+│   └── v2/
+│        ├── train.py             # 当前主训练脚本
+│        ├── dev_v2.md            # 该版本的研究记录
+│        └── artifacts/
+│             ├── checkpoints/    # v2 模型、stats、曲线
+│             ├── logs/           # 文本日志（train_xx.log）
+│             ├── tb_logs/        # TensorBoard 事件文件
+│             └── plots/          # 可选图像输出
+├── scripts/run_codex_iterations.sh # Codex 自动迭代理脚本
+├── visualize.py / watch.py        # 诊断与可视化工具
+├── SOP.md                         # 循环开发流程
+├── requirements.txt
+└── venv/                          # uv 创建的虚拟环境
 ```
 
 ## 环境要求
@@ -46,12 +50,12 @@ fish_rl/
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # 创建虚拟环境
-uv venv
+uv venv venv
 
 # 激活虚拟环境
-source .venv/bin/activate  # macOS/Linux
+source venv/bin/activate  # macOS/Linux
 # 或
-.venv\Scripts\activate  # Windows
+venv\Scripts\activate  # Windows
 
 # 安装依赖
 uv pip install -r requirements.txt
@@ -66,14 +70,13 @@ python test_env.py
 ### 3. 训练模型
 
 ```bash
-python train_v2.py
+# 建议利用 16 核 / 128GB 资源，至少启动 64 个并行环境
+python experiments/v2/train.py --total_iterations 100 --num_envs 64 --num_fish 25
 ```
 
-默认配置：
-- 100 个 iterations
-- 25 条小鱼
-- 32 个并行环境
-- 训练过程中每 5 个 iteration 自动保存统计信息
+默认行为：
+- 每 5 个 iteration 保存一次统计信息与 checkpoints
+- 所有输出（日志、TensorBoard、曲线、模型）位于 `experiments/v2/artifacts/`
 
 ### 4. 实时观看训练好的模型
 
@@ -94,10 +97,10 @@ python watch.py --episodes 3
 ### 5. 查看训练曲线
 
 ```bash
-python visualize.py
+python visualize.py --stats experiments/v2/artifacts/checkpoints/training_stats.pkl
 ```
 
-这将生成训练曲线图，显示存活率、奖励等指标的变化。
+或者直接打开 `experiments/v2/artifacts/checkpoints/v2_iter100/training_curve.png` 了解迭代过程。
 
 ## 环境参数
 
@@ -170,13 +173,13 @@ python visualize.py
 
 ### 修改训练参数
 
-编辑 `train_v2.py`:
+编辑 `experiments/v2/train.py`:
 
 ```python
 if __name__ == "__main__":
     TOTAL_ITERATIONS = 100  # 训练轮数
     NUM_FISH = 25           # 小鱼数量
-    NUM_ENVS = 32           # 并行环境数量（多进程）
+    NUM_ENVS = 64           # 并行环境数量（多进程）
     
     model, stats = train_ppo_v2(
         total_iterations=TOTAL_ITERATIONS,
@@ -209,7 +212,7 @@ self.FISH_MAX_SPEED = 2.5  # 增加小鱼最大速度
 import pickle
 import matplotlib.pyplot as plt
 
-with open('./checkpoints/training_stats.pkl', 'rb') as f:
+with open('experiments/v2/artifacts/checkpoints/training_stats.pkl', 'rb') as f:
     stats = pickle.load(f)
 
 plt.plot(stats['iterations'], stats['avg_rewards'])
