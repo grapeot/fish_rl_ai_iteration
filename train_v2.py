@@ -142,6 +142,11 @@ class VectorizedFishEnv(gym.Env):
         info['final_num_alive'] = info.get('num_alive', 0)  # 保存最终存活数
         info['num_alive'] = int(avg_survival_rate * self.num_fish)  # 为了兼容性，使用平均存活数
         
+        # 如果episode结束，确保使用平均存活率
+        if terminated or truncated:
+            info['survival_rate'] = avg_survival_rate
+            info['num_alive'] = int(avg_survival_rate * self.num_fish)
+        
         return next_obs, avg_reward, terminated, truncated, info
     
     def render(self):
@@ -198,8 +203,19 @@ class CheckpointCallback(BaseCallback):
             self.stats['num_alive'].append(avg_num_alive)
             
             if self.verbose > 0 and self.iteration % 5 == 0:
-                print(f"Iter {self.iteration:3d}: Survival={survival_rate:6.2%}, "
-                      f"Alive={avg_num_alive:5.1f}, Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}")
+                # 调试：打印第一个episode的详细信息
+                if len(recent_episodes) > 0:
+                    first_ep = recent_episodes[0]
+                    debug_info = f" [Debug: ep_keys={list(first_ep.keys())}, "
+                    if 'survival_rate' in first_ep:
+                        debug_info += f"sr={first_ep['survival_rate']:.3f}, "
+                    if 'num_alive' in first_ep:
+                        debug_info += f"na={first_ep['num_alive']}]"
+                    print(f"Iter {self.iteration:3d}: Survival={survival_rate:6.2%}, "
+                          f"Alive={avg_num_alive:5.1f}, Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}{debug_info}")
+                else:
+                    print(f"Iter {self.iteration:3d}: Survival={survival_rate:6.2%}, "
+                          f"Alive={avg_num_alive:5.1f}, Reward={avg_reward:8.2f}, Steps={avg_timestep:5.1f}")
         
         if self.iteration in self.checkpoint_iterations:
             model_path = os.path.join(self.save_path, f"model_iter_{self.iteration}")
