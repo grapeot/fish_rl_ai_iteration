@@ -15,7 +15,14 @@ class FishEscapeEnv(gym.Env):
     
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
     
-    def __init__(self, render_mode: Optional[str] = None, num_fish: int = 250):
+    def __init__(
+        self,
+        render_mode: Optional[str] = None,
+        num_fish: int = 250,
+        include_neighbor_features: bool = False,
+        neighbor_radius: float = 2.0,
+        neighbor_average_count: int = 6,
+    ):
         super().__init__()
         
         # 环境参数
@@ -42,11 +49,20 @@ class FishEscapeEnv(gym.Env):
         # 奖励缩放，降低单步奖励量级，便于稳定训练
         self.REWARD_SCALE = 0.1
         
+        # 邻居特征控制
+        self.include_neighbor_features = include_neighbor_features
+        self.neighbor_radius = max(neighbor_radius, 1e-3)
+        self.neighbor_average_count = max(neighbor_average_count, 1)
+
         # 定义观测空间（单条小鱼的观测）
-        # [自身x, 自身y, 自身vx, 自身vy, 到边界距离, 
-        #  大鱼可见标志, 大鱼相对x, 大鱼相对y, 大鱼相对vx, 大鱼相对vy, 大鱼距离]
+        # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
+        #  大鱼可见标志, 大鱼相对x, 大鱼相对y, 大鱼相对vx, 大鱼相对vy, 大鱼距离,
+        #  (可选) 邻居密度、平均相对x、平均相对y、最近邻距离]
+        base_dim = 11
+        neighbor_dim = 4 if self.include_neighbor_features else 0
+        self._obs_dim = base_dim + neighbor_dim
         self.observation_space = spaces.Box(
-            low=-np.inf, high=np.inf, shape=(11,), dtype=np.float32
+            low=-np.inf, high=np.inf, shape=(self._obs_dim,), dtype=np.float32
         )
         
         # 定义动作空间（离散动作）
@@ -66,6 +82,7 @@ class FishEscapeEnv(gym.Env):
         self.fish_alive = None
         self.predator_pos = None
         self.predator_vel = None
+        self.fish_death_timesteps = None
         
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
         super().reset(seed=seed)
@@ -76,6 +93,7 @@ class FishEscapeEnv(gym.Env):
         self.fish_positions = np.zeros((self.NUM_FISH, 2), dtype=np.float32)
         self.fish_velocities = np.zeros((self.NUM_FISH, 2), dtype=np.float32)
         self.fish_alive = np.ones(self.NUM_FISH, dtype=bool)
+        self.fish_death_timesteps = np.full(self.NUM_FISH, -1, dtype=np.int32)
         
         for i in range(self.NUM_FISH):
             # 随机角度和半径
@@ -146,7 +164,18 @@ class FishEscapeEnv(gym.Env):
             "survival_rate": np.sum(self.fish_alive) / self.NUM_FISH,
             "timestep": self.timestep
         }
-        
+
+        if self.fish_death_timesteps is not None:
+            valid = self.fish_death_timesteps[self.fish_death_timesteps >= 0]
+            info["first_death_step"] = int(valid.min()) if valid.size > 0 else -1
+        else:
+            info["first_death_step"] = -1
+
+        if terminated or truncated:
+            info["death_timesteps"] = (
+                self.fish_death_timesteps.tolist() if self.fish_death_timesteps is not None else None
+            )
+
         return observations, rewards, terminated, truncated, info
     
     def _update_fish(self, fish_idx: int, action: int):
@@ -238,6 +267,8 @@ class FishEscapeEnv(gym.Env):
             dist = np.linalg.norm(self.fish_positions[i] - self.predator_pos)
             if dist < (self.FISH_SIZE + self.PREDATOR_SIZE):
                 self.fish_alive[i] = False
+                if self.fish_death_timesteps is not None and self.fish_death_timesteps[i] < 0:
+                    self.fish_death_timesteps[i] = self.timestep
     
     def _compute_rewards(self) -> np.ndarray:
         """计算每条小鱼的奖励"""
@@ -272,27 +303,27 @@ class FishEscapeEnv(gym.Env):
     def _get_observations(self) -> np.ndarray:
         """获取所有存活小鱼的观测"""
         observations = []
-        
+
         for i in range(self.NUM_FISH):
             if not self.fish_alive[i]:
                 continue
-            
-            obs = np.zeros(11, dtype=np.float32)
-            
+
+            obs = np.zeros(self._obs_dim, dtype=np.float32)
+
             # 自身状态（归一化）
             obs[0] = self.fish_positions[i][0] / self.STAGE_RADIUS
             obs[1] = self.fish_positions[i][1] / self.STAGE_RADIUS
             obs[2] = self.fish_velocities[i][0] / self.FISH_MAX_SPEED
             obs[3] = self.fish_velocities[i][1] / self.FISH_MAX_SPEED
-            
+
             # 到边界的距离
             dist_to_center = np.linalg.norm(self.fish_positions[i])
             obs[4] = (self.STAGE_RADIUS - dist_to_center) / self.STAGE_RADIUS
-            
+
             # 大鱼相对信息
             relative_pos = self.predator_pos - self.fish_positions[i]
             dist_to_predator = np.linalg.norm(relative_pos)
-            
+
             if dist_to_predator < self.FISH_VISION_RADIUS:
                 obs[5] = 1.0  # 大鱼可见
                 obs[6] = relative_pos[0] / self.FISH_VISION_RADIUS
@@ -302,9 +333,37 @@ class FishEscapeEnv(gym.Env):
                 obs[10] = dist_to_predator / self.FISH_VISION_RADIUS
             else:
                 obs[5] = 0.0  # 大鱼不可见
-            
+
+            if self.include_neighbor_features:
+                offset = 11
+                neighbor_vectors: List[np.ndarray] = []
+                neighbor_distances: List[float] = []
+                for j in range(self.NUM_FISH):
+                    if j == i or not self.fish_alive[j]:
+                        continue
+                    rel = self.fish_positions[j] - self.fish_positions[i]
+                    dist = np.linalg.norm(rel)
+                    if dist <= self.neighbor_radius:
+                        neighbor_vectors.append(rel)
+                        neighbor_distances.append(dist)
+
+                if neighbor_vectors:
+                    rel_array = np.array(neighbor_vectors, dtype=np.float32)
+                    dist_array = np.array(neighbor_distances, dtype=np.float32)
+                    top_k = min(len(dist_array), self.neighbor_average_count)
+                    top_indices = np.argsort(dist_array)[:top_k]
+                    rel_subset = rel_array[top_indices]
+                    dist_subset = dist_array[top_indices]
+                    obs[offset] = min(len(dist_array) / float(self.neighbor_average_count), 1.0)
+                    obs[offset + 1] = float(np.mean(rel_subset[:, 0]) / self.neighbor_radius)
+                    obs[offset + 2] = float(np.mean(rel_subset[:, 1]) / self.neighbor_radius)
+                    obs[offset + 3] = float(np.min(dist_subset) / self.neighbor_radius)
+                else:
+                    obs[offset:offset + 4] = 0.0
+
             observations.append(obs)
-        
+
+            
         return np.array(observations, dtype=np.float32)
     
     def _render_frame(self):
