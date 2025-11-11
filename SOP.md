@@ -56,6 +56,7 @@ fish_rl/
 ```
 - 历史版本只追加 `experiments/v{X}/` 文件夹，旧 artifacts 保持只读。
 - 通用读取路径需以 `Path(__file__).resolve().parent` 为基准，避免硬编码根目录。
+- 感知拓展选项：若需要研究“群体协作”行为，可在 `FishEscapeEnv._get_observations` 中加入其他小鱼的相对位置/速度等特征（例如邻近前 K 条鱼）；默认配置只观测捕食者，如果实验需要可在 `dev_vX.md` 说明后再开启。该拓展目前视为 stretch goal，可随时纳入后续迭代。
 
 ## 约定
 - 任何 Python 操作前检查/创建/激活 `uv` 虚拟环境，并用 `uv pip install` 管理依赖。

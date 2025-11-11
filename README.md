@@ -61,6 +61,11 @@ tensorboard --logdir experiments/v2/artifacts/tb_logs --port 6006
 - 执行 `scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex` 可让 Codex CLI 读取 SOP/上一轮文档，生成新的 `experiments/v3/`、跑实验、写日志并提醒提交。
 - 该脚本会在提示中强制遵守 `venv` 约定、要求 ≥64 并行环境、并在结束阶段执行 `git status`/commit/push`。运行日志保存在 `codex_runs/`（可用 `CODEX_RUN_LOG_DIR` 覆盖）。
 
+## 感知拓展（Stretch Goal）
+- 目前 `FishEscapeEnv` 的观测集中在捕食者信息；若实验需要，可以在 `_get_observations` 中额外注入附近小鱼的相对位置/速度/存活状态，以探索协同行为。
+- 启用该拓展前请在对应 `dev_vX.md` 记录目的、配置（比如最近 N 条邻居）、对训练脚本的影响，并将更改纳入版本控制。
+- 这类“群体感知”实验属于长期目标，可与动作模型改造或课程训练结合。
+
 ## 贡献指南
 - 所有代码/文档改动必须附带 `experiments/vX/dev_vX.md` 的相应记录。
 - artifacts 目录中的二进制文件不入库（由 `.gitignore` 排除），但其生成脚本和路径必须写进文档。
