@@ -1,0 +1,24 @@
+[2025-11-10 22:25:54] iter=001 sr=58.82% final_alive= 0.59 reward= 200.95 steps= 320.3
+[2025-11-10 22:25:57] iter=002 sr=64.00% final_alive= 0.64 reward= 215.88 steps= 341.3
+[2025-11-10 22:26:00] iter=003 sr=76.00% final_alive= 0.76 reward= 265.88 steps= 403.5
+[2025-11-10 22:26:03] iter=004 sr=73.00% final_alive= 0.73 reward= 261.78 steps= 396.5
+[2025-11-10 22:26:06] iter=005 sr=76.00% final_alive= 0.76 reward= 271.05 steps= 407.4
+[2025-11-10 22:26:06] checkpoint_saved iteration=5
+[2025-11-10 22:26:09] iter=006 sr=76.00% final_alive= 0.76 reward= 256.16 steps= 395.1
+[2025-11-10 22:26:12] iter=007 sr=78.00% final_alive= 0.78 reward= 261.91 steps= 401.4
+[2025-11-10 22:26:15] iter=008 sr=73.00% final_alive= 0.73 reward= 249.79 steps= 383.1
+[2025-11-10 22:26:18] iter=009 sr=74.00% final_alive= 0.74 reward= 253.46 steps= 386.8
+[2025-11-10 22:26:21] iter=010 sr=82.00% final_alive= 0.82 reward= 279.45 steps= 413.2
+[2025-11-10 22:26:21] checkpoint_saved iteration=10
+[2025-11-10 22:26:24] iter=011 sr=71.00% final_alive= 0.71 reward= 247.00 steps= 374.2
+[2025-11-10 22:26:27] iter=012 sr=70.00% final_alive= 0.70 reward= 245.15 steps= 369.8
+[2025-11-10 22:26:30] iter=013 sr=75.00% final_alive= 0.75 reward= 257.70 steps= 387.0
+[2025-11-10 22:26:33] iter=014 sr=78.00% final_alive= 0.78 reward= 275.46 steps= 406.7
+[2025-11-10 22:26:36] iter=015 sr=81.00% final_alive= 0.81 reward= 286.23 steps= 416.8
+[2025-11-10 22:26:36] checkpoint_saved iteration=15
+[2025-11-10 22:26:39] iter=016 sr=68.00% final_alive= 0.68 reward= 231.62 steps= 354.4
+[2025-11-10 22:26:43] iter=017 sr=75.00% final_alive= 0.75 reward= 261.28 steps= 392.1
+[2025-11-10 22:26:46] iter=018 sr=73.00% final_alive= 0.73 reward= 258.06 steps= 389.9
+[2025-11-10 22:26:49] iter=019 sr=78.00% final_alive= 0.78 reward= 274.66 steps= 409.4
+[2025-11-10 22:26:52] iter=020 sr=77.00% final_alive= 0.77 reward= 267.09 steps= 401.6
+[2025-11-10 22:26:52] checkpoint_saved iteration=20

@@ -62,4 +62,9 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+codex_runs/
+
+# Track dev_v3 artifacts despite the generic ignore rules
+!experiments/v3/artifacts/
+!experiments/v3/artifacts/**
 *.bak
