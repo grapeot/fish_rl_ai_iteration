@@ -195,16 +195,21 @@ class CheckpointCallback(BaseCallback):
 
 
 def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
-    """改进的PPO训练"""
+    """
+    改进的PPO训练 - 使用多进程并行环境
+    
+    使用 SubprocVecEnv 实现真正的多进程并行，可以充分利用多核CPU，
+    相比 DummyVecEnv 在CPU密集型任务上有更好的性能。
+    """
     checkpoint_iterations = list(range(10, total_iterations + 1, 10))
     
     print(f"Creating {num_envs} parallel environments with {num_fish} fish each...")
     
-    # 创建多个并行环境
+    # 创建多个并行环境（使用多进程）
     def make_env():
         return VectorizedFishEnv(num_fish=num_fish)
     
-    envs = DummyVecEnv([make_env for _ in range(num_envs)])
+    envs = SubprocVecEnv([make_env for _ in range(num_envs)], start_method='spawn')
     envs = VecMonitor(envs)
     
     print("Initializing PPO model...")
@@ -212,8 +217,8 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
         "MlpPolicy",
         envs,
         learning_rate=3e-4,
-        n_steps=512,  # 每个环境收集的步数
-        batch_size=128,
+        n_steps=1024,  # 增加步数，减少进程间同步频率，提高CPU利用率
+        batch_size=256,  # 增加batch size以匹配更多数据
         n_epochs=10,
         gamma=0.99,
         gae_lambda=0.95,
@@ -235,7 +240,7 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
     )
     
     # 总时间步 = iterations * n_steps * num_envs
-    total_timesteps = total_iterations * 512 * num_envs
+    total_timesteps = total_iterations * 1024 * num_envs
     model.learn(total_timesteps=total_timesteps, callback=callback, progress_bar=True)
     
     model.save("./checkpoints/model_final")
@@ -255,8 +260,8 @@ def train_ppo_v2(total_iterations=100, num_fish=50, num_envs=4):
 
 if __name__ == "__main__":
     TOTAL_ITERATIONS = 100
-    NUM_FISH = 50
-    NUM_ENVS = 4
+    NUM_FISH = 100  # 增加鱼数量，提高每个环境的计算量
+    NUM_ENVS = 32   # 增加并行环境数（可以超过CPU核心数，因为进程可以重叠I/O等待）
     
     model, stats = train_ppo_v2(
         total_iterations=TOTAL_ITERATIONS,

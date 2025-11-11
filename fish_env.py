@@ -105,6 +105,9 @@ class FishEscapeEnv(gym.Env):
         """
         self.timestep += 1
         
+        # 记录死亡前的状态
+        prev_alive = self.fish_alive.copy()
+        
         # 更新小鱼状态
         alive_indices = np.where(self.fish_alive)[0]
         for idx, fish_idx in enumerate(alive_indices):
@@ -118,8 +121,13 @@ class FishEscapeEnv(gym.Env):
         # 碰撞检测
         self._check_collisions()
         
-        # 计算奖励
+        # 计算奖励（包括死亡惩罚）
         rewards = self._compute_rewards()
+        
+        # 给刚刚死亡的鱼添加死亡惩罚
+        for i in range(self.NUM_FISH):
+            if prev_alive[i] and not self.fish_alive[i]:
+                rewards[i] -= 50.0  # 死亡时的单次惩罚
         
         # 检查终止条件
         terminated = (np.sum(self.fish_alive) == 0) or (self.timestep >= self.MAX_TIMESTEPS)
@@ -235,26 +243,27 @@ class FishEscapeEnv(gym.Env):
         
         for i in range(self.NUM_FISH):
             if not self.fish_alive[i]:
-                rewards[i] = -100.0  # 死亡惩罚
+                # 死去的鱼不再获得奖励或惩罚（只在死亡时惩罚一次）
+                rewards[i] = 0.0
                 continue
             
             # 存活奖励（增加权重）
-            rewards[i] += 1.0
+            rewards[i] += 2.0
             
             # 距离奖励（与大鱼保持距离）
             dist_to_predator = np.linalg.norm(self.fish_positions[i] - self.predator_pos)
             if dist_to_predator < self.FISH_VISION_RADIUS:
                 # 在视野内，鼓励远离（增加奖励）
-                rewards[i] += 5.0 * (dist_to_predator / self.FISH_VISION_RADIUS)
+                rewards[i] += 10.0 * (dist_to_predator / self.FISH_VISION_RADIUS)
             else:
                 # 不在视野内也给一些奖励
-                rewards[i] += 2.0
+                rewards[i] += 5.0
             
             # 边界惩罚（减少惩罚）
             dist_to_center = np.linalg.norm(self.fish_positions[i])
             dist_to_boundary = self.STAGE_RADIUS - dist_to_center
             if dist_to_boundary < 1.0:
-                rewards[i] -= 1.0 * (1.0 - dist_to_boundary)
+                rewards[i] -= 2.0 * (1.0 - dist_to_boundary)
         
         return rewards
     
