@@ -223,6 +223,12 @@ class CheckpointCallback(BaseCallback):
             if self.verbose > 0:
                 print(f"✓ Checkpoint saved at iteration {self.iteration}")
         
+        # 实时保存统计信息（每5个iteration保存一次，避免频繁IO）
+        if self.iteration % 5 == 0:
+            stats_path = os.path.join(self.save_path, "training_stats.pkl")
+            with open(stats_path, "wb") as f:
+                pickle.dump(self.stats, f)
+        
         return True
 
 
