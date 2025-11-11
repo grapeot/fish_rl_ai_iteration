@@ -22,6 +22,9 @@ class FishEscapeEnv(gym.Env):
         include_neighbor_features: bool = False,
         neighbor_radius: float = 2.0,
         neighbor_average_count: int = 6,
+        initial_escape_boost: bool = False,
+        escape_boost_speed: float = 0.6,
+        escape_jitter_std: float = np.pi / 12,
     ):
         super().__init__()
         
@@ -49,17 +52,20 @@ class FishEscapeEnv(gym.Env):
         # 奖励缩放，降低单步奖励量级，便于稳定训练
         self.REWARD_SCALE = 0.1
         
-        # 邻居特征控制
+        # 邻居特征 & 初始逃逸控制
         self.include_neighbor_features = include_neighbor_features
         self.neighbor_radius = max(neighbor_radius, 1e-3)
         self.neighbor_average_count = max(neighbor_average_count, 1)
+        self.initial_escape_boost = initial_escape_boost
+        self.escape_boost_speed = float(np.clip(escape_boost_speed, 0.0, 1.0))
+        self.escape_jitter_std = float(max(escape_jitter_std, 0.0))
 
         # 定义观测空间（单条小鱼的观测）
         # [自身x, 自身y, 自身vx, 自身vy, 到边界距离,
         #  大鱼可见标志, 大鱼相对x, 大鱼相对y, 大鱼相对vx, 大鱼相对vy, 大鱼距离,
-        #  (可选) 邻居密度、平均相对x、平均相对y、最近邻距离]
+        #  (可选) 邻居密度、平均相对x、平均相对y、最近邻距离及速度/散度统计]
         base_dim = 11
-        neighbor_dim = 4 if self.include_neighbor_features else 0
+        neighbor_dim = 7 if self.include_neighbor_features else 0
         self._obs_dim = base_dim + neighbor_dim
         self.observation_space = spaces.Box(
             low=-np.inf, high=np.inf, shape=(self._obs_dim,), dtype=np.float32
@@ -100,11 +106,28 @@ class FishEscapeEnv(gym.Env):
             angle = self.np_random.uniform(0, 2 * np.pi)
             radius = self.np_random.uniform(0, self.STAGE_RADIUS * 0.8)
             self.fish_positions[i] = [radius * np.cos(angle), radius * np.sin(angle)]
-            
+
             # 随机初始速度
             v_angle = self.np_random.uniform(0, 2 * np.pi)
             v_mag = self.np_random.uniform(0, self.FISH_MAX_SPEED * 0.5)
             self.fish_velocities[i] = [v_mag * np.cos(v_angle), v_mag * np.sin(v_angle)]
+
+        if self.initial_escape_boost:
+            for i in range(self.NUM_FISH):
+                radial = self.fish_positions[i].copy()
+                norm = np.linalg.norm(radial)
+                if norm < 1e-5:
+                    radial = self.np_random.normal(0, 1, size=2)
+                    norm = np.linalg.norm(radial)
+                radial /= max(norm, 1e-6)
+                jitter = self.np_random.normal(0.0, self.escape_jitter_std)
+                cos_a, sin_a = np.cos(jitter), np.sin(jitter)
+                rotated = np.array([
+                    radial[0] * cos_a - radial[1] * sin_a,
+                    radial[0] * sin_a + radial[1] * cos_a,
+                ])
+                boost_speed = self.FISH_MAX_SPEED * self.escape_boost_speed
+                self.fish_velocities[i] = rotated * boost_speed
         
         # 初始化大鱼位置（圆心附近）
         self.predator_pos = np.array([0.0, 0.0], dtype=np.float32)
@@ -338,6 +361,8 @@ class FishEscapeEnv(gym.Env):
                 offset = 11
                 neighbor_vectors: List[np.ndarray] = []
                 neighbor_distances: List[float] = []
+                neighbor_speeds: List[float] = []
+                neighbor_divergence: List[float] = []
                 for j in range(self.NUM_FISH):
                     if j == i or not self.fish_alive[j]:
                         continue
@@ -346,6 +371,12 @@ class FishEscapeEnv(gym.Env):
                     if dist <= self.neighbor_radius:
                         neighbor_vectors.append(rel)
                         neighbor_distances.append(dist)
+                        speed = np.linalg.norm(self.fish_velocities[j])
+                        neighbor_speeds.append(speed / max(self.FISH_MAX_SPEED, 1e-6))
+                        rel_dir = rel / max(dist, 1e-6)
+                        neighbor_divergence.append(
+                            float(np.dot(self.fish_velocities[j], rel_dir) / max(self.FISH_MAX_SPEED, 1e-6))
+                        )
 
                 if neighbor_vectors:
                     rel_array = np.array(neighbor_vectors, dtype=np.float32)
@@ -358,8 +389,13 @@ class FishEscapeEnv(gym.Env):
                     obs[offset + 1] = float(np.mean(rel_subset[:, 0]) / self.neighbor_radius)
                     obs[offset + 2] = float(np.mean(rel_subset[:, 1]) / self.neighbor_radius)
                     obs[offset + 3] = float(np.min(dist_subset) / self.neighbor_radius)
+                    speeds = np.array(neighbor_speeds[: len(dist_array)], dtype=np.float32)
+                    divergences = np.array(neighbor_divergence[: len(dist_array)], dtype=np.float32)
+                    obs[offset + 4] = float(np.mean(speeds))
+                    obs[offset + 5] = float(np.std(speeds))
+                    obs[offset + 6] = float(np.mean(divergences))
                 else:
-                    obs[offset:offset + 4] = 0.0
+                    obs[offset:offset + 7] = 0.0
 
             observations.append(obs)
 

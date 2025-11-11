@@ -76,4 +76,7 @@ codex_runs/
 # Track dev_v6 artifacts as well
 !experiments/v6/artifacts/
 !experiments/v6/artifacts/**
+# Track dev_v7 artifacts as well
+!experiments/v7/artifacts/
+!experiments/v7/artifacts/**
 *.bak
