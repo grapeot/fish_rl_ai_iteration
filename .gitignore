@@ -85,4 +85,7 @@ codex_runs/
 # Track dev_v9 artifacts as well
 !experiments/v9/artifacts/
 !experiments/v9/artifacts/**
+# Track dev_v10 artifacts as well
+!experiments/v10/artifacts/
+!experiments/v10/artifacts/**
 *.bak
