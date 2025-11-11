@@ -790,8 +790,6 @@ def train(args):
     initial_density_penalty = penalty_scheduler.initial_value() if penalty_scheduler else args.density_penalty_coef
 
     run_name = args.run_name or datetime.now().strftime("dev_v9_%Y%m%d_%H%M%S")
-
-    run_name = args.run_name or datetime.now().strftime("dev_v9_%Y%m%d_%H%M%S")
     run_checkpoint_dir = CHECKPOINT_DIR / run_name
     run_log_path = LOG_DIR / f"{run_name}.log"
     stats_path = run_checkpoint_dir / "training_stats.pkl"
