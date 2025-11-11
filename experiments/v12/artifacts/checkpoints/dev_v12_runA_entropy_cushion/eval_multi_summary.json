@@ -1,0 +1,8 @@
+{
+  "episodes": 8,
+  "avg_final_survival_rate": 0.76,
+  "min_final_survival_rate": 0.68,
+  "avg_min_survival_rate": 0.76,
+  "min_of_min_survival_rate": 0.68,
+  "median_min_survival_rate": 0.74
+}
