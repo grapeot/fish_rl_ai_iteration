@@ -144,4 +144,7 @@ codex_runs/
 !experiments/v33/artifacts/**
 !experiments/v35/artifacts/
 !experiments/v35/artifacts/**
+!experiments/v34/artifacts/checkpoints/tail_seed_mix_v34_ne.json
+!experiments/v36/artifacts/
+!experiments/v36/artifacts/**
 *.bak
