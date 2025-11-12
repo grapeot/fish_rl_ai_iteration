@@ -427,6 +427,29 @@ class FishEscapeEnv(gym.Env):
             return None
         return self._prewarm_velocity_queue.popleft()
 
+    def prewarm_queue_length(self) -> int:
+        """Return current number of queued prewarm velocities."""
+        return len(self._prewarm_velocity_queue)
+
+    def enqueue_prewarm_velocity(self, velocity: Sequence[float], front: bool = False) -> bool:
+        """Append a predator velocity override so下次 reset 会优先使用 tail seed."""
+        if velocity is None:
+            return False
+        if isinstance(velocity, np.ndarray):
+            vector = velocity.astype(np.float32, copy=True)
+        else:
+            if len(velocity) < 2:
+                return False
+            try:
+                vector = np.array([float(velocity[0]), float(velocity[1])], dtype=np.float32)
+            except (TypeError, ValueError):
+                return False
+        if front:
+            self._prewarm_velocity_queue.appendleft(vector)
+        else:
+            self._prewarm_velocity_queue.append(vector)
+        return True
+
     def _sample_heading_bias_angle(self) -> Optional[float]:
         if not self.predator_heading_bias:
             return None
