@@ -1,0 +1,120 @@
+{
+  "generated_at": "2025-11-12T01:51:52.501352Z",
+  "run_name": "dev_v31_runB_tailmix",
+  "records": 63,
+  "summary": {
+    "total_events": 63,
+    "angle_bin_deg": 30.0,
+    "speed_bin": 0.4,
+    "clusters": [
+      {
+        "angle_deg_start": 90.0,
+        "angle_deg_end": 120.0,
+        "speed_bin_start": 1.6,
+        "speed_bin_end": 2.0,
+        "count": 9,
+        "share": 0.14285714285714285,
+        "sample": {
+          "iteration": 16,
+          "angle_deg": 92.02410681550414,
+          "speed": 1.7590958074031122,
+          "predator_velocity": [
+            -0.06213122978806496,
+            1.7579982280731201
+          ],
+          "fish_idx": 11
+        }
+      },
+      {
+        "angle_deg_start": 30.0,
+        "angle_deg_end": 60.0,
+        "speed_bin_start": 1.2000000000000002,
+        "speed_bin_end": 1.6,
+        "count": 9,
+        "share": 0.14285714285714285,
+        "sample": {
+          "iteration": 48,
+          "angle_deg": 57.63545226502836,
+          "speed": 1.5852179611590398,
+          "predator_velocity": [
+            0.8485739231109619,
+            1.338969111442566
+          ],
+          "fish_idx": 14
+        }
+      },
+      {
+        "angle_deg_start": 90.0,
+        "angle_deg_end": 120.0,
+        "speed_bin_start": 0.8,
+        "speed_bin_end": 1.2000000000000002,
+        "count": 7,
+        "share": 0.1111111111111111,
+        "sample": {
+          "iteration": 16,
+          "angle_deg": 92.21567017464892,
+          "speed": 0.8758516782678029,
+          "predator_velocity": [
+            -0.03386139124631882,
+            0.8751968741416931
+          ],
+          "fish_idx": 76
+        }
+      },
+      {
+        "angle_deg_start": 150.0,
+        "angle_deg_end": 180.0,
+        "speed_bin_start": 1.6,
+        "speed_bin_end": 2.0,
+        "count": 4,
+        "share": 0.06349206349206349,
+        "sample": {
+          "iteration": 48,
+          "angle_deg": 163.48408021924328,
+          "speed": 1.8912273365033465,
+          "predator_velocity": [
+            -1.8131967782974243,
+            0.5376414060592651
+          ],
+          "fish_idx": 4
+        }
+      },
+      {
+        "angle_deg_start": 90.0,
+        "angle_deg_end": 120.0,
+        "speed_bin_start": 1.2000000000000002,
+        "speed_bin_end": 1.6,
+        "count": 3,
+        "share": 0.047619047619047616,
+        "sample": {
+          "iteration": 16,
+          "angle_deg": 117.6131250806393,
+          "speed": 1.3154205495271067,
+          "predator_velocity": [
+            -0.6096961498260498,
+            1.165590763092041
+          ],
+          "fish_idx": 22
+        }
+      },
+      {
+        "angle_deg_start": 120.0,
+        "angle_deg_end": 150.0,
+        "speed_bin_start": 0.8,
+        "speed_bin_end": 1.2000000000000002,
+        "count": 3,
+        "share": 0.047619047619047616,
+        "sample": {
+          "iteration": 32,
+          "angle_deg": 124.23212845628542,
+          "speed": 1.1849354848507694,
+          "predator_velocity": [
+            -0.6665819883346558,
+            0.9796634912490845
+          ],
+          "fish_idx": 10
+        }
+      }
+    ]
+  }
+}
