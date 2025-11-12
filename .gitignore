@@ -138,4 +138,6 @@ codex_runs/
 # Track dev_v31 artifacts as well
 !experiments/v31/artifacts/
 !experiments/v31/artifacts/**
+!experiments/v32/artifacts/
+!experiments/v32/artifacts/**
 *.bak
