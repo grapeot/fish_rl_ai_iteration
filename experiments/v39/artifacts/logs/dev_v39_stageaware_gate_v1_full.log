@@ -1,0 +1,67 @@
+[2025-11-12 01:40:04] density_penalty_update iteration=001 value=0.0000
+[2025-11-12 01:40:04] entropy_coef_update iteration=001 value=0.0200
+[2025-11-12 01:40:04] escape_boost_apply iteration=001 speed=0.750
+[2025-11-12 01:40:06] iter=002 sr=84.87% final_alive=12.73 reward= 132.43 steps= 224.0
+[2025-11-12 01:40:08] iter=003 sr=84.87% final_alive=12.73 reward= 132.43 steps= 224.0
+[2025-11-12 01:40:09] iter=004 sr=86.20% final_alive=12.93 reward= 134.45 steps= 224.0
+[2025-11-12 01:40:11] iter=005 sr=86.20% final_alive=12.93 reward= 134.45 steps= 224.0
+[2025-11-12 01:40:11] checkpoint_saved iteration=5
+[2025-11-12 01:40:12] iter=006 sr=84.60% final_alive=12.69 reward= 132.01 steps= 224.0
+[2025-11-12 01:40:14] iter=007 sr=86.00% final_alive=12.90 reward= 134.22 steps= 224.0
+[2025-11-12 01:40:15] iter=008 sr=86.00% final_alive=12.90 reward= 134.22 steps= 224.0
+[2025-11-12 01:42:37] penalty_gate event=failure_hold iteration=008 stage=0 phase_limit=3 freeze_until=13
+[2025-11-12 01:42:57] iter=009 sr=85.67% final_alive=12.85 reward= 134.14 steps= 224.0
+[2025-11-12 01:44:52] density_penalty_update iteration=010 value=0.0200
+[2025-11-12 01:44:52] escape_boost_apply iteration=010 speed=0.750
+[2025-11-12 01:44:54] iter=010 sr=85.67% final_alive=12.85 reward= 134.14 steps= 224.0
+[2025-11-12 01:44:54] checkpoint_saved iteration=10
+[2025-11-12 01:44:57] iter=011 sr=86.20% final_alive=17.24 reward= 134.12 steps= 224.0
+[2025-11-12 01:44:59] iter=012 sr=86.20% final_alive=17.24 reward= 134.12 steps= 224.0
+[2025-11-12 01:45:01] iter=013 sr=85.60% final_alive=17.12 reward= 135.09 steps= 224.0
+[2025-11-12 01:45:04] iter=014 sr=85.60% final_alive=17.12 reward= 135.09 steps= 224.0
+[2025-11-12 01:45:06] iter=015 sr=84.40% final_alive=16.88 reward= 131.12 steps= 224.0
+[2025-11-12 01:45:06] checkpoint_saved iteration=15
+[2025-11-12 01:45:07] entropy_coef_update iteration=016 value=0.0300
+[2025-11-12 01:45:09] iter=016 sr=85.40% final_alive=17.08 reward= 133.03 steps= 224.0
+[2025-11-12 01:49:46] iter=017 sr=85.40% final_alive=17.08 reward= 133.03 steps= 224.0
+[2025-11-12 01:49:49] iter=018 sr=84.80% final_alive=16.96 reward= 132.11 steps= 224.0
+[2025-11-12 01:49:52] iter=019 sr=84.80% final_alive=16.96 reward= 132.11 steps= 224.0
+[2025-11-12 01:51:50] escape_boost_base iteration=020 base=0.760
+[2025-11-12 01:51:50] density_penalty_update iteration=020 value=0.0400
+[2025-11-12 01:51:50] escape_boost_apply iteration=020 speed=0.760
+[2025-11-12 01:51:52] iter=020 sr=84.80% final_alive=16.96 reward= 132.11 steps= 224.0
+[2025-11-12 01:51:52] checkpoint_saved iteration=20
+[2025-11-12 01:51:56] iter=021 sr=85.08% final_alive=21.27 reward= 132.34 steps= 224.0
+[2025-11-12 01:51:59] iter=022 sr=85.08% final_alive=21.27 reward= 132.34 steps= 224.0
+[2025-11-12 01:52:02] iter=023 sr=85.32% final_alive=21.33 reward= 133.65 steps= 224.0
+[2025-11-12 01:52:05] iter=024 sr=85.32% final_alive=21.33 reward= 133.65 steps= 224.0
+[2025-11-12 01:56:01] penalty_gate event=failure_hold iteration=024 stage=0 phase_limit=3 freeze_until=29
+[2025-11-12 01:56:24] entropy_coef_update iteration=025 value=0.0200
+[2025-11-12 01:56:27] iter=025 sr=85.80% final_alive=21.45 reward= 134.34 steps= 224.0
+[2025-11-12 01:56:27] checkpoint_saved iteration=25
+[2025-11-12 01:56:30] iter=026 sr=84.40% final_alive=21.10 reward= 132.11 steps= 224.0
+[2025-11-12 01:56:33] iter=027 sr=84.40% final_alive=21.10 reward= 132.11 steps= 224.0
+[2025-11-12 01:56:36] iter=028 sr=84.84% final_alive=21.21 reward= 132.87 steps= 224.0
+[2025-11-12 01:58:36] escape_boost_base iteration=029 base=0.780
+[2025-11-12 01:58:36] density_penalty_update iteration=029 value=0.0500
+[2025-11-12 01:58:36] escape_boost_apply iteration=029 speed=0.780
+[2025-11-12 01:58:39] iter=029 sr=84.84% final_alive=21.21 reward= 132.87 steps= 224.0
+[2025-11-12 01:58:42] iter=030 sr=84.96% final_alive=21.24 reward= 133.05 steps= 224.0
+[2025-11-12 01:58:42] checkpoint_saved iteration=30
+[2025-11-12 01:58:45] iter=031 sr=84.96% final_alive=21.24 reward= 133.05 steps= 224.0
+[2025-11-12 01:58:49] iter=032 sr=85.08% final_alive=21.27 reward= 133.21 steps= 224.0
+[2025-11-12 02:03:13] penalty_gate event=failure_hold iteration=032 stage=0 phase_limit=3 freeze_until=37
+[2025-11-12 02:03:41] iter=033 sr=85.08% final_alive=21.27 reward= 133.21 steps= 224.0
+[2025-11-12 02:03:44] iter=034 sr=86.56% final_alive=21.64 reward= 134.43 steps= 224.0
+[2025-11-12 02:03:48] iter=035 sr=84.72% final_alive=21.18 reward= 132.12 steps= 224.0
+[2025-11-12 02:03:48] checkpoint_saved iteration=35
+[2025-11-12 02:03:51] iter=036 sr=84.72% final_alive=21.18 reward= 132.12 steps= 224.0
+[2025-11-12 02:05:55] escape_boost_base iteration=037 base=0.820
+[2025-11-12 02:05:55] escape_boost_apply iteration=037 speed=0.800
+[2025-11-12 02:05:57] iter=037 sr=84.72% final_alive=21.18 reward= 132.12 steps= 224.0
+[2025-11-12 02:05:57] adaptive_boost iteration=037 window_p10=1.00 target=0.800
+[2025-11-12 02:05:57] escape_boost_apply iteration=038 speed=0.800
+[2025-11-12 02:06:00] iter=038 sr=85.44% final_alive=21.36 reward= 133.02 steps= 224.0
+[2025-11-12 02:06:04] iter=039 sr=85.44% final_alive=21.36 reward= 133.02 steps= 224.0
+[2025-11-12 02:06:07] iter=040 sr=84.64% final_alive=21.16 reward= 132.49 steps= 224.0
+[2025-11-12 02:06:07] checkpoint_saved iteration=40

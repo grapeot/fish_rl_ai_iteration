@@ -1,0 +1,26 @@
+[2025-11-12 01:29:47] density_penalty_update iteration=001 value=0.0000
+[2025-11-12 01:29:47] entropy_coef_update iteration=001 value=0.0200
+[2025-11-12 01:29:47] escape_boost_apply iteration=001 speed=0.750
+[2025-11-12 01:29:50] iter=002 sr=86.60% final_alive=12.99 reward= 134.60 steps= 224.0
+[2025-11-12 01:29:51] iter=003 sr=86.60% final_alive=12.99 reward= 134.60 steps= 224.0
+[2025-11-12 01:29:53] iter=004 sr=83.27% final_alive=12.49 reward= 129.96 steps= 224.0
+[2025-11-12 01:29:54] iter=005 sr=83.27% final_alive=12.49 reward= 129.96 steps= 224.0
+[2025-11-12 01:29:54] checkpoint_saved iteration=5
+[2025-11-12 01:29:56] iter=006 sr=84.53% final_alive=12.68 reward= 131.49 steps= 224.0
+[2025-11-12 01:29:57] iter=007 sr=82.73% final_alive=12.41 reward= 130.20 steps= 224.0
+[2025-11-12 01:29:59] iter=008 sr=82.73% final_alive=12.41 reward= 130.20 steps= 224.0
+[2025-11-12 01:32:10] penalty_gate event=failure_hold iteration=008 stage=0 phase_limit=3 freeze_until=13
+[2025-11-12 01:32:28] iter=009 sr=84.80% final_alive=12.72 reward= 132.61 steps= 224.0
+[2025-11-12 01:34:24] density_penalty_update iteration=010 value=0.0200
+[2025-11-12 01:34:24] escape_boost_apply iteration=010 speed=0.750
+[2025-11-12 01:34:26] iter=010 sr=84.80% final_alive=12.72 reward= 132.61 steps= 224.0
+[2025-11-12 01:34:26] checkpoint_saved iteration=10
+[2025-11-12 01:34:28] iter=011 sr=86.20% final_alive=17.24 reward= 134.11 steps= 224.0
+[2025-11-12 01:34:31] iter=012 sr=86.20% final_alive=17.24 reward= 134.11 steps= 224.0
+[2025-11-12 01:34:33] iter=013 sr=83.80% final_alive=16.76 reward= 130.91 steps= 224.0
+[2025-11-12 01:34:36] iter=014 sr=83.80% final_alive=16.76 reward= 130.91 steps= 224.0
+[2025-11-12 01:34:38] iter=015 sr=85.35% final_alive=17.07 reward= 133.73 steps= 224.0
+[2025-11-12 01:34:38] checkpoint_saved iteration=15
+[2025-11-12 01:34:39] entropy_coef_update iteration=016 value=0.0300
+[2025-11-12 01:34:40] iter=016 sr=84.80% final_alive=16.96 reward= 131.88 steps= 224.0
+[2025-11-12 01:37:52] penalty_gate event=failure_hold iteration=016 stage=0 phase_limit=3 freeze_until=21
