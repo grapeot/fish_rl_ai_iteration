@@ -149,4 +149,6 @@ codex_runs/
 !experiments/v36/artifacts/**
 !experiments/v37/artifacts/
 !experiments/v37/artifacts/**
+!experiments/v38/artifacts/
+!experiments/v38/artifacts/**
 *.bak
