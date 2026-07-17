@@ -79,10 +79,37 @@
 - [x] 复核承重结论(gate 短路逻辑 + 原始 p10 数据)
 - [ ] 与项目经理讨论后确定 v44 的实际改动
 
-## Learning / 下一步(候选,待与 PM 讨论)
+## 六、Factorial 对照结果(2026-07-17)—— **推翻了前面的核心假设**
 
-1. **先修 gate 配置**:要么把 `failure_p10` 降到策略够得着的值(~60),要么干脆认清这个指标是在告诉你"策略不行",而不是"门太严"。这是让整套 gate 机制恢复可动作性的前提。
-2. **止住策略回归**:iter8→56 存活率单调下降是反常的,PPO 不该越训越差。优先怀疑 tail seed injection 把过硬样本反复灌进训练缓冲,把策略往差里拖。可以先做一次"纯 PPO + 课程、关掉 tail injection"的干净基线对照,看存活率是否不降反升。
-3. **消除 ~2% 结构 doom(可选、确定性)**:如果不想要 step-one 必死,在**环境**里加 spawn 最小间距(拒绝 spawn 在捕食者 capture 半径 + margin 内的鱼),而不是在 reward 里绕。这能确定性抹掉那 2% 并给 `step_one_ratio` 去噪。
-4. **排查 pre-roll speed_scale 采样器**:76× 的离群值制造病态慢速捕食者,污染 worst-seed 统计和 60–150° heading bias。
-5. **天花板改动(靠后)**:5 离散动作 → 连续/更细转向;正式打开 `include_neighbor_features` 群体感知。这两个抬天花板,但要等 gate 和回归问题解决后再投。
+跑了 tail-off/gate-on 的干净对照(`v44_clean_baseline_notail_nogate`,128 env × 60 iter),用**和 v42 完全相同的 multi-eval харness**(96 fish × 20 ep)对比。结论和第四节的 debugging 假设**相反**。
+
+### 关键陷阱:on-policy 存活率是骗人的信号
+
+我一开始被 on-policy 的 `sr` 骗了。看训练日志,tail-off 这跑存活率平稳在 ~73%(iter4=75.3%→iter60=72.5%,无回归),我据此以为"关掉 tail injection 就止住了退化"。**这个判断是错的。** on-policy sr 是在**训练分布**上测的,策略过拟合到这个分布,所以看着稳。真正的判决要看 held-out multi-eval:
+
+| 跑法 | on-policy sr | multi-eval avg_final | multi-eval min_final | train/eval gap |
+| --- | --- | --- | --- | --- |
+| **v42(tail-on/gate-on)** | ~85% | **0.70–0.87** | 0.51–0.74 | ~15pt(泛化好) |
+| **v44 clean(tail-off/gate-on)** | ~73% | **0.08–0.29** | 常态 0.000 | ~50pt(灾难性过拟合) |
+
+### 结论:tail injection 不是病,是药
+
+- **关掉 tail injection,held-out 泛化直接崩盘**:avg_final 从 v42 的 0.70–0.87 掉到 0.08–0.29,min_final 常态归零。策略在训练分布上看着好(73%),一到真 eval 就废。
+- **v42 那个"0.87→0.70 的下降"根本不是退化**,而是策略被逐步注入的更硬样本推着走、同时保持了强 held-out 表现。tail seed injection 正是**强迫策略泛化到困难 predator 配置**的机制。
+- **前面第四节把 on-policy 曲线的平稳当成好消息,是被训练分布过拟合骗了。** 这次对照的价值就在于:不做实验、只信 debugging 叙事,就会朝完全错误的方向改。
+
+### 这对 min_final≈0.51 的重新理解
+
+v42 的 min_final≈0.51 不是"策略差",而是**已经相当强的策略在最难 held-out 样本上的地板**。真正的问题不是"策略在退化"(它没有),而是:(a) 那道 `failure_p10=95` 的 gate 门槛策略够不到,让晋级机制空转;(b) 最难样本上还有 ~0.3 的提升空间,但这是"锦上添花"级别,不是"止血"级别。
+
+## 七、修正后的方向(待验证,factorial 还差一格)
+
+factorial 还缺 **tail-off/gate-off** 和 **tail-on/gate-off** 两格才完整,但主结论(tail 是药)已经稳了。修正后的候选方向:
+
+1. **保留并强化 tail injection,而不是拆掉它。** 它是当前泛化的支柱。可以研究:更系统地覆盖 predator 配置空间(而非手工拼 stage spec),让注入的困难样本分布更均匀。
+2. **修 gate 门槛让晋级机制真正生效。** `failure_p10=95` 策略够不到 → gate 空转。降到 ~60,或改成基于 held-out avg_final 的判据,让 density penalty phase 能真正推进。
+3. **直接优化最难样本的 min_final(~0.51 地板)。** 针对 held-out 最差 predator 配置(慢速+居中、60–150° heading)做定向 hard-negative 训练。
+4. **天花板改动**:5 离散动作 → 连续/更细转向;打开 `include_neighbor_features` 群体感知。
+5. **可选**:环境侧加 spawn 最小间距,确定性消除 ~2% step-one 结构性必死。
+
+**教训(已存档):承重结论必须靠 held-out eval,不能信 on-policy 训练指标——过拟合会让训练曲线看着很健康。**

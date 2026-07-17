@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-07-17T17:45:01.835029Z",
+  "run_name": "v44_clean_baseline_notail_nogate",
+  "records": 286,
+  "stage_summary": {
+    "total_events": 286,
+    "stages": [
+      {
+        "stage_type": "unknown",
+        "count": 286,
+        "share": 1.0,
+        "iteration_min": 8,
+        "iteration_max": 56,
+        "predator_speed": {
+          "count": 286,
+          "mean": 1.2993971217216966,
+          "std": 0.7817301393206701,
+          "p10": 0.23219081520822676,
+          "p50": 1.3084754337858424,
+          "p90": 2.435262609310687,
+          "min": 0.07749742146651052,
+          "max": 2.8440449099095355
+        }
+      }
+    ]
+  }
+}
