@@ -177,3 +177,12 @@ experiments/v44/artifacts/media/
 experiments/v45/artifacts/tb_logs/
 experiments/v45/artifacts/media/
 *.bak
+# Track v46 lightweight artifacts (sweep summary + eval JSONL + plots); heavy binaries stay ignored
+!experiments/v46/artifacts/
+!experiments/v46/artifacts/*.json
+!experiments/v46/artifacts/plots/
+!experiments/v46/artifacts/plots/**
+!experiments/v46/artifacts/checkpoints/
+!experiments/v46/artifacts/checkpoints/**/*.jsonl
+experiments/v46/artifacts/tb_logs/
+experiments/v46/artifacts/media/

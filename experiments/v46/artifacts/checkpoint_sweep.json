@@ -1,0 +1,486 @@
+{
+  "config": {
+    "num_fish": 96,
+    "escape_boost_speed": 0.8,
+    "selection_rng_seed": 555001,
+    "report_rng_seed": 555002,
+    "selection_episodes": 20,
+    "report_episodes": 40
+  },
+  "selection": [
+    {
+      "tag": "v45_avgfinal_gate|sel|5",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.6046875,
+      "min_final": 0.4375,
+      "max_final": 0.7708333333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|10",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.5838541666666667,
+      "min_final": 0.22916666666666666,
+      "max_final": 0.8333333333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|15",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.4822916666666667,
+      "min_final": 0.28125,
+      "max_final": 0.59375
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|20",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.4791666666666667,
+      "min_final": 0.3125,
+      "max_final": 0.6666666666666666
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|25",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.4963541666666667,
+      "min_final": 0.40625,
+      "max_final": 0.625
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|30",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.5286458333333333,
+      "min_final": 0.3854166666666667,
+      "max_final": 0.7395833333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|35",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.4703125,
+      "min_final": 0.28125,
+      "max_final": 0.6145833333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|40",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.4947916666666667,
+      "min_final": 0.3125,
+      "max_final": 0.6458333333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|45",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.4515625,
+      "min_final": 0.2604166666666667,
+      "max_final": 0.6041666666666666
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|50",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.4713541666666667,
+      "min_final": 0.22916666666666666,
+      "max_final": 0.6145833333333334
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|55",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.4473958333333333,
+      "min_final": 0.2604166666666667,
+      "max_final": 0.625
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|60",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.446875,
+      "min_final": 0.2708333333333333,
+      "max_final": 0.625
+    },
+    {
+      "tag": "v45_avgfinal_gate|sel|final",
+      "model": "experiments/v45/artifacts/checkpoints/v45_avgfinal_gate/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.446875,
+      "min_final": 0.2708333333333333,
+      "max_final": 0.625
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|5",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.8359375,
+      "min_final": 0.65625,
+      "max_final": 0.9791666666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|10",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.834375,
+      "min_final": 0.5625,
+      "max_final": 0.96875
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|15",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.9026041666666667,
+      "min_final": 0.78125,
+      "max_final": 0.9791666666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|20",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.9125,
+      "min_final": 0.78125,
+      "max_final": 0.9895833333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|25",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.8651041666666666,
+      "min_final": 0.7291666666666666,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|30",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.8854166666666666,
+      "min_final": 0.7708333333333334,
+      "max_final": 0.96875
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|35",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.8666666666666666,
+      "min_final": 0.7395833333333334,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|40",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.8541666666666666,
+      "min_final": 0.7083333333333334,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|45",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.8588541666666666,
+      "min_final": 0.71875,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|50",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.8442708333333334,
+      "min_final": 0.6979166666666666,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|55",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.8640625,
+      "min_final": 0.75,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|60",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.8739583333333334,
+      "min_final": 0.7708333333333334,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed700000|sel|final",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.8739583333333334,
+      "min_final": 0.7708333333333334,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|5",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.8838541666666666,
+      "min_final": 0.71875,
+      "max_final": 0.9791666666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|10",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.8765625,
+      "min_final": 0.6041666666666666,
+      "max_final": 0.96875
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|15",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.871875,
+      "min_final": 0.7708333333333334,
+      "max_final": 0.9270833333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|20",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.8697916666666666,
+      "min_final": 0.7604166666666666,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|25",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.83125,
+      "min_final": 0.75,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|30",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.8140625,
+      "min_final": 0.71875,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|35",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.8265625,
+      "min_final": 0.7395833333333334,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|40",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.8171875,
+      "min_final": 0.71875,
+      "max_final": 0.9270833333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|45",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.8244791666666667,
+      "min_final": 0.7291666666666666,
+      "max_final": 0.9270833333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|50",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.8234375,
+      "min_final": 0.6875,
+      "max_final": 0.9270833333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|55",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.815625,
+      "min_final": 0.6770833333333334,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|60",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.828125,
+      "min_final": 0.6458333333333334,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed701000|sel|final",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed701000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.828125,
+      "min_final": 0.6458333333333334,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|5",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.6109375,
+      "min_final": 0.020833333333333332,
+      "max_final": 0.9791666666666666
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|10",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.6463541666666667,
+      "min_final": 0.020833333333333332,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|15",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.828125,
+      "min_final": 0.4583333333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|20",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.8286458333333334,
+      "min_final": 0.4583333333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|25",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.8296875,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|30",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.8286458333333334,
+      "min_final": 0.46875,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|35",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.8296875,
+      "min_final": 0.46875,
+      "max_final": 0.96875
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|40",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.8307291666666666,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.96875
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|45",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.8291666666666666,
+      "min_final": 0.46875,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|50",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.8296875,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|55",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.8296875,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|60",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.828125,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_baseline_v42cfg_seed702000|sel|final",
+      "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed702000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.828125,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    }
+  ],
+  "chosen": {
+    "v45_avgfinal_gate": {
+      "best_iter": "5",
+      "best_sel_avg": 0.6046875,
+      "rep_best": {
+        "iter": "5",
+        "avg_final": 0.5856770833333333,
+        "min_final": 0.375
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.4854166666666667,
+        "min_final": 0.19791666666666666
+      }
+    },
+    "ms_baseline_v42cfg_seed700000": {
+      "best_iter": "20",
+      "best_sel_avg": 0.9125,
+      "rep_best": {
+        "iter": "20",
+        "avg_final": 0.8989583333333334,
+        "min_final": 0.7083333333333334
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.87578125,
+        "min_final": 0.78125
+      }
+    },
+    "ms_baseline_v42cfg_seed701000": {
+      "best_iter": "5",
+      "best_sel_avg": 0.8838541666666666,
+      "rep_best": {
+        "iter": "5",
+        "avg_final": 0.8783854166666666,
+        "min_final": 0.7291666666666666
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.83671875,
+        "min_final": 0.6458333333333334
+      }
+    },
+    "ms_baseline_v42cfg_seed702000": {
+      "best_iter": "40",
+      "best_sel_avg": 0.8307291666666666,
+      "rep_best": {
+        "iter": "40",
+        "avg_final": 0.8296875,
+        "min_final": 0.6145833333333334
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.82890625,
+        "min_final": 0.625
+      }
+    }
+  }
+}
