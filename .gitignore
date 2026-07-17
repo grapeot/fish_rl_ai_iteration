@@ -168,4 +168,12 @@ codex_runs/
 !experiments/v44/artifacts/checkpoints/**/*.json
 experiments/v44/artifacts/tb_logs/
 experiments/v44/artifacts/media/
+# Track v45 lightweight artifacts (multiseed summaries + eval JSONL); heavy binaries stay ignored
+!experiments/v45/artifacts/
+!experiments/v45/artifacts/*.json
+!experiments/v45/artifacts/checkpoints/
+!experiments/v45/artifacts/checkpoints/**/*.jsonl
+!experiments/v45/artifacts/checkpoints/**/*.json
+experiments/v45/artifacts/tb_logs/
+experiments/v45/artifacts/media/
 *.bak
