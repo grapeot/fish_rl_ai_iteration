@@ -159,4 +159,13 @@ codex_runs/
 !experiments/v41/artifacts/**
 !experiments/v42/artifacts/
 !experiments/v42/artifacts/**
+# Track v44 lightweight artifacts (plots + eval JSONL); heavy binaries stay ignored
+!experiments/v44/artifacts/
+!experiments/v44/artifacts/plots/
+!experiments/v44/artifacts/plots/**
+!experiments/v44/artifacts/checkpoints/
+!experiments/v44/artifacts/checkpoints/**/*.jsonl
+!experiments/v44/artifacts/checkpoints/**/*.json
+experiments/v44/artifacts/tb_logs/
+experiments/v44/artifacts/media/
 *.bak
