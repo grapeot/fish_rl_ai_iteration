@@ -11,7 +11,7 @@
 
 1. **承重结论只看 held-out multi-eval 的 `avg_final_survival_rate`，绝不看 on-policy 训练 `sr`。**
    - 训练日志的 `sr` 是在训练分布上测的；策略过拟合就会让它看着很稳/很高。实测：某配置 on-policy 稳定 ~73%，held-out avg_final 却只有 0.08–0.29。
-   - multi-eval 的 predator 配置由 `multi_eval_seed_base` 固定、跨 run 共享（同 base → 逐位相同的 `episode_seeds`），所以 eval 本身是公平、确定的对照，可以直接跨 run 比 `avg_final`。
+   - multi-eval 的 predator 配置由 `multi_eval_seed_base` 固定：**跨 run 在同一 eval 序号上 `episode_seeds` 逐位相同**（可直接跨 run 比同期 `avg_final`），但**同一 run 内不同 eval 之间 seeds 随 RNG 推进而不同**（20 episodes 的批间抽样噪声 ~0.02–0.05，跨 iteration 比较时要留意）。
 
 2. **绝不用单个训练 run 的单点数字作为 merge/晋级依据。训练 seed 方差是双峰的。**
    - 实测（baseline_v42cfg）：健康 run 紧密聚在 **avg_final 0.848 ± 0.016**（3 seed），但**同配置仍可能抽到早期没起来的坏 seed（实测一个 0.535）**。所以单 seed 的"提升/退化"极可能只是 seed 运气。
@@ -21,6 +21,10 @@
 3. **任何"这个改动有没有用"的判断，必须走多 seed：** 用 `experiments/v45/multiseed_eval.py`，同配置跑 ≥3 个训练 seed，比较 held-out `avg_final` 的 **均值±std**。只有当新配置的均值超过 baseline 均值 + 噪声带，才算真提升、才可 merge。
 
 4. **penalty gate 用 held-out `avg_final` 判晋级**（`--penalty_gate_success_avg_final` / `--penalty_gate_failure_avg_final`，v45 引入），不要再用够不到的 `failure_p10`（旧默认 95，策略 p10 常态 58–93，导致 gate 永久空转）。
+
+5. **固定训练 seed 也不能复现 run，"seed"不是轨迹的锚。** v46 实测：同 seed 450060 的两次训练，iter5 checkpoint 在同一测试集上一个 avg_final 0.815、一个 0.605（CPU torch 浮点非确定性随迭代放大）。推论：(a) "换个 seed 复跑"和"同 seed 复跑"在统计上是一回事，都是从同一 run 分布里重新抽样；(b) 不存在"坏 seed"，只有"坏 run"；(c) 任何配置对比只能比 run 分布（多 run 均值±std），不能指望复现单条轨迹。
+
+6. **run 的交付物是 best checkpoint，不是 model_final。** 训练默认每 5 iter 存 checkpoint；run 结束后用 `experiments/v46/checkpoint_sweep.py` 在固定 selection set（20 eps）上扫全部 checkpoint 选 best，再在**不相交的 report set**（40 eps）上出报告数字——selection/report 分离是为了防止"同一测试集既选又报"的选择过拟合。v46 实测（report set）：3 个健康 run 的 final 均值 0.847 → best 均值 0.869；坏 run 0.485 → 0.586。best-checkpoint 在四个 run 上全部不低于 final，是零训练成本的免费增益。
 
 ## 工作流（循环迭代）
 0. **启动新一轮**
