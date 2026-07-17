@@ -1,0 +1,28 @@
+{
+  "label": "baseline_v42cfg",
+  "seeds": 3,
+  "last_n": 3,
+  "elapsed_sec": 6187.9,
+  "per_seed": [
+    {
+      "run_name": "ms_baseline_v42cfg_seed700000",
+      "seed": 700000,
+      "final_avg_final": 0.8668402777777778
+    },
+    {
+      "run_name": "ms_baseline_v42cfg_seed701000",
+      "seed": 701000,
+      "final_avg_final": 0.8473958333333335
+    },
+    {
+      "run_name": "ms_baseline_v42cfg_seed702000",
+      "seed": 702000,
+      "final_avg_final": 0.8286458333333334
+    }
+  ],
+  "mean": 0.8476,
+  "std": 0.0156,
+  "min": 0.8286,
+  "max": 0.8668,
+  "n_ok": 3
+}

@@ -5,6 +5,23 @@
 - 每次迭代都可复现：包含代码版本、训练参数、日志、曲线和检查点。
 - 任意时刻可以回溯至某个 `dev_vX.md` 了解背景、假设和下一步计划。
 
+## 评估方法论（2026-07 起，凌驾于旧工作流之上）
+
+**这一节是 v44/v45 用实验换来的教训，优先级高于下面任何"看曲线"的旧描述。违反它做出的任何结论都不可信。**
+
+1. **承重结论只看 held-out multi-eval 的 `avg_final_survival_rate`，绝不看 on-policy 训练 `sr`。**
+   - 训练日志的 `sr` 是在训练分布上测的；策略过拟合就会让它看着很稳/很高。实测：某配置 on-policy 稳定 ~73%，held-out avg_final 却只有 0.08–0.29。
+   - multi-eval 的 predator 配置由 `multi_eval_seed_base` 固定、跨 run 共享（同 base → 逐位相同的 `episode_seeds`），所以 eval 本身是公平、确定的对照，可以直接跨 run 比 `avg_final`。
+
+2. **绝不用单个训练 run 的单点数字作为 merge/晋级依据。训练 seed 方差是双峰的。**
+   - 实测（baseline_v42cfg）：健康 run 紧密聚在 **avg_final 0.848 ± 0.016**（3 seed），但**同配置仍可能抽到早期没起来的坏 seed（实测一个 0.535）**。所以单 seed 的"提升/退化"极可能只是 seed 运气。
+   - v40→v43 那一长串单 seed 迭代，有一大块是在优化这个噪声（表现为反复调 gate/tail 参数却原地打转）。
+   - baseline 噪声带记录在 `experiments/v45/artifacts/multiseed_baseline_v42cfg.json`；新方向要超过 **0.848 + 噪声** 才算真提升。
+
+3. **任何"这个改动有没有用"的判断，必须走多 seed：** 用 `experiments/v45/multiseed_eval.py`，同配置跑 ≥3 个训练 seed，比较 held-out `avg_final` 的 **均值±std**。只有当新配置的均值超过 baseline 均值 + 噪声带，才算真提升、才可 merge。
+
+4. **penalty gate 用 held-out `avg_final` 判晋级**（`--penalty_gate_success_avg_final` / `--penalty_gate_failure_avg_final`，v45 引入），不要再用够不到的 `failure_p10`（旧默认 95，策略 p10 常态 58–93，导致 gate 永久空转）。
+
 ## 工作流（循环迭代）
 0. **启动新一轮**
    - 阅读历史 `dev_v*.md`（尤其上一轮的 “Learning / 下一步计划”）。
@@ -65,4 +82,5 @@ fish_rl/
 - `experiments/vX/artifacts/` 下的历史模型视为不可变，只追加新目录。
 - 本机资源：32 物理核 / 512 GB RAM，可稳定支撑 64~128 个并行环境；在 v2+ 迭代中默认把 `--num_envs` 设为 ≥64（建议 128）。
 - 训练迭代数：推荐至少训练 60 个 iteration 以确保策略充分收敛；小规模快速验证时可适当降低，但完整实验应达到此标准。
+- CLI 超时设置：CLI 默认超时为 120 秒，对于长时间运行的训练任务可能不够；建议将超时设置为 10 分钟（600 秒）或更长，可通过环境变量或 CLI 配置进行设置。
 - 每轮结束必须 `git status` 检查、`git add` 相关文件、`git commit -m "..."` 并 `git push origin master`，形成远端可见的追溯链。
