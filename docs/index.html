@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fish RL — AI 自主运营的强化学习实验室</title>
+<style>
+  :root {
+    --ink: #1e2530;
+    --muted: #5b6472;
+    --accent: #0f6f8f;
+    --card: #f4f6f8;
+    --line: #dde3e9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.75;
+    background: #fff;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  h1 { font-size: 1.9rem; line-height: 1.3; margin: 0 0 0.4rem; }
+  h2 { font-size: 1.3rem; margin: 2.8rem 0 0.8rem; border-bottom: 1px solid var(--line); padding-bottom: 0.35rem; }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 0.5rem; }
+  p { margin: 0.7rem 0; }
+  .sub { color: var(--muted); margin-bottom: 1.8rem; }
+  .cards { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1.4rem 0; }
+  .card {
+    flex: 1 1 180px; background: var(--card); border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+  }
+  .card .num { font-size: 1.55rem; font-weight: 700; color: var(--accent); }
+  .card .lab { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+  video { width: 100%; border-radius: 10px; background: #000; }
+  figure { margin: 1.4rem 0; }
+  figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.4rem; }
+  img { max-width: 100%; border-radius: 8px; border: 1px solid var(--line); }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--line); padding: 0.45rem 0.65rem; text-align: left; }
+  th { background: var(--card); }
+  code { background: var(--card); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.88em; }
+  a { color: var(--accent); }
+  .neg { color: #a4463c; font-weight: 600; }
+  .pos { color: #1d7a4f; font-weight: 600; }
+  footer { margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--line);
+    font-size: 0.85rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Fish RL</h1>
+<p class="sub">一个 AI 自主运营的强化学习实验室:训练一群小鱼在高速捕食者面前保持高终局存活率。人类担任项目经理,AI 代理按 SOP 自主设计实验、跑训练、写日志、提交代码。仓库:<a href="https://github.com/grapeot/fish_rl_ai_iteration">grapeot/fish_rl_ai_iteration</a></p>
+
+<figure>
+  <video src="assets/demo_tail_episode.mp4" autoplay loop muted playsinline></video>
+  <figcaption>一个困难(tail)episode:48 条小鱼(蓝)在带重力、会弹墙加速的捕食者(红)面前的群体规避。策略为 PPO + 课程学习 + 邻居感知(obs 18 维,384×384 MLP,5 个转向动作)。</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card"><div class="num">0.899</div><div class="lab">当前最优单策略的 held-out 终局存活率(96 鱼,独立 40-episode report set)</div></div>
+  <div class="card"><div class="num">0.848 ± 0.016</div><div class="lab">健康 run 的 baseline 分布(3 run,held-out avg_final)</div></div>
+  <div class="card"><div class="num">+0.022</div><div class="lab">best-checkpoint 交付相对 model_final 的免费增益(3 run 均值,零训练成本)</div></div>
+</div>
+
+<h2>2026-07 冲刺:三个方向的结论</h2>
+
+<p>这轮冲刺(v44–v47)从"指标为什么卡住"出发,系统性 debug 后定了三个方向,逐一实验、逐一 PR。三个方向两成一负,但方法论收获比单点指标更大。</p>
+
+<h3>方向一:修好晋级 gate(v44–v45,成功)</h3>
+<p>v41–v43 连续三轮所有实验都卡在 stage 0,排查发现 gate 的 <code>failure_p10=95</code> 是一个策略永远达不到的门槛(实际 p10 常态 58–93),failure 判定又短路了 success——过去几轮调的所有晋级判据都是死代码。修复方式是让 gate 直接用 held-out <code>avg_final</code> 判晋级。修复后三个新 run 全部正常晋级 stage 0→1→2,并建立了多 seed baseline <strong>0.848±0.016</strong>。</p>
+
+<h3>方向二:best-checkpoint 交付 + 一个更深的发现(v46,成功)</h3>
+<p>原计划是"救坏 seed"(同配置偶尔抽出 0.5 档的差 run)。debug 过程中发现了更根本的事实:<strong>固定训练 seed 也无法复现训练</strong>——同 seed 450060 跑两次,iter5 的 checkpoint 在同一测试集上一个 0.815、一个 0.605(CPU 浮点非确定性逐迭代放大)。所以不存在"坏 seed",只有"坏 run";一切配置对比只能比 run 分布,不能信任何单条轨迹。</p>
+<p>可操作的产出是 <code>checkpoint_sweep.py</code>:训练默认每 5 iter 存 checkpoint,run 结束后在固定 selection set 上扫全部 checkpoint 选最优,再在不相交的 report set 上出报告数字(防选择过拟合)。回溯验证 4 个已有 run:健康 3-run 均值 <span class="pos">0.847 → 0.869</span>,最差 run 0.485 → 0.586,无一变差。</p>
+
+<figure>
+  <img src="assets/timeline_repro.png" alt="held-out avg_final 随训练迭代的时间线">
+  <figcaption>一条健康 run 的 held-out avg_final 时间线。跨 run 对比发现 best checkpoint 常出现在 iter5–10(早期泛化峰值),中期训练反而侵蚀 held-out 表现——这是 best-checkpoint 交付有免费增益的原因。</figcaption>
+</figure>
+
+<h3>方向三:高密度课程(v47,负结果)</h3>
+<p>训练课程最多只到 25 鱼,评估却在 96 鱼——这个密度 gap 是泛化失败所在的轴。把课程尾段换成 48/96 鱼后(3 run):final 均值 0.809 vs baseline 0.847(<span class="neg">-0.038</span>),best-checkpoint 均值 0.855 vs 0.869(-0.014,噪声内)。<strong>未达 merge 判据,不采纳。</strong>留下一个弱正信号:高密度 phase 区间内(iter 40→60)hidensity 的 within-run 改善(+0.032)高于 baseline(+0.009),若重试应更早、更长地引入高密度——但按 SOP,负结果如实入库。</p>
+
+<h2>方法论教训(比单点指标更值钱的部分)</h2>
+
+<p><strong>承重结论只看 held-out,绝不看训练分布上的指标。</strong>on-policy 存活率能在 held-out 只有 0.08 的时候依旧显示 73%——过拟合会让训练侧指标完全失真。</p>
+
+<p><strong>seed 不是轨迹的锚,"复现单条 run"不存在。</strong>同 seed 两次训练在 iter5 已相差 0.21。推论:配置对比必须是多 run 分布之间的对比(均值±std + 噪声带),单 run 单点的"提升"极可能是抽签运气。v40–v43 的一大段单 seed 迭代实际是在优化噪声。</p>
+
+<p><strong>交付物是 best checkpoint,不是最后一个 checkpoint。</strong>最优策略往往出现在训练中途(常见于 iter5–10 的早期泛化峰值),之后被继续训练侵蚀。用不相交的 selection/report 双测试集做"选择"和"报告"的分离,防止选择过拟合。</p>
+
+<p><strong>判据系统本身会变成负债。</strong>这个项目卡住的直接原因不是策略弱,而是 gate 判据用了永远达不到的阈值且无人验证——复杂的晋级机制迭代了多轮,全部是死代码。任何 gate/判据都要有"它真的触发过吗"的可观测性检查。</p>
+
+<p><strong>多口径交叉验证,别用单一聚合数字下重结论。</strong>v47 若只看单一口径会得出"高密度有害"的强结论,但 best-checkpoint 口径在噪声内、within-run 口径为正——真相更接近"中性、检验力不足"。</p>
+
+<h2>迭代档案</h2>
+
+<table>
+  <tr><th>版本</th><th>主题</th><th>结果</th></tr>
+  <tr><td><a href="https://github.com/grapeot/fish_rl_ai_iteration/blob/master/experiments/v44/dev_v44.md">v44</a></td><td>系统性 debug:gate 空转定位 + tail injection 因子分解</td><td>找到 <code>failure_p10=95</code> 死锁;确认 tail injection 是泛化支柱</td></tr>
+  <tr><td><a href="https://github.com/grapeot/fish_rl_ai_iteration/blob/master/experiments/v45/dev_v45.md">v45</a></td><td>avg_final gate + 多 seed 方法论</td><td>gate 正常晋级;baseline 0.848±0.016</td></tr>
+  <tr><td><a href="https://github.com/grapeot/fish_rl_ai_iteration/blob/master/experiments/v46/dev_v46.md">v46</a></td><td>best-checkpoint 交付 + 同 seed 非确定性</td><td>健康均值 0.847→0.869;"坏 seed"概念被证伪</td></tr>
+  <tr><td><a href="https://github.com/grapeot/fish_rl_ai_iteration/blob/master/experiments/v47/dev_v47.md">v47</a></td><td>高密度课程(48/96 鱼尾段)</td><td>负结果,不采纳;留 within-run 正信号待查</td></tr>
+</table>
+
+<p>更早的 v1–v43 迭代记录见各 <code>experiments/vX/dev_vX.md</code>。</p>
+
+<footer>
+  由 AI 代理(Claude)在自主迭代 session 中生成与维护 · 2026-07 · <a href="https://github.com/grapeot/fish_rl_ai_iteration">源码与全部实验数据</a>
+</footer>
+
+</main>
+</body>
+</html>
