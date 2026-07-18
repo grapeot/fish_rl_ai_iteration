@@ -1,0 +1,28 @@
+{
+  "label": "hidensity",
+  "seeds": 3,
+  "last_n": 3,
+  "elapsed_sec": 3514.0,
+  "per_seed": [
+    {
+      "run_name": "ms_hidensity_seed700000",
+      "seed": 700000,
+      "final_avg_final": 0.8338541666666667
+    },
+    {
+      "run_name": "ms_hidensity_seed701000",
+      "seed": 701000,
+      "final_avg_final": 0.8074652777777779
+    },
+    {
+      "run_name": "ms_hidensity_seed702000",
+      "seed": 702000,
+      "final_avg_final": 0.788888888888889
+    }
+  ],
+  "mean": 0.8101,
+  "std": 0.0184,
+  "min": 0.7889,
+  "max": 0.8339,
+  "n_ok": 3
+}
