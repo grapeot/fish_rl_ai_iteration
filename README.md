@@ -2,6 +2,8 @@
 
 > Reinforcement-learning fish survival, managed as an AI-operated laboratory.
 
+📊 **结果总览与方法论教训:[grapeot.github.io/fish_rl_ai_iteration](https://grapeot.github.io/fish_rl_ai_iteration/)**(v44–v47 冲刺结论、当前最优 0.899、SOP 方法论)
+
 ## 为什么存在
 - **项目目标**：训练一套策略，让大量小鱼在高速捕食者面前依旧保持高存活率。
 - **工作方式**：人类扮演项目经理，搭建 SOP、工具与基线；自动化代理（Codex CLI 等）按照 SOP 自主循环，记录 `dev_vX.md`、运行实验、写日志、提交至 GitHub。
@@ -61,16 +63,16 @@ tensorboard --logdir experiments/v2/artifacts/tb_logs --port 6006
 - 执行 `scripts/run_codex_iterations.sh 2 3 --model gpt-5-codex` 可让 Codex CLI 读取 SOP/上一轮文档，生成新的 `experiments/v3/`、跑实验、写日志并提醒提交。
 - 该脚本会在提示中强制遵守 `venv` 约定、要求 ≥64 并行环境、并在结束阶段执行 `git status`/commit/push`。运行日志保存在 `codex_runs/`（可用 `CODEX_RUN_LOG_DIR` 覆盖）。
 
-## 感知拓展（Stretch Goal）
-- 目前 `FishEscapeEnv` 的观测集中在捕食者信息；若实验需要，可以在 `_get_observations` 中额外注入附近小鱼的相对位置/速度/存活状态，以探索协同行为。
-- 启用该拓展前请在对应 `dev_vX.md` 记录目的、配置（比如最近 N 条邻居）、对训练脚本的影响，并将更改纳入版本控制。
-- 这类“群体感知”实验属于长期目标，可与动作模型改造或课程训练结合。
+## 感知拓展（已完成,非 Stretch Goal）
+- 群体感知早已启用并成为默认配置:`include_neighbor_features=True`(obs 18 维 = 11 基础 + 7 邻居特征,`neighbor_radius=3.0`,平均最近 6 邻居),网络为 384×384 MLP。
+- (v46 勘误:本节旧文案称其为"长期目标",导致后续 session 误以为未实装。以 `fish_env.py` 与 train.py argparse 默认值为准。)
 
 ## 贡献指南
 - 所有代码/文档改动必须附带 `experiments/vX/dev_vX.md` 的相应记录。
 - artifacts 目录中的二进制文件不入库（由 `.gitignore` 排除），但其生成脚本和路径必须写进文档。
 - 若引入新依赖，请更新 `requirements.txt` 并在 README 中说明用途。
 
-## 下一步
-- v2 已经添加 reward scaling 与改进的 logging，存活率仍在 ~70% 徘徊。
-- v3 计划：引入单鱼 VecEnv、扩大并行度、实现 deterministic evaluator，并继续按照 SOP 推进。
+## 当前状态(2026-07,v47)
+- 最优单策略 held-out 终局存活率 **0.899**(96 鱼,独立 report set);健康 run baseline **0.848±0.016**。
+- 评估方法论(held-out only、多 run 分布对比、best-checkpoint 交付)见 `SOP.md` 方法论节,结论综述见上方 Pages 链接。
+- 开放问题:中期训练(iter10–25)侵蚀 held-out 泛化的机制;高密度课程的 within-run 正信号(v47)。
