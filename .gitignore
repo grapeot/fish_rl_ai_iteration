@@ -186,3 +186,10 @@ experiments/v45/artifacts/media/
 !experiments/v46/artifacts/checkpoints/**/*.jsonl
 experiments/v46/artifacts/tb_logs/
 experiments/v46/artifacts/media/
+# Track v47 lightweight artifacts (multiseed + sweep summaries + eval JSONL); heavy binaries stay ignored
+!experiments/v47/artifacts/
+!experiments/v47/artifacts/*.json
+!experiments/v47/artifacts/checkpoints/
+!experiments/v47/artifacts/checkpoints/**/*.jsonl
+experiments/v47/artifacts/tb_logs/
+experiments/v47/artifacts/media/

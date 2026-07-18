@@ -1,0 +1,369 @@
+{
+  "config": {
+    "num_fish": 96,
+    "escape_boost_speed": 0.8,
+    "selection_rng_seed": 555001,
+    "report_rng_seed": 555002,
+    "selection_episodes": 20,
+    "report_episodes": 40
+  },
+  "selection": [
+    {
+      "tag": "ms_hidensity_seed700000|sel|5",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.8916666666666666,
+      "min_final": 0.6979166666666666,
+      "max_final": 0.9791666666666666
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|10",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.9,
+      "min_final": 0.6875,
+      "max_final": 0.9895833333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|15",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.8515625,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|20",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.8567708333333334,
+      "min_final": 0.5,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|25",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.8427083333333334,
+      "min_final": 0.4583333333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|30",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.840625,
+      "min_final": 0.46875,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|35",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.8385416666666666,
+      "min_final": 0.4479166666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|40",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.8375,
+      "min_final": 0.4479166666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|45",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.8375,
+      "min_final": 0.4479166666666667,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|50",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.8416666666666666,
+      "min_final": 0.5,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|55",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.840625,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|60",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.8401041666666667,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed700000|sel|final",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed700000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.8401041666666667,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.9583333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|5",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.6015625,
+      "min_final": 0.3958333333333333,
+      "max_final": 0.8229166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|10",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.4463541666666667,
+      "min_final": 0.28125,
+      "max_final": 0.6979166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|15",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.6984375,
+      "min_final": 0.5104166666666666,
+      "max_final": 0.875
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|20",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.7098958333333333,
+      "min_final": 0.5625,
+      "max_final": 0.9270833333333334
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|25",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.7640625,
+      "min_final": 0.6354166666666666,
+      "max_final": 0.8854166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|30",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.7640625,
+      "min_final": 0.6458333333333334,
+      "max_final": 0.875
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|35",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.7734375,
+      "min_final": 0.6458333333333334,
+      "max_final": 0.90625
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|40",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.775,
+      "min_final": 0.6770833333333334,
+      "max_final": 0.875
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|45",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.7739583333333333,
+      "min_final": 0.6770833333333334,
+      "max_final": 0.8854166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|50",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.8026041666666666,
+      "min_final": 0.6875,
+      "max_final": 0.9166666666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|55",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.8166666666666667,
+      "min_final": 0.6875,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|60",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.8213541666666666,
+      "min_final": 0.6979166666666666,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_hidensity_seed701000|sel|final",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed701000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.8213541666666666,
+      "min_final": 0.6979166666666666,
+      "max_final": 0.9375
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|5",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_5.zip",
+      "episodes": 20,
+      "avg_final": 0.8619791666666666,
+      "min_final": 0.7604166666666666,
+      "max_final": 0.9479166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|10",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_10.zip",
+      "episodes": 20,
+      "avg_final": 0.8072916666666666,
+      "min_final": 0.71875,
+      "max_final": 0.90625
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|15",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_15.zip",
+      "episodes": 20,
+      "avg_final": 0.7114583333333333,
+      "min_final": 0.3645833333333333,
+      "max_final": 0.8854166666666666
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|20",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_20.zip",
+      "episodes": 20,
+      "avg_final": 0.7411458333333333,
+      "min_final": 0.4479166666666667,
+      "max_final": 0.8645833333333334
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|25",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_25.zip",
+      "episodes": 20,
+      "avg_final": 0.74375,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.8958333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|30",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_30.zip",
+      "episodes": 20,
+      "avg_final": 0.746875,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.9166666666666666
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|35",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_35.zip",
+      "episodes": 20,
+      "avg_final": 0.7171875,
+      "min_final": 0.4895833333333333,
+      "max_final": 0.8958333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|40",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_40.zip",
+      "episodes": 20,
+      "avg_final": 0.70625,
+      "min_final": 0.3125,
+      "max_final": 0.8541666666666666
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|45",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_45.zip",
+      "episodes": 20,
+      "avg_final": 0.7119791666666667,
+      "min_final": 0.3333333333333333,
+      "max_final": 0.8958333333333334
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|50",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_50.zip",
+      "episodes": 20,
+      "avg_final": 0.7348958333333333,
+      "min_final": 0.4791666666666667,
+      "max_final": 0.875
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|55",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_55.zip",
+      "episodes": 20,
+      "avg_final": 0.7421875,
+      "min_final": 0.53125,
+      "max_final": 0.875
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|60",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_iter_60.zip",
+      "episodes": 20,
+      "avg_final": 0.753125,
+      "min_final": 0.5520833333333334,
+      "max_final": 0.90625
+    },
+    {
+      "tag": "ms_hidensity_seed702000|sel|final",
+      "model": "experiments/v47/artifacts/checkpoints/ms_hidensity_seed702000/model_final.zip",
+      "episodes": 20,
+      "avg_final": 0.753125,
+      "min_final": 0.5520833333333334,
+      "max_final": 0.90625
+    }
+  ],
+  "chosen": {
+    "ms_hidensity_seed700000": {
+      "best_iter": "10",
+      "best_sel_avg": 0.9,
+      "rep_best": {
+        "iter": "10",
+        "avg_final": 0.8911458333333334,
+        "min_final": 0.7395833333333334
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.8341145833333334,
+        "min_final": 0.6145833333333334
+      }
+    },
+    "ms_hidensity_seed701000": {
+      "best_iter": "final",
+      "best_sel_avg": 0.8213541666666666,
+      "best_is_final": true,
+      "rep_best": {
+        "iter": "final",
+        "avg_final": 0.81875,
+        "min_final": 0.5208333333333334
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.81875,
+        "min_final": 0.5208333333333334
+      }
+    },
+    "ms_hidensity_seed702000": {
+      "best_iter": "5",
+      "best_sel_avg": 0.8619791666666666,
+      "rep_best": {
+        "iter": "5",
+        "avg_final": 0.8541666666666666,
+        "min_final": 0.625
+      },
+      "rep_final": {
+        "iter": "final",
+        "avg_final": 0.7736979166666667,
+        "min_final": 0.5
+      }
+    }
+  }
+}
