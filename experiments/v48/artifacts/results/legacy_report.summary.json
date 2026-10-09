@@ -1,0 +1,75 @@
+{
+  "seed_set": "legacy_report",
+  "n_seeds": 40,
+  "workers": 8,
+  "wall_sec": 69.7972559928894,
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  },
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": true,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "arms": {
+    "policy_per_fish": {
+      "n": 40,
+      "mean_final_survival": 0.8989583333333334,
+      "std": 0.04982831993190686,
+      "median": 0.90625,
+      "min": 0.7083333333333334,
+      "max": 0.9791666666666666,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 69,
+      "mean_elapsed_per_episode_sec": 13.164195287227631
+    }
+  },
+  "paired_vs_reference": {},
+  "reference": "policy_per_fish"
+}

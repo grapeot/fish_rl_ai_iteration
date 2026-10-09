@@ -1,0 +1,32 @@
+{
+  "control": "policy_per_fish",
+  "model": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_20.zip",
+  "n_episodes": 40,
+  "predator": {
+    "radius_mean": 7.702800162493065,
+    "radius_p95": 9.918888044357299,
+    "speed_mean": 1.4139751804266474,
+    "speed_max": 4.111831188201904,
+    "heading_change_deg_mean": 4.406856835523279,
+    "heading_change_deg_p95": 7.3741127014160055,
+    "heading_change_deg_max": 179.6521759033203
+  },
+  "visibility": {
+    "frac_fish_steps_predator_visible": 0.02002703273013465,
+    "mean_per_episode_frac_fish_seeing": 0.0202071563250313
+  },
+  "deaths": {
+    "total": 380,
+    "visible_prev_step": 380,
+    "invisible_prev_step": 0,
+    "frac_visible": 1.0,
+    "step1_deaths": 71,
+    "nontrivial_deaths": 309,
+    "warning_window_steps_mean": 12.828478964401295,
+    "warning_window_steps_median": 11.0,
+    "warning_window_steps_p90": 23.0,
+    "non_step1_deaths_near_boundary_frac": 0.14563106796116504
+  },
+  "first_death_step_mean": 3.525,
+  "first_death_step_is_1_frac": 0.8
+}

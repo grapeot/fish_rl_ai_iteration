@@ -1,0 +1,181 @@
+{
+  "seed_set": "dev",
+  "n_seeds": 12,
+  "workers": 8,
+  "wall_sec": 123.01089906692505,
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  },
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": true,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "arms": {
+    "policy_per_fish": {
+      "n": 12,
+      "mean_final_survival": 0.9184027777777778,
+      "std": 0.04393299870735977,
+      "median": 0.9270833333333334,
+      "min": 0.8125,
+      "max": 0.96875,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 15,
+      "mean_elapsed_per_episode_sec": 13.703840573628744
+    },
+    "rule_flee_lead": {
+      "n": 12,
+      "mean_final_survival": 0.984375,
+      "std": 0.01691341960179144,
+      "median": 0.9895833333333334,
+      "min": 0.9375,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 12,
+      "mean_elapsed_per_episode_sec": 13.415552934010824
+    },
+    "rule_flee_lead_t0.5": {
+      "n": 12,
+      "mean_final_survival": 0.984375,
+      "std": 0.020110568732571308,
+      "median": 0.9947916666666667,
+      "min": 0.9375,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 12,
+      "mean_elapsed_per_episode_sec": 13.094983577728271
+    },
+    "rule_flee_lead_t1.0": {
+      "n": 12,
+      "mean_final_survival": 0.9809027777777778,
+      "std": 0.021224236709613934,
+      "median": 0.984375,
+      "min": 0.9270833333333334,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 12,
+      "mean_elapsed_per_episode_sec": 13.086259047190348
+    },
+    "rule_flee_lead_t2.0": {
+      "n": 12,
+      "mean_final_survival": 0.9505208333333335,
+      "std": 0.04049610476654053,
+      "median": 0.9635416666666667,
+      "min": 0.8854166666666666,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 12,
+      "mean_elapsed_per_episode_sec": 12.630503594875336
+    },
+    "rule_flee_lead_t3.0": {
+      "n": 12,
+      "mean_final_survival": 0.9105902777777778,
+      "std": 0.03959288494539976,
+      "median": 0.90625,
+      "min": 0.84375,
+      "max": 0.9791666666666666,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 12,
+      "mean_elapsed_per_episode_sec": 12.154336035251617
+    }
+  },
+  "paired_vs_reference": {
+    "rule_flee_lead": {
+      "n_pairs": 12,
+      "mean_diff": 0.06597222222222222,
+      "std_diff": 0.03421344420413947,
+      "ci95_low": 0.04861111111111111,
+      "ci95_high": 0.0859375,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rule_flee_lead_t0.5": {
+      "n_pairs": 12,
+      "mean_diff": 0.06597222222222222,
+      "std_diff": 0.03562586758350514,
+      "ci95_low": 0.04774305555555556,
+      "ci95_high": 0.08593750000000001,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rule_flee_lead_t1.0": {
+      "n_pairs": 12,
+      "mean_diff": 0.06250000000000001,
+      "std_diff": 0.03382683920358288,
+      "ci95_low": 0.04600694444444444,
+      "ci95_high": 0.08161892361111082,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rule_flee_lead_t2.0": {
+      "n_pairs": 12,
+      "mean_diff": 0.03211805555555556,
+      "std_diff": 0.03909142447638092,
+      "ci95_low": 0.009548611111111114,
+      "ci95_high": 0.0512152777777778,
+      "win_rate": 0.8333333333333334,
+      "tie_rate": 0.0,
+      "loss_rate": 0.16666666666666666
+    },
+    "rule_flee_lead_t3.0": {
+      "n_pairs": 12,
+      "mean_diff": -0.0078124999999999905,
+      "std_diff": 0.04263204568683567,
+      "ci95_low": -0.03124999999999999,
+      "ci95_high": 0.014756944444444456,
+      "win_rate": 0.3333333333333333,
+      "tie_rate": 0.25,
+      "loss_rate": 0.4166666666666667
+    }
+  },
+  "reference": "policy_per_fish"
+}
