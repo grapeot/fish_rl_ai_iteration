@@ -1,0 +1,413 @@
+{
+  "kind": "v50_selection_manifest",
+  "version": 2,
+  "hash_scheme": "policy_tensor_sha256",
+  "created_utc": "2026-10-09T10:02:16.862837+00:00",
+  "bindings_enriched_utc": "2026-10-09T10:51:29.290462+00:00",
+  "bindings_note": "created_utc is the original selection freeze time. report_seeds, env config (incl. heading/speed bias) and the final-checkpoint identity fields are a v2 metadata enrichment added after the first report; they did not all exist at created_utc.",
+  "selection_seed_bank": {
+    "rng_seed": 500201,
+    "n": 24
+  },
+  "selection_seeds": [
+    1757158816,
+    839404838,
+    638978447,
+    1896023242,
+    46728581,
+    58307003,
+    1092202391,
+    2048882371,
+    1186277875,
+    1298414880,
+    418139406,
+    175469148,
+    1877818247,
+    221813241,
+    390217388,
+    1314657214,
+    924838945,
+    1270171424,
+    12108937,
+    393937466,
+    1134856013,
+    1182057418,
+    1066419720,
+    849609019
+  ],
+  "report_seed_bank": {
+    "rng_seed": 500202,
+    "n": 40
+  },
+  "report_seeds": [
+    526645654,
+    384998461,
+    710513949,
+    570533988,
+    1783823019,
+    1962944024,
+    1139230530,
+    134161899,
+    468162520,
+    1826697770,
+    500511800,
+    1557411566,
+    962780000,
+    815271111,
+    1847806599,
+    1932332469,
+    1980380851,
+    1938968447,
+    1701939973,
+    1419373682,
+    1900226533,
+    1199418552,
+    1260692667,
+    423074895,
+    1351816759,
+    83303297,
+    586267988,
+    137912598,
+    1875359765,
+    147022622,
+    1111572575,
+    2130293303,
+    1884449525,
+    910401918,
+    1111106753,
+    1899312354,
+    634340813,
+    1668252851,
+    639869726,
+    1687081343
+  ],
+  "env": {
+    "neighbor": false,
+    "env_config": {
+      "num_fish": 96,
+      "include_neighbor_features": false,
+      "neighbor_radius": 3.0,
+      "neighbor_average_count": 6,
+      "initial_escape_boost": true,
+      "escape_boost_speed": 0.8,
+      "escape_jitter_std": 0.35,
+      "divergence_reward_coef": 0.0,
+      "density_penalty_coef": 0.05,
+      "density_target": 0.4,
+      "predator_spawn_jitter_radius": 1.6,
+      "predator_pre_roll_steps": 16,
+      "predator_pre_roll_angle_jitter": 0.3,
+      "predator_pre_roll_speed_jitter": 0.2,
+      "predator_heading_bias": [
+        {
+          "start_deg": 0.0,
+          "end_deg": 60.0,
+          "weight": 1.1
+        },
+        {
+          "start_deg": 60.0,
+          "end_deg": 90.0,
+          "weight": 0.8
+        },
+        {
+          "start_deg": 90.0,
+          "end_deg": 120.0,
+          "weight": 0.08
+        },
+        {
+          "start_deg": 120.0,
+          "end_deg": 150.0,
+          "weight": 0.05
+        },
+        {
+          "start_deg": 150.0,
+          "end_deg": 210.0,
+          "weight": 0.9
+        },
+        {
+          "start_deg": 210.0,
+          "end_deg": 270.0,
+          "weight": 1.3
+        },
+        {
+          "start_deg": 270.0,
+          "end_deg": 330.0,
+          "weight": 1.2
+        },
+        {
+          "start_deg": 330.0,
+          "end_deg": 360.0,
+          "weight": 0.95
+        }
+      ],
+      "predator_pre_roll_speed_bias": [
+        {
+          "min_speed": 0.0,
+          "max_speed": 1.0,
+          "weight": 1.6
+        },
+        {
+          "min_speed": 1.0,
+          "max_speed": 1.6,
+          "weight": 1.3
+        },
+        {
+          "min_speed": 1.6,
+          "max_speed": 2.0,
+          "weight": 0.7
+        },
+        {
+          "min_speed": 2.0,
+          "max_speed": 2.4,
+          "weight": 0.35
+        },
+        {
+          "min_speed": 2.4,
+          "max_speed": 3.0,
+          "weight": 0.2
+        }
+      ]
+    }
+  },
+  "rule": "For each (replicate, arm) pick the stage with the highest mean final survival over the frozen selection bank; ties broken toward the earliest update. Computed and frozen before any report evaluation.",
+  "statistic": "mean final_survival over selection episodes",
+  "selected": {
+    "rep0_original": {
+      "selected_arm": "rep0_original_u50",
+      "selected_update": 50,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_original/checkpoints/model_updates_50.zip",
+      "selection_mean_final_survival": 0.865451388888889,
+      "selection_n": 24,
+      "policy_state_hash": "882d003faaaba4040b1ec9532607c33acc5c3ea41e4c0a3e3e7ebdee05e2fb29",
+      "policy_tensor_sha256": "882d003faaaba4040b1ec9532607c33acc5c3ea41e4c0a3e3e7ebdee05e2fb29",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_original/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "f33256ecc4be758aa54f65575094bb0e4e1e370c946e1305274612e85bb48c2c",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep0_original_u50",
+          "update": 50,
+          "mean_final_survival": 0.865451388888889,
+          "std": 0.03908639567022691
+        },
+        {
+          "arm": "rep0_original_u100",
+          "update": 100,
+          "mean_final_survival": 0.829861111111111,
+          "std": 0.05431510689816508
+        },
+        {
+          "arm": "rep0_original_u150",
+          "update": 150,
+          "mean_final_survival": 0.810763888888889,
+          "std": 0.06678167917256865
+        },
+        {
+          "arm": "rep0_original_u200",
+          "update": 200,
+          "mean_final_survival": 0.3958333333333333,
+          "std": 0.08617220639271905
+        }
+      ]
+    },
+    "rep0_survival_only": {
+      "selected_arm": "rep0_survival_only_u200",
+      "selected_update": 200,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "selection_mean_final_survival": 0.9401041666666666,
+      "selection_n": 24,
+      "policy_state_hash": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "selected_is_final": true,
+      "candidates": [
+        {
+          "arm": "rep0_survival_only_u50",
+          "update": 50,
+          "mean_final_survival": 0.935763888888889,
+          "std": 0.033178232149510746
+        },
+        {
+          "arm": "rep0_survival_only_u100",
+          "update": 100,
+          "mean_final_survival": 0.9340277777777777,
+          "std": 0.030971992048710366
+        },
+        {
+          "arm": "rep0_survival_only_u150",
+          "update": 150,
+          "mean_final_survival": 0.9388020833333334,
+          "std": 0.033552340434180025
+        },
+        {
+          "arm": "rep0_survival_only_u200",
+          "update": 200,
+          "mean_final_survival": 0.9401041666666666,
+          "std": 0.03740048187772439
+        }
+      ]
+    },
+    "rep1_original": {
+      "selected_arm": "rep1_original_u100",
+      "selected_update": 100,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_original/checkpoints/model_updates_100.zip",
+      "selection_mean_final_survival": 0.8854166666666666,
+      "selection_n": 24,
+      "policy_state_hash": "9423e112744becae06273a0a5f8d25187816114a9b490fe8bec77ad60e2cc48f",
+      "policy_tensor_sha256": "9423e112744becae06273a0a5f8d25187816114a9b490fe8bec77ad60e2cc48f",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_original/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "472871b8de7cd272f86058e4000a1737dff90a7fb53a836fac3a818855a1b2ca",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep1_original_u50",
+          "update": 50,
+          "mean_final_survival": 0.8298611111111112,
+          "std": 0.04468956034179205
+        },
+        {
+          "arm": "rep1_original_u100",
+          "update": 100,
+          "mean_final_survival": 0.8854166666666666,
+          "std": 0.04016778668232197
+        },
+        {
+          "arm": "rep1_original_u150",
+          "update": 150,
+          "mean_final_survival": 0.872829861111111,
+          "std": 0.04354671182314333
+        },
+        {
+          "arm": "rep1_original_u200",
+          "update": 200,
+          "mean_final_survival": 0.872829861111111,
+          "std": 0.03799233554130692
+        }
+      ]
+    },
+    "rep1_survival_only": {
+      "selected_arm": "rep1_survival_only_u50",
+      "selected_update": 50,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_updates_50.zip",
+      "selection_mean_final_survival": 0.9379340277777778,
+      "selection_n": 24,
+      "policy_state_hash": "13b4637e837335db93d7f4a4adfc455d5a23440d4a162c86ff3f1a14023bfe74",
+      "policy_tensor_sha256": "13b4637e837335db93d7f4a4adfc455d5a23440d4a162c86ff3f1a14023bfe74",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep1_survival_only_u50",
+          "update": 50,
+          "mean_final_survival": 0.9379340277777778,
+          "std": 0.03830151467066059
+        },
+        {
+          "arm": "rep1_survival_only_u100",
+          "update": 100,
+          "mean_final_survival": 0.9244791666666666,
+          "std": 0.04089525953476097
+        },
+        {
+          "arm": "rep1_survival_only_u150",
+          "update": 150,
+          "mean_final_survival": 0.9244791666666666,
+          "std": 0.0467111669944209
+        },
+        {
+          "arm": "rep1_survival_only_u200",
+          "update": 200,
+          "mean_final_survival": 0.9240451388888888,
+          "std": 0.039394473017514746
+        }
+      ]
+    },
+    "rep2_original": {
+      "selected_arm": "rep2_original_u50",
+      "selected_update": 50,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_original/checkpoints/model_updates_50.zip",
+      "selection_mean_final_survival": 0.8927951388888888,
+      "selection_n": 24,
+      "policy_state_hash": "e005707f0433131f8d8d8062b654060838bdf226d8672125ab1460dc8333f4a2",
+      "policy_tensor_sha256": "e005707f0433131f8d8d8062b654060838bdf226d8672125ab1460dc8333f4a2",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_original/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "ec8c48564416aa9dcc016bac5f73d4d056a678d77b689103af82b653deabcd81",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep2_original_u50",
+          "update": 50,
+          "mean_final_survival": 0.8927951388888888,
+          "std": 0.043816715723470935
+        },
+        {
+          "arm": "rep2_original_u100",
+          "update": 100,
+          "mean_final_survival": 0.8871527777777778,
+          "std": 0.06542568555324982
+        },
+        {
+          "arm": "rep2_original_u150",
+          "update": 150,
+          "mean_final_survival": 0.861545138888889,
+          "std": 0.0852075895724836
+        },
+        {
+          "arm": "rep2_original_u200",
+          "update": 200,
+          "mean_final_survival": 0.8880208333333334,
+          "std": 0.05950318289095626
+        }
+      ]
+    },
+    "rep2_survival_only": {
+      "selected_arm": "rep2_survival_only_u150",
+      "selected_update": 150,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_updates_150.zip",
+      "selection_mean_final_survival": 0.927951388888889,
+      "selection_n": 24,
+      "policy_state_hash": "4d0e15cc3858cd06b72304fca7f23833d7ac3f19a55d36878a588f40111ddfe4",
+      "policy_tensor_sha256": "4d0e15cc3858cd06b72304fca7f23833d7ac3f19a55d36878a588f40111ddfe4",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep2_survival_only_u50",
+          "update": 50,
+          "mean_final_survival": 0.927517361111111,
+          "std": 0.039514046753036165
+        },
+        {
+          "arm": "rep2_survival_only_u100",
+          "update": 100,
+          "mean_final_survival": 0.9240451388888888,
+          "std": 0.030636977389337065
+        },
+        {
+          "arm": "rep2_survival_only_u150",
+          "update": 150,
+          "mean_final_survival": 0.927951388888889,
+          "std": 0.03391652794070075
+        },
+        {
+          "arm": "rep2_survival_only_u200",
+          "update": 200,
+          "mean_final_survival": 0.915798611111111,
+          "std": 0.0381085716696663
+        }
+      ]
+    }
+  },
+  "selection_summary_sha256": "24fe2fbf14d7e36d29a78726153bafa73c15d97463f379b214d1787980d18bc1",
+  "selected_only": {
+    "rep0_original": "rep0_original_u50",
+    "rep0_survival_only": "rep0_survival_only_u200",
+    "rep1_original": "rep1_original_u100",
+    "rep1_survival_only": "rep1_survival_only_u50",
+    "rep2_original": "rep2_original_u50",
+    "rep2_survival_only": "rep2_survival_only_u150"
+  }
+}

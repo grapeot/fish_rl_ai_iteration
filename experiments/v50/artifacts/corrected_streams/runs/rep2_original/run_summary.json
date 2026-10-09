@@ -1,0 +1,58 @@
+{
+  "replicate": 2,
+  "arm": "original",
+  "model_seed": 7000031,
+  "num_envs": 6,
+  "env_bank_worker_seeds": [
+    6000031,
+    6000032,
+    6000033,
+    6000034,
+    6000035,
+    6000036
+  ],
+  "iterations": 200,
+  "total_steps": 614400,
+  "wall_sec": 1391.587152004242,
+  "steps_per_sec": 441.51025619567315,
+  "episodes": 1418,
+  "deaths": 247,
+  "truncs": 1171,
+  "focal_survival_rate": 0.8258110014104373,
+  "updates_completed": 200,
+  "train_metrics_rows": 200,
+  "checkpoints": [
+    {
+      "updates_completed": 50,
+      "collected_steps": 153600,
+      "path": "model_updates_50.zip"
+    },
+    {
+      "updates_completed": 100,
+      "collected_steps": 307200,
+      "path": "model_updates_100.zip"
+    },
+    {
+      "updates_completed": 150,
+      "collected_steps": 460800,
+      "path": "model_updates_150.zip"
+    },
+    {
+      "updates_completed": 200,
+      "collected_steps": 614400,
+      "path": "model_final.zip"
+    }
+  ],
+  "initial_policy_hash": "1263b06c1157cfa324a4362407e24ca3bd8fd2e6dd8ef581b5356233ed808afb",
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  }
+}
