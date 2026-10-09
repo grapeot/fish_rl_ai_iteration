@@ -1,0 +1,531 @@
+{
+  "seed_set": "report",
+  "neighbor_features": false,
+  "n_seeds": 40,
+  "workers": 8,
+  "wall_sec": 516.0628187656403,
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  },
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": false,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "arm_model_sha256": {
+    "rep0_original_selected": "882d003faaaba4040b1ec9532607c33acc5c3ea41e4c0a3e3e7ebdee05e2fb29",
+    "rep0_original_final": "f33256ecc4be758aa54f65575094bb0e4e1e370c946e1305274612e85bb48c2c",
+    "rep0_survival_only_selected": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+    "rep1_original_selected": "9423e112744becae06273a0a5f8d25187816114a9b490fe8bec77ad60e2cc48f",
+    "rep1_original_final": "472871b8de7cd272f86058e4000a1737dff90a7fb53a836fac3a818855a1b2ca",
+    "rep1_survival_only_selected": "13b4637e837335db93d7f4a4adfc455d5a23440d4a162c86ff3f1a14023bfe74",
+    "rep1_survival_only_final": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+    "rep2_original_selected": "e005707f0433131f8d8d8062b654060838bdf226d8672125ab1460dc8333f4a2",
+    "rep2_original_final": "ec8c48564416aa9dcc016bac5f73d4d056a678d77b689103af82b653deabcd81",
+    "rep2_survival_only_selected": "4d0e15cc3858cd06b72304fca7f23833d7ac3f19a55d36878a588f40111ddfe4",
+    "rep2_survival_only_final": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce"
+  },
+  "arms": {
+    "rule_hold": {
+      "n": 40,
+      "mean_final_survival": 0.7583333333333334,
+      "std": 0.07271415712723106,
+      "median": 0.7604166666666666,
+      "min": 0.625,
+      "max": 0.90625,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9145833333333332,
+        "250": 0.8606770833333334,
+        "500": 0.7583333333333334
+      },
+      "mean_action_dist": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "rule_flee_lead": {
+      "n": 40,
+      "mean_final_survival": 0.9731770833333332,
+      "std": 0.022488658011054746,
+      "median": 0.9791666666666666,
+      "min": 0.90625,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 53,
+      "mean_survival_at_step": {
+        "1": 0.9861979166666668,
+        "100": 0.9856770833333333,
+        "250": 0.9815104166666668,
+        "500": 0.9731770833333332
+      },
+      "mean_action_dist": [
+        0.015002800888905663,
+        0.03441963985092854,
+        0.033593481595213893,
+        0.0,
+        0.9169840776649523
+      ]
+    },
+    "rule_safe_top": {
+      "n": 40,
+      "mean_final_survival": 0.93203125,
+      "std": 0.05248178251115746,
+      "median": 0.9479166666666666,
+      "min": 0.78125,
+      "max": 0.9895833333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 57,
+      "mean_survival_at_step": {
+        "1": 0.98515625,
+        "100": 0.93203125,
+        "250": 0.93203125,
+        "500": 0.93203125
+      },
+      "mean_action_dist": [
+        0.03227600410134015,
+        0.019278326930277135,
+        0.019167896290459143,
+        0.06739025417968018,
+        0.8618875184982434
+      ]
+    },
+    "rep0_original_selected": {
+      "n": 40,
+      "mean_final_survival": 0.8721354166666666,
+      "std": 0.0483425598602208,
+      "median": 0.8854166666666666,
+      "min": 0.75,
+      "max": 0.9375,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9171875,
+        "250": 0.88515625,
+        "500": 0.8721354166666666
+      },
+      "mean_action_dist": [
+        0.0028234721509179514,
+        0.024842741836979956,
+        0.11091634943390279,
+        0.6033456976521934,
+        0.25807173892600577
+      ]
+    },
+    "rep0_original_final": {
+      "n": 40,
+      "mean_final_survival": 0.3934895833333333,
+      "std": 0.11128177414858507,
+      "median": 0.3645833333333333,
+      "min": 0.23958333333333334,
+      "max": 0.8125,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9169270833333332,
+        "250": 0.76796875,
+        "500": 0.3934895833333333
+      },
+      "mean_action_dist": [
+        0.13722960083971952,
+        0.13530465865111702,
+        0.4174164791533424,
+        0.1581247288227447,
+        0.15192453253307645
+      ]
+    },
+    "rep0_survival_only_selected": {
+      "n": 40,
+      "mean_final_survival": 0.9434895833333332,
+      "std": 0.028783299726174213,
+      "median": 0.9479166666666666,
+      "min": 0.8854166666666666,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9434895833333332,
+        "250": 0.9434895833333332,
+        "500": 0.9434895833333332
+      },
+      "mean_action_dist": [
+        0.11845898088675529,
+        0.04937609324499012,
+        0.02940155790823542,
+        0.7874025565780125,
+        0.0153608113820067
+      ]
+    },
+    "rep1_original_selected": {
+      "n": 40,
+      "mean_final_survival": 0.8783854166666666,
+      "std": 0.060251002425430494,
+      "median": 0.8802083333333333,
+      "min": 0.7395833333333334,
+      "max": 0.96875,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9096354166666666,
+        "250": 0.8888020833333332,
+        "500": 0.8783854166666666
+      },
+      "mean_action_dist": [
+        0.017741757694855288,
+        0.13497820114596845,
+        0.011016166024041842,
+        0.7929028134320198,
+        0.043361061703114503
+      ]
+    },
+    "rep1_original_final": {
+      "n": 40,
+      "mean_final_survival": 0.8661458333333332,
+      "std": 0.07678425752988666,
+      "median": 0.8854166666666666,
+      "min": 0.5833333333333334,
+      "max": 0.9583333333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9106770833333332,
+        "250": 0.8783854166666668,
+        "500": 0.8661458333333332
+      },
+      "mean_action_dist": [
+        0.044211578934893025,
+        0.3886079383838001,
+        0.4811489075909113,
+        0.08602928404341077,
+        2.2910469846330508e-06
+      ]
+    },
+    "rep1_survival_only_selected": {
+      "n": 40,
+      "mean_final_survival": 0.9322916666666667,
+      "std": 0.04970532826689366,
+      "median": 0.953125,
+      "min": 0.78125,
+      "max": 0.9895833333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 58,
+      "mean_survival_at_step": {
+        "1": 0.9848958333333332,
+        "100": 0.9322916666666667,
+        "250": 0.9322916666666667,
+        "500": 0.9322916666666667
+      },
+      "mean_action_dist": [
+        0.09009461832846621,
+        0.0246842415126104,
+        0.033816944414191266,
+        0.7948686049712613,
+        0.05653559077347083
+      ]
+    },
+    "rep1_survival_only_final": {
+      "n": 40,
+      "mean_final_survival": 0.9356770833333334,
+      "std": 0.03172603065606315,
+      "median": 0.9427083333333333,
+      "min": 0.8645833333333334,
+      "max": 1.0,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9359375,
+        "250": 0.9356770833333334,
+        "500": 0.9356770833333334
+      },
+      "mean_action_dist": [
+        0.16624311218306015,
+        0.060666763498067114,
+        0.04816454726029117,
+        0.3342087334013083,
+        0.3907168436572732
+      ]
+    },
+    "rep2_original_selected": {
+      "n": 40,
+      "mean_final_survival": 0.8942708333333333,
+      "std": 0.046855705905747766,
+      "median": 0.9010416666666667,
+      "min": 0.7604166666666666,
+      "max": 0.9583333333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 54,
+      "mean_survival_at_step": {
+        "1": 0.9859375,
+        "100": 0.91875,
+        "250": 0.8973958333333332,
+        "500": 0.8942708333333333
+      },
+      "mean_action_dist": [
+        0.015607433423805888,
+        0.4907902893743909,
+        0.08739139609936832,
+        0.4055575785056457,
+        0.0006533025967893199
+      ]
+    },
+    "rep2_original_final": {
+      "n": 40,
+      "mean_final_survival": 0.8932291666666667,
+      "std": 0.052628027824326296,
+      "median": 0.90625,
+      "min": 0.78125,
+      "max": 0.9791666666666666,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 54,
+      "mean_survival_at_step": {
+        "1": 0.9859375,
+        "100": 0.9346354166666668,
+        "250": 0.90859375,
+        "500": 0.8932291666666667
+      },
+      "mean_action_dist": [
+        0.08066792826308727,
+        0.539079134252913,
+        0.042316058415238784,
+        0.337936879068761,
+        0.0
+      ]
+    },
+    "rep2_survival_only_selected": {
+      "n": 40,
+      "mean_final_survival": 0.925,
+      "std": 0.04501750609152905,
+      "median": 0.9427083333333333,
+      "min": 0.8229166666666666,
+      "max": 0.9895833333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.925,
+        "250": 0.925,
+        "500": 0.925
+      },
+      "mean_action_dist": [
+        0.012864353200354936,
+        0.06743689037257686,
+        0.39340499150109565,
+        0.43783472995391415,
+        0.08845903497205838
+      ]
+    },
+    "rep2_survival_only_final": {
+      "n": 40,
+      "mean_final_survival": 0.9255208333333332,
+      "std": 0.04643819511027227,
+      "median": 0.9270833333333334,
+      "min": 0.8229166666666666,
+      "max": 0.9895833333333334,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 55,
+      "mean_survival_at_step": {
+        "1": 0.9856770833333333,
+        "100": 0.9268229166666666,
+        "250": 0.9255208333333332,
+        "500": 0.9255208333333332
+      },
+      "mean_action_dist": [
+        0.027679798032081926,
+        0.5314251484315158,
+        0.056600631808959266,
+        0.19903120659320755,
+        0.18526321513423555
+      ]
+    }
+  },
+  "paired_vs_reference": {
+    "rule_flee_lead": {
+      "n_pairs": 40,
+      "mean_diff": 0.21484375,
+      "std_diff": 0.07257963547426317,
+      "ci95_low": 0.1921875,
+      "ci95_high": 0.23776041666666664,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rule_safe_top": {
+      "n_pairs": 40,
+      "mean_diff": 0.17369791666666665,
+      "std_diff": 0.07803636353655885,
+      "ci95_low": 0.15,
+      "ci95_high": 0.19765625,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rep0_original_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.11380208333333335,
+      "std_diff": 0.07516702599905582,
+      "ci95_low": 0.09036458333333335,
+      "ci95_high": 0.13697916666666668,
+      "win_rate": 0.925,
+      "tie_rate": 0.05,
+      "loss_rate": 0.025
+    },
+    "rep0_original_final": {
+      "n_pairs": 40,
+      "mean_diff": -0.36484375,
+      "std_diff": 0.1208233744606616,
+      "ci95_low": -0.4013020833333333,
+      "ci95_high": -0.32734375,
+      "win_rate": 0.0,
+      "tie_rate": 0.0,
+      "loss_rate": 1.0
+    },
+    "rep0_survival_only_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.18515625,
+      "std_diff": 0.07183986274165143,
+      "ci95_low": 0.16327473958333333,
+      "ci95_high": 0.2075520833333333,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rep1_original_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.12005208333333332,
+      "std_diff": 0.07869671508794952,
+      "ci95_low": 0.09557291666666667,
+      "ci95_high": 0.14453125,
+      "win_rate": 0.975,
+      "tie_rate": 0.0,
+      "loss_rate": 0.025
+    },
+    "rep1_original_final": {
+      "n_pairs": 40,
+      "mean_diff": 0.1078125,
+      "std_diff": 0.08474203302777736,
+      "ci95_low": 0.08098958333333334,
+      "ci95_high": 0.13307291666666665,
+      "win_rate": 0.9,
+      "tie_rate": 0.0,
+      "loss_rate": 0.1
+    },
+    "rep1_survival_only_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.17395833333333333,
+      "std_diff": 0.07034142923389221,
+      "ci95_low": 0.15208333333333335,
+      "ci95_high": 0.19557942708333326,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rep1_survival_only_final": {
+      "n_pairs": 40,
+      "mean_diff": 0.17734375,
+      "std_diff": 0.06644793762301318,
+      "ci95_low": 0.15677083333333336,
+      "ci95_high": 0.19791666666666666,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rep2_original_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.1359375,
+      "std_diff": 0.06634160535009197,
+      "ci95_low": 0.11561848958333334,
+      "ci95_high": 0.15598958333333332,
+      "win_rate": 0.975,
+      "tie_rate": 0.0,
+      "loss_rate": 0.025
+    },
+    "rep2_original_final": {
+      "n_pairs": 40,
+      "mean_diff": 0.13489583333333335,
+      "std_diff": 0.06877144511427263,
+      "ci95_low": 0.11380208333333335,
+      "ci95_high": 0.15599609374999993,
+      "win_rate": 0.975,
+      "tie_rate": 0.0,
+      "loss_rate": 0.025
+    },
+    "rep2_survival_only_selected": {
+      "n_pairs": 40,
+      "mean_diff": 0.16666666666666666,
+      "std_diff": 0.07247654105190866,
+      "ci95_low": 0.14453124999999997,
+      "ci95_high": 0.1890625,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    },
+    "rep2_survival_only_final": {
+      "n_pairs": 40,
+      "mean_diff": 0.1671875,
+      "std_diff": 0.07719622421774126,
+      "ci95_low": 0.14348958333333334,
+      "ci95_high": 0.19088541666666664,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0
+    }
+  },
+  "reference": "rule_hold"
+}

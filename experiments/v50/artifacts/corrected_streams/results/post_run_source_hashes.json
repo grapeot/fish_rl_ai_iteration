@@ -1,0 +1,32 @@
+{
+  "note": "Honest provenance for v50. Run-time sources are archived in each run's config.json `source_sha256` and are NOT refreshed. Training sources unchanged since the corrected runs. Post-run tooling was hardened AFTER the runs (manifest-binding gate incl. heading bias, strict report validation, selected_is_final hash-equality); its current hashes are under post_run_source_sha256 with an explicit scope. fish_env.py unchanged.",
+  "run_time_sources_unchanged_since_runs": {
+    "v50_common.py": {
+      "archived_sha256": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+      "current_sha256": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+      "unchanged": true
+    },
+    "v50_env.py": {
+      "archived_sha256": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+      "current_sha256": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+      "unchanged": true
+    },
+    "v50_train.py": {
+      "archived_sha256": "378501fbad61315572134bfcb981ca4686bfb02ed1f8ee1172cca6391d6387d7",
+      "current_sha256": "378501fbad61315572134bfcb981ca4686bfb02ed1f8ee1172cca6391d6387d7",
+      "unchanged": true
+    }
+  },
+  "post_run_source_sha256": {
+    "scope": "tooling changed after the corrected runs; evaluation/selection/report/analysis only; no retraining",
+    "files": {
+      "v50_evaluate.py": "4a840ad19f4b29588aba13a5fe63c06851770966d3edc1010fbd00355ee2f9e5",
+      "v50_select.py": "13dae07fcc77bf16050e6867e94e9716bbb56365111b235190bbb46f68b07967",
+      "v50_report.py": "0ed1029d801b100c316a51a6e4bf17fe9f23bcbe19153d718f9e8ee88fd3fc2f",
+      "v50_analyze.py": "b140bd856f24afee2628b729e3396dce976b4e52a8d1e86d2fc190962674071b",
+      "v50_verify.py": "d5f6c534c505a9495747bf5c757e2a5e0e56db41c88290bca77a979e1010c64a"
+    }
+  },
+  "fish_env_sha256": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e",
+  "archived_config_example": "experiments/v50/artifacts/corrected_streams/runs/rep0_original/config.json"
+}
