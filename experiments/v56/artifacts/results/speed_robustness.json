@@ -1,0 +1,44 @@
+{
+  "source": "computed directly from raw report records (not copied from the summary)",
+  "manifest": {
+    "path": "experiments/v56/artifacts/frozen_config/v56_frozen_manifest.json",
+    "created_utc": "2026-10-09T12:04:01.404121+00:00"
+  },
+  "caveats": [
+    "Statistical unit is the scenario (40), never the 96 fish or the policy-scenario.",
+    "Per scenario the fixed 3 PPO policies are averaged, then paired to scale1p00.",
+    "Both slower and faster directions are reported; no sign is preselected.",
+    "Do not replace a difference CI by subtracting two independent CIs."
+  ],
+  "speed_robustness": {
+    "unit": "scenario (40); each scenario averages the fixed 3 PPO policies, then pairs to scale1p00",
+    "slowdown_scale0p75_minus_base": {
+      "contrast": "scale0p75 - scale1p00 (mean over 3 PPO)",
+      "mean": -0.0020833333333333285,
+      "ci95_low": -0.005295138888888891,
+      "ci95_high": 0.0009548611111111179,
+      "pos_scenarios": 18,
+      "zero_scenarios": 2,
+      "neg_scenarios": 20
+    },
+    "speedup_scale1p25_minus_base": {
+      "contrast": "scale1p25 - scale1p00 (mean over 3 PPO)",
+      "mean": 0.0028645833333333344,
+      "ci95_low": 0.00034722222222222733,
+      "ci95_high": 0.005468749999999993,
+      "pos_scenarios": 23,
+      "zero_scenarios": 1,
+      "neg_scenarios": 16
+    },
+    "asymmetry_fast_minus_slow": {
+      "contrast": "scale1p25 effect - scale0p75 effect",
+      "mean": 0.004947916666666663,
+      "ci95_low": 0.0013888888888888879,
+      "ci95_high": 0.008680555555555556,
+      "pos_scenarios": 23,
+      "zero_scenarios": 6,
+      "neg_scenarios": 11
+    },
+    "note": "Paired outcome contrast, NOT a causal decomposition. Both directions are reported; a positive asymmetry means the faster condition hurts survival less (or helps more) than the slower one. Do not subtract independent CIs. Same sorted report seeds, numpy RNG 560301, 10,000 resamples, percentile 95% CI."
+  }
+}
