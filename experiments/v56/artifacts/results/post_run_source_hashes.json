@@ -1,0 +1,14 @@
+{
+  "scope": "post-run snapshot; run-time hashes are embedded in the result summary and never refreshed",
+  "note": "v56 is a no-training evaluation round; no model weights change. This snapshot is for auditing doc/tooling edits after the run.",
+  "post_run_source_sha256": {
+    "v56_common.py": "0c28317312d4af8359cd33d4324f322c00c2222b8a36c73eb905619052b2dba5",
+    "v56_env.py": "66faa0ec6bdc67dba91aeef5b0e0acc52486ad8e4a8f00599f60f9b710f1036a",
+    "v56_evaluate.py": "5599f53d91dcba8ace6d1ea7f3429167f66cd842fae57b6c008f285786528ec3",
+    "v56_verify.py": "9fdfae4d9a74081cdcb184656a46df870a20a59b7b3afae7fbfc306494090cd4",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "fish_env_sha256": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+}

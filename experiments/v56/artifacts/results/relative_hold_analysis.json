@@ -1,0 +1,58 @@
+{
+  "source": "computed directly from raw report records (not copied from the summary)",
+  "scope": "supplemental post-run analysis; no re-evaluation and no modification of the raw records, report summary or original analysis.json",
+  "manifest": {
+    "path": "experiments/v56/artifacts/frozen_config/v56_frozen_manifest.json",
+    "created_utc": "2026-10-09T12:04:01.404121+00:00"
+  },
+  "caveats": [
+    "Statistical unit is the scenario (40), never the 96 fish or the policy-scenario.",
+    "Per scenario the fixed 3 PPO policies are averaged, then paired against HOLD on the same seed/condition.",
+    "Descriptive raw-derived baseline contrasts, not prespecified primary endpoints.",
+    "HOLD is a contextual anchor, not the strongest rule here; flee_lead exceeds PPO in all conditions.",
+    "The advantage-change CI is bootstrapped directly on the paired difference; do not subtract two independent CIs.",
+    "Crossing zero on the advantage-change does not establish negligible impact; excluding zero does not establish importance."
+  ],
+  "relative_hold": {
+    "unit": "scenario (40); each scenario averages the fixed 3 PPO policies, then pairs against HOLD",
+    "ppo_minus_hold": {
+      "scale0p75": {
+        "contrast": "PPO - HOLD at scale0p75",
+        "mean": 0.17100694444444448,
+        "ci95_low": 0.15616319444444443,
+        "ci95_high": 0.18645833333333334,
+        "pos_scenarios": 40,
+        "zero_scenarios": 0,
+        "neg_scenarios": 0
+      },
+      "scale1p00": {
+        "contrast": "PPO - HOLD at scale1p00",
+        "mean": 0.18038194444444444,
+        "ci95_low": 0.16397569444444443,
+        "ci95_high": 0.19661458333333331,
+        "pos_scenarios": 40,
+        "zero_scenarios": 0,
+        "neg_scenarios": 0
+      },
+      "scale1p25": {
+        "contrast": "PPO - HOLD at scale1p25",
+        "mean": 0.18663194444444445,
+        "ci95_low": 0.16788194444444443,
+        "ci95_high": 0.20546874999999995,
+        "pos_scenarios": 40,
+        "zero_scenarios": 0,
+        "neg_scenarios": 0
+      }
+    },
+    "advantage_fast_minus_nominal": {
+      "contrast": "advantage at scale1p25 - advantage at scale1p00 (paired difference)",
+      "mean": 0.006250000000000008,
+      "ci95_low": -0.009463975694444475,
+      "ci95_high": 0.023263888888888883,
+      "pos_scenarios": 18,
+      "zero_scenarios": 1,
+      "neg_scenarios": 21
+    },
+    "note": "Descriptive raw-derived baseline contrasts, not prespecified primary endpoints. HOLD is a contextual anchor, not the strongest rule here (flee_lead exceeds PPO in all conditions). The advantage-change CI spans both decrease and increase, so a standalone faster-condition PPO survival rise does not establish a reliably larger relative advantage over HOLD. Bootstrap the paired advantage difference directly; do not subtract two independent CIs. Same sorted report seeds, numpy RNG 560301, 10,000 resamples, percentile two-sided 95% CI."
+  }
+}
