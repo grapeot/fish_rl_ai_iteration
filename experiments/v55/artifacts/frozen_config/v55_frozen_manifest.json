@@ -1,0 +1,244 @@
+{
+  "kind": "v55_frozen_controller_manifest",
+  "version": 1,
+  "hash_scheme": "policy_tensor_sha256",
+  "created_utc": "2026-10-09T11:47:14.938958+00:00",
+  "role": "v55 round 7/10: post-reset predator-velocity rotation one-axis generalization probe",
+  "depends_on": {
+    "v50_manifest": "experiments/v50/artifacts/corrected_streams/results/selection_manifest.json",
+    "note": "accepted corrected survival_only FINAL models (PR#11 merged, 7e682e7). No dependence on the unaccepted v54 or on v53."
+  },
+  "conditions": [
+    "deg0",
+    "deg90",
+    "deg180",
+    "deg270"
+  ],
+  "rotation_degrees": {
+    "deg0": 0,
+    "deg90": 90,
+    "deg180": 180,
+    "deg270": 270
+  },
+  "rotation_matrices": {
+    "deg0": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "deg90": [
+      [
+        0,
+        -1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "deg180": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "deg270": [
+      [
+        0,
+        1
+      ],
+      [
+        -1,
+        0
+      ]
+    ]
+  },
+  "intervention": "post-reset deterministic rotation of ONLY predator_vel by 0/90/180/270 deg via exact integer matrices (norm preserved exactly), on the nominal world (full heading/speed bias and pre-roll). NOT a resample of the natural initial-heading distribution and NOT a gravity turn; fish pos/vel/alive/timestep/pre-roll/RNG held identical. deg0 is the exact identity and must reproduce the nominal.",
+  "controllers": {
+    "rep0_ppo": {
+      "source_run": "rep0_survival_only",
+      "stage": "final",
+      "updates": 200,
+      "total_steps": 614400,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8"
+    },
+    "rep1_ppo": {
+      "source_run": "rep1_survival_only",
+      "stage": "final",
+      "updates": 200,
+      "total_steps": 614400,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17"
+    },
+    "rep2_ppo": {
+      "source_run": "rep2_survival_only",
+      "stage": "final",
+      "updates": 200,
+      "total_steps": 614400,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce"
+    }
+  },
+  "rule_controllers": [
+    "rule_hold",
+    "rule_flee_lead",
+    "rule_safe_top"
+  ],
+  "seed_banks": {
+    "debug": {
+      "rng_seed": 550101,
+      "n": 2,
+      "seeds": [
+        431447944,
+        110635475
+      ]
+    },
+    "report": {
+      "rng_seed": 550102,
+      "n": 40,
+      "seeds": [
+        1673241838,
+        113053871,
+        130947585,
+        112882742,
+        1307560064,
+        1476935255,
+        1950370472,
+        865995144,
+        1890204566,
+        1447731430,
+        1222187918,
+        743445532,
+        2056854539,
+        59966663,
+        1393796947,
+        211427152,
+        879759586,
+        1600964505,
+        395508171,
+        1775123313,
+        1223507078,
+        1440913040,
+        1110322917,
+        492266677,
+        730716554,
+        1163470459,
+        1480169415,
+        348226824,
+        152448617,
+        603814135,
+        1413442403,
+        82156830,
+        712228986,
+        284214310,
+        520254033,
+        39842618,
+        1267528783,
+        548105197,
+        74922484,
+        1386683278
+      ]
+    }
+  },
+  "env": {
+    "neighbor": false,
+    "env_config": {
+      "num_fish": 96,
+      "include_neighbor_features": false,
+      "neighbor_radius": 3.0,
+      "neighbor_average_count": 6,
+      "initial_escape_boost": true,
+      "escape_boost_speed": 0.8,
+      "escape_jitter_std": 0.35,
+      "divergence_reward_coef": 0.0,
+      "density_penalty_coef": 0.05,
+      "density_target": 0.4,
+      "predator_spawn_jitter_radius": 1.6,
+      "predator_pre_roll_steps": 16,
+      "predator_pre_roll_angle_jitter": 0.3,
+      "predator_pre_roll_speed_jitter": 0.2,
+      "predator_heading_bias": [
+        {
+          "start_deg": 0.0,
+          "end_deg": 60.0,
+          "weight": 1.1
+        },
+        {
+          "start_deg": 60.0,
+          "end_deg": 90.0,
+          "weight": 0.8
+        },
+        {
+          "start_deg": 90.0,
+          "end_deg": 120.0,
+          "weight": 0.08
+        },
+        {
+          "start_deg": 120.0,
+          "end_deg": 150.0,
+          "weight": 0.05
+        },
+        {
+          "start_deg": 150.0,
+          "end_deg": 210.0,
+          "weight": 0.9
+        },
+        {
+          "start_deg": 210.0,
+          "end_deg": 270.0,
+          "weight": 1.3
+        },
+        {
+          "start_deg": 270.0,
+          "end_deg": 330.0,
+          "weight": 1.2
+        },
+        {
+          "start_deg": 330.0,
+          "end_deg": 360.0,
+          "weight": 0.95
+        }
+      ],
+      "predator_pre_roll_speed_bias": [
+        {
+          "min_speed": 0.0,
+          "max_speed": 1.0,
+          "weight": 1.6
+        },
+        {
+          "min_speed": 1.0,
+          "max_speed": 1.6,
+          "weight": 1.3
+        },
+        {
+          "min_speed": 1.6,
+          "max_speed": 2.0,
+          "weight": 0.7
+        },
+        {
+          "min_speed": 2.0,
+          "max_speed": 2.4,
+          "weight": 0.35
+        },
+        {
+          "min_speed": 2.4,
+          "max_speed": 3.0,
+          "weight": 0.2
+        }
+      ]
+    },
+    "num_fish": 96,
+    "max_timesteps": 500
+  },
+  "statistic": "final_survival = num_alive / 96, per episode (scenario)"
+}

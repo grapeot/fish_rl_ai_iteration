@@ -1,0 +1,1224 @@
+{
+  "conditions": [
+    "deg0",
+    "deg90",
+    "deg180",
+    "deg270"
+  ],
+  "rotation_degrees": {
+    "deg0": 0,
+    "deg90": 90,
+    "deg180": 180,
+    "deg270": 270
+  },
+  "per_controller": {
+    "rep0_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9307291666666666,
+        "std": 0.031165305457271135,
+        "min": 0.8645833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.93125,
+          "250": 0.9307291666666666,
+          "500": 0.9307291666666666
+        },
+        "mean_action_dist": [
+          0.12052636566698274,
+          0.05162197138457597,
+          0.030958784692709802,
+          0.7816516118421403,
+          0.015241266413591128
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9377604166666668,
+        "std": 0.034304714793842755,
+        "min": 0.8645833333333334,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 82,
+        "mean_survival_at_step": {
+          "1": 0.9786458333333334,
+          "100": 0.9385416666666668,
+          "250": 0.9377604166666668,
+          "500": 0.9377604166666668
+        },
+        "mean_action_dist": [
+          0.11994884738145004,
+          0.05303890483302266,
+          0.03011458941643485,
+          0.7834783395426496,
+          0.013419318826442933
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.93046875,
+        "std": 0.027949605440263047,
+        "min": 0.8645833333333334,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 88,
+        "mean_survival_at_step": {
+          "1": 0.9770833333333332,
+          "100": 0.9307291666666668,
+          "250": 0.93046875,
+          "500": 0.93046875
+        },
+        "mean_action_dist": [
+          0.11646748714287476,
+          0.05331985057432156,
+          0.03074338907977589,
+          0.7849133643536985,
+          0.014555908849329285
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9265625,
+        "std": 0.026578337619700392,
+        "min": 0.8854166666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.9265625,
+          "250": 0.9265625,
+          "500": 0.9265625
+        },
+        "mean_action_dist": [
+          0.11850598458429643,
+          0.05292776806979009,
+          0.03144461761757863,
+          0.7802202952547362,
+          0.01690133447359891
+        ]
+      }
+    },
+    "rep1_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9307291666666668,
+        "std": 0.03447158472037371,
+        "min": 0.8333333333333334,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 73,
+        "mean_survival_at_step": {
+          "1": 0.9809895833333334,
+          "100": 0.93125,
+          "250": 0.93125,
+          "500": 0.9307291666666668
+        },
+        "mean_action_dist": [
+          0.1706968176543216,
+          0.06039079897988882,
+          0.05092303180237649,
+          0.2998395298073533,
+          0.4181498217560599
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9283854166666666,
+        "std": 0.033208525358966096,
+        "min": 0.8333333333333334,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666667,
+          "100": 0.9286458333333332,
+          "250": 0.9286458333333332,
+          "500": 0.9283854166666666
+        },
+        "mean_action_dist": [
+          0.1660207761268076,
+          0.06004841853814029,
+          0.05020171780333067,
+          0.3127145963812514,
+          0.41101449115047
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.9091145833333332,
+        "std": 0.03546121977716003,
+        "min": 0.8541666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 86,
+        "mean_survival_at_step": {
+          "1": 0.9776041666666668,
+          "100": 0.9098958333333333,
+          "250": 0.9096354166666666,
+          "500": 0.9091145833333332
+        },
+        "mean_action_dist": [
+          0.1568369932559955,
+          0.06010113168623332,
+          0.04834233047282639,
+          0.32539813379197297,
+          0.40932141079297174
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9213541666666666,
+        "std": 0.0391145486573304,
+        "min": 0.8333333333333334,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.921875,
+          "250": 0.921875,
+          "500": 0.9213541666666666
+        },
+        "mean_action_dist": [
+          0.16362546363811586,
+          0.060525283341490085,
+          0.049943896984191286,
+          0.30592114453950503,
+          0.41998421149669773
+        ]
+      }
+    },
+    "rep2_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9247395833333334,
+        "std": 0.030528302847533335,
+        "min": 0.84375,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 74,
+        "mean_survival_at_step": {
+          "1": 0.9807291666666668,
+          "100": 0.9247395833333334,
+          "250": 0.9247395833333334,
+          "500": 0.9247395833333334
+        },
+        "mean_action_dist": [
+          0.027540614298341294,
+          0.5397459549482009,
+          0.05751538861108939,
+          0.19157852356721963,
+          0.18361951857514897
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9041666666666666,
+        "std": 0.04795033191213936,
+        "min": 0.78125,
+        "max": 0.9583333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 81,
+        "mean_survival_at_step": {
+          "1": 0.97890625,
+          "100": 0.9041666666666666,
+          "250": 0.9041666666666666,
+          "500": 0.9041666666666666
+        },
+        "mean_action_dist": [
+          0.02893138450092822,
+          0.5418766520653786,
+          0.055110431673354034,
+          0.18649243239311766,
+          0.18758909936722135
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.8533854166666668,
+        "std": 0.05842233651935141,
+        "min": 0.7395833333333334,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 85,
+        "mean_survival_at_step": {
+          "1": 0.9778645833333333,
+          "100": 0.8533854166666668,
+          "250": 0.8533854166666668,
+          "500": 0.8533854166666668
+        },
+        "mean_action_dist": [
+          0.030827745252277654,
+          0.5130040856253998,
+          0.05787151614910983,
+          0.20700840067437828,
+          0.19128825229883467
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9046875,
+        "std": 0.04814431707994223,
+        "min": 0.71875,
+        "max": 0.9583333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 82,
+        "mean_survival_at_step": {
+          "1": 0.9786458333333334,
+          "100": 0.9059895833333333,
+          "250": 0.9049479166666667,
+          "500": 0.9046875
+        },
+        "mean_action_dist": [
+          0.029408749627825848,
+          0.5291458369266506,
+          0.05686741496669915,
+          0.1973779824761061,
+          0.18720001600271824
+        ]
+      }
+    },
+    "rule_hold": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.7549479166666666,
+        "std": 0.05695621002332229,
+        "min": 0.53125,
+        "max": 0.84375,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.90390625,
+          "250": 0.8546875,
+          "500": 0.7549479166666666
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.7463541666666667,
+        "std": 0.05619705089417308,
+        "min": 0.625,
+        "max": 0.8333333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 83,
+        "mean_survival_at_step": {
+          "1": 0.9783854166666668,
+          "100": 0.8875,
+          "250": 0.8296875,
+          "500": 0.7463541666666667
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.7463541666666667,
+        "std": 0.059468409429591015,
+        "min": 0.5833333333333334,
+        "max": 0.84375,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 88,
+        "mean_survival_at_step": {
+          "1": 0.9770833333333332,
+          "100": 0.9026041666666668,
+          "250": 0.8296875,
+          "500": 0.7463541666666667
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.76484375,
+        "std": 0.049079370522991106,
+        "min": 0.6666666666666666,
+        "max": 0.8645833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.8940104166666666,
+          "250": 0.84921875,
+          "500": 0.76484375
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9705729166666668,
+        "std": 0.020684228713823364,
+        "min": 0.8958333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 69,
+        "mean_survival_at_step": {
+          "1": 0.98203125,
+          "100": 0.9796875,
+          "250": 0.978125,
+          "500": 0.9705729166666668
+        },
+        "mean_action_dist": [
+          0.014496759358889427,
+          0.0350959351497982,
+          0.0327533274106881,
+          0.0,
+          0.9176539780806247
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9690104166666668,
+        "std": 0.016255529275162633,
+        "min": 0.9375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 75,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.9768229166666668,
+          "250": 0.9755208333333334,
+          "500": 0.9690104166666668
+        },
+        "mean_action_dist": [
+          0.015249749491333595,
+          0.03402514576347533,
+          0.034265182783410876,
+          0.0,
+          0.91645992196178
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.9630208333333334,
+        "std": 0.019729011260771163,
+        "min": 0.9270833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.9763020833333333,
+          "250": 0.97265625,
+          "500": 0.9630208333333334
+        },
+        "mean_action_dist": [
+          0.018613734216598565,
+          0.03598383153262008,
+          0.033930002253481896,
+          0.0,
+          0.9114724319972991
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9700520833333334,
+        "std": 0.01919108150961136,
+        "min": 0.9166666666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.978125,
+          "250": 0.9755208333333332,
+          "500": 0.9700520833333334
+        },
+        "mean_action_dist": [
+          0.01453593093981551,
+          0.03383370363196718,
+          0.03303772513430168,
+          0.0,
+          0.9185926402939154
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.92890625,
+        "std": 0.041391149715255704,
+        "min": 0.8125,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 74,
+        "mean_survival_at_step": {
+          "1": 0.9807291666666668,
+          "100": 0.92890625,
+          "250": 0.92890625,
+          "500": 0.92890625
+        },
+        "mean_action_dist": [
+          0.031710398597173096,
+          0.019582419375477507,
+          0.01928271632934595,
+          0.0673943507694635,
+          0.8620301149285401
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9065104166666668,
+        "std": 0.06715596929590585,
+        "min": 0.59375,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.9065104166666668,
+          "250": 0.9065104166666668,
+          "500": 0.9065104166666668
+        },
+        "mean_action_dist": [
+          0.032627003051849776,
+          0.01981511298241564,
+          0.01952365802308273,
+          0.06726155368391332,
+          0.8607726722587385
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.8815104166666667,
+        "std": 0.07043974913113119,
+        "min": 0.625,
+        "max": 0.9583333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 84,
+        "mean_survival_at_step": {
+          "1": 0.978125,
+          "100": 0.8815104166666667,
+          "250": 0.8815104166666667,
+          "500": 0.8815104166666667
+        },
+        "mean_action_dist": [
+          0.03342771499822046,
+          0.02000441188502784,
+          0.019750433807353505,
+          0.06715618741253129,
+          0.8596612518968669
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9158854166666666,
+        "std": 0.04870950245538919,
+        "min": 0.7708333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 79,
+        "mean_survival_at_step": {
+          "1": 0.9794270833333334,
+          "100": 0.9158854166666666,
+          "250": 0.9158854166666666,
+          "500": 0.9158854166666666
+        },
+        "mean_action_dist": [
+          0.03228953828654422,
+          0.01968420030575862,
+          0.019326504662000463,
+          0.06734200699637735,
+          0.8613577497493192
+        ]
+      }
+    }
+  },
+  "per_ppo_replicate": {
+    "rep0_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9307291666666668
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9377604166666667
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.93046875
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9265625
+      }
+    },
+    "rep1_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9307291666666668
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9283854166666666
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.9091145833333334
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9213541666666666
+      }
+    },
+    "rep2_ppo": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9247395833333332
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9041666666666668
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.8533854166666668
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9046875
+      }
+    }
+  },
+  "paired_vs_deg0": {
+    "rep0_ppo": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": 0.007031250000000008,
+        "std_diff": 0.03964005017869572,
+        "ci95_low": -0.004947916666666654,
+        "ci95_high": 0.019270833333333334,
+        "win_rate": 0.55,
+        "tie_rate": 0.1,
+        "loss_rate": 0.35
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.00026041666666665186,
+        "std_diff": 0.037184653132668395,
+        "ci95_low": -0.011197916666666655,
+        "ci95_high": 0.011458333333333345,
+        "win_rate": 0.375,
+        "tie_rate": 0.15,
+        "loss_rate": 0.475
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.004166666666666663,
+        "std_diff": 0.036222912071979516,
+        "ci95_low": -0.014843749999999998,
+        "ci95_high": 0.0072916666666666685,
+        "win_rate": 0.275,
+        "tie_rate": 0.075,
+        "loss_rate": 0.65
+      }
+    },
+    "rep1_ppo": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.002343750000000003,
+        "std_diff": 0.03642875020779986,
+        "ci95_low": -0.01380208333333333,
+        "ci95_high": 0.008593749999999997,
+        "win_rate": 0.45,
+        "tie_rate": 0.1,
+        "loss_rate": 0.45
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.021614583333333336,
+        "std_diff": 0.03754949102418319,
+        "ci95_low": -0.03333333333333334,
+        "ci95_high": -0.010156250000000006,
+        "win_rate": 0.3,
+        "tie_rate": 0.025,
+        "loss_rate": 0.675
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.009374999999999998,
+        "std_diff": 0.040018136023885605,
+        "ci95_low": -0.021874999999999995,
+        "ci95_high": 0.0028645833333333206,
+        "win_rate": 0.375,
+        "tie_rate": 0.125,
+        "loss_rate": 0.5
+      }
+    },
+    "rep2_ppo": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.020572916666666656,
+        "std_diff": 0.049788520669128415,
+        "ci95_low": -0.03671874999999999,
+        "ci95_high": -0.0062499999999999865,
+        "win_rate": 0.275,
+        "tie_rate": 0.175,
+        "loss_rate": 0.55
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.07135416666666668,
+        "std_diff": 0.0626578313409232,
+        "ci95_low": -0.09088541666666668,
+        "ci95_high": -0.05260416666666666,
+        "win_rate": 0.05,
+        "tie_rate": 0.075,
+        "loss_rate": 0.875
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.020052083333333328,
+        "std_diff": 0.04606750469068111,
+        "ci95_low": -0.03411458333333334,
+        "ci95_high": -0.006510416666666655,
+        "win_rate": 0.325,
+        "tie_rate": 0.025,
+        "loss_rate": 0.65
+      }
+    },
+    "rule_flee_lead": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.0015625000000000083,
+        "std_diff": 0.02090665516186125,
+        "ci95_low": -0.0075520833333333455,
+        "ci95_high": 0.005214843749999903,
+        "win_rate": 0.3,
+        "tie_rate": 0.3,
+        "loss_rate": 0.4
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.007552083333333332,
+        "std_diff": 0.022868965019770763,
+        "ci95_low": -0.014322916666666654,
+        "ci95_high": -0.00026041666666666845,
+        "win_rate": 0.2,
+        "tie_rate": 0.25,
+        "loss_rate": 0.55
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.0005208333333333398,
+        "std_diff": 0.020826654912474662,
+        "ci95_low": -0.006770833333333346,
+        "ci95_high": 0.005989583333333321,
+        "win_rate": 0.3,
+        "tie_rate": 0.3,
+        "loss_rate": 0.4
+      }
+    },
+    "rule_hold": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.00859375,
+        "std_diff": 0.06155298827773354,
+        "ci95_low": -0.026822916666666658,
+        "ci95_high": 0.010937499999999992,
+        "win_rate": 0.275,
+        "tie_rate": 0.1,
+        "loss_rate": 0.625
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.008593749999999989,
+        "std_diff": 0.061053757626658475,
+        "ci95_low": -0.02656249999999999,
+        "ci95_high": 0.010156250000000002,
+        "win_rate": 0.4,
+        "tie_rate": 0.1,
+        "loss_rate": 0.5
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": 0.00989583333333334,
+        "std_diff": 0.051137240452639905,
+        "ci95_low": -0.00546875,
+        "ci95_high": 0.026041666666666657,
+        "win_rate": 0.575,
+        "tie_rate": 0.05,
+        "loss_rate": 0.375
+      }
+    },
+    "rule_safe_top": {
+      "deg90": {
+        "contrast": "deg90 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.02239583333333334,
+        "std_diff": 0.06406298858475348,
+        "ci95_low": -0.04453125000000001,
+        "ci95_high": -0.005729166666666677,
+        "win_rate": 0.375,
+        "tie_rate": 0.025,
+        "loss_rate": 0.6
+      },
+      "deg180": {
+        "contrast": "deg180 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.04739583333333334,
+        "std_diff": 0.06128402232597126,
+        "ci95_low": -0.06771484375,
+        "ci95_high": -0.029687500000000006,
+        "win_rate": 0.125,
+        "tie_rate": 0.075,
+        "loss_rate": 0.8
+      },
+      "deg270": {
+        "contrast": "deg270 - deg0",
+        "n_pairs": 40,
+        "mean_diff": -0.013020833333333337,
+        "std_diff": 0.04498968602124934,
+        "ci95_low": -0.027083333333333338,
+        "ci95_high": 0.0005208333333333232,
+        "win_rate": 0.275,
+        "tie_rate": 0.15,
+        "loss_rate": 0.575
+      }
+    }
+  },
+  "aggregate_ppo_contrast": {
+    "deg90": {
+      "contrast": "deg90 - deg0 (mean over 3 frozen PPO policies per scenario)",
+      "n_scenarios": 40,
+      "mean_diff": -0.005295138888888884,
+      "ci95_low": -0.013020833333333329,
+      "ci95_high": 0.0024305555555555526,
+      "win_rate": 0.4,
+      "loss_rate": 0.55,
+      "note": "per scenario average over the 3 fixed PPO policies, then bootstrap over scenarios"
+    },
+    "deg180": {
+      "contrast": "deg180 - deg0 (mean over 3 frozen PPO policies per scenario)",
+      "n_scenarios": 40,
+      "mean_diff": -0.031076388888888883,
+      "ci95_low": -0.04131944444444444,
+      "ci95_high": -0.02074652777777778,
+      "win_rate": 0.125,
+      "loss_rate": 0.8,
+      "note": "per scenario average over the 3 fixed PPO policies, then bootstrap over scenarios"
+    },
+    "deg270": {
+      "contrast": "deg270 - deg0 (mean over 3 frozen PPO policies per scenario)",
+      "n_scenarios": 40,
+      "mean_diff": -0.011197916666666663,
+      "ci95_low": -0.020572916666666653,
+      "ci95_high": -0.0019943576388889114,
+      "win_rate": 0.275,
+      "loss_rate": 0.725,
+      "note": "per scenario average over the 3 fixed PPO policies, then bootstrap over scenarios"
+    }
+  },
+  "worst_rotation_descriptive": {
+    "rep0_ppo": {
+      "condition_means": {
+        "deg0": 0.9307291666666668,
+        "deg90": 0.9377604166666667,
+        "deg180": 0.93046875,
+        "deg270": 0.9265625
+      },
+      "worst_condition": "deg270",
+      "worst_condition_mean": 0.9265625,
+      "deg0_worst_episode_seed": 152448617,
+      "deg0_worst_episode_survival": 0.8645833333333334,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    },
+    "rep1_ppo": {
+      "condition_means": {
+        "deg0": 0.9307291666666668,
+        "deg90": 0.9283854166666666,
+        "deg180": 0.9091145833333334,
+        "deg270": 0.9213541666666666
+      },
+      "worst_condition": "deg180",
+      "worst_condition_mean": 0.9091145833333334,
+      "deg0_worst_episode_seed": 548105197,
+      "deg0_worst_episode_survival": 0.8333333333333334,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    },
+    "rep2_ppo": {
+      "condition_means": {
+        "deg0": 0.9247395833333332,
+        "deg90": 0.9041666666666668,
+        "deg180": 0.8533854166666668,
+        "deg270": 0.9046875
+      },
+      "worst_condition": "deg180",
+      "worst_condition_mean": 0.8533854166666668,
+      "deg0_worst_episode_seed": 152448617,
+      "deg0_worst_episode_survival": 0.84375,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    },
+    "rule_flee_lead": {
+      "condition_means": {
+        "deg0": 0.9705729166666668,
+        "deg90": 0.9690104166666667,
+        "deg180": 0.9630208333333332,
+        "deg270": 0.9700520833333334
+      },
+      "worst_condition": "deg180",
+      "worst_condition_mean": 0.9630208333333332,
+      "deg0_worst_episode_seed": 152448617,
+      "deg0_worst_episode_survival": 0.8958333333333334,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    },
+    "rule_hold": {
+      "condition_means": {
+        "deg0": 0.7549479166666666,
+        "deg90": 0.7463541666666667,
+        "deg180": 0.7463541666666667,
+        "deg270": 0.76484375
+      },
+      "worst_condition": "deg90",
+      "worst_condition_mean": 0.7463541666666667,
+      "deg0_worst_episode_seed": 1413442403,
+      "deg0_worst_episode_survival": 0.53125,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    },
+    "rule_safe_top": {
+      "condition_means": {
+        "deg0": 0.92890625,
+        "deg90": 0.9065104166666668,
+        "deg180": 0.8815104166666667,
+        "deg270": 0.9158854166666666
+      },
+      "worst_condition": "deg180",
+      "worst_condition_mean": 0.8815104166666667,
+      "deg0_worst_episode_seed": 548105197,
+      "deg0_worst_episode_survival": 0.8125,
+      "note": "descriptive only; not a basis for selecting a training plan"
+    }
+  },
+  "rule_anchors": {
+    "rule_hold": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.7549479166666666,
+        "std": 0.05695621002332229,
+        "min": 0.53125,
+        "max": 0.84375,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.90390625,
+          "250": 0.8546875,
+          "500": 0.7549479166666666
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.7463541666666667,
+        "std": 0.05619705089417308,
+        "min": 0.625,
+        "max": 0.8333333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 83,
+        "mean_survival_at_step": {
+          "1": 0.9783854166666668,
+          "100": 0.8875,
+          "250": 0.8296875,
+          "500": 0.7463541666666667
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.7463541666666667,
+        "std": 0.059468409429591015,
+        "min": 0.5833333333333334,
+        "max": 0.84375,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 88,
+        "mean_survival_at_step": {
+          "1": 0.9770833333333332,
+          "100": 0.9026041666666668,
+          "250": 0.8296875,
+          "500": 0.7463541666666667
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.76484375,
+        "std": 0.049079370522991106,
+        "min": 0.6666666666666666,
+        "max": 0.8645833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.8940104166666666,
+          "250": 0.84921875,
+          "500": 0.76484375
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.9705729166666668,
+        "std": 0.020684228713823364,
+        "min": 0.8958333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 69,
+        "mean_survival_at_step": {
+          "1": 0.98203125,
+          "100": 0.9796875,
+          "250": 0.978125,
+          "500": 0.9705729166666668
+        },
+        "mean_action_dist": [
+          0.014496759358889427,
+          0.0350959351497982,
+          0.0327533274106881,
+          0.0,
+          0.9176539780806247
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9690104166666668,
+        "std": 0.016255529275162633,
+        "min": 0.9375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 75,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.9768229166666668,
+          "250": 0.9755208333333334,
+          "500": 0.9690104166666668
+        },
+        "mean_action_dist": [
+          0.015249749491333595,
+          0.03402514576347533,
+          0.034265182783410876,
+          0.0,
+          0.91645992196178
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.9630208333333334,
+        "std": 0.019729011260771163,
+        "min": 0.9270833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.9763020833333333,
+          "250": 0.97265625,
+          "500": 0.9630208333333334
+        },
+        "mean_action_dist": [
+          0.018613734216598565,
+          0.03598383153262008,
+          0.033930002253481896,
+          0.0,
+          0.9114724319972991
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9700520833333334,
+        "std": 0.01919108150961136,
+        "min": 0.9166666666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.978125,
+          "250": 0.9755208333333332,
+          "500": 0.9700520833333334
+        },
+        "mean_action_dist": [
+          0.01453593093981551,
+          0.03383370363196718,
+          0.03303772513430168,
+          0.0,
+          0.9185926402939154
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "deg0": {
+        "n": 40,
+        "mean_final_survival": 0.92890625,
+        "std": 0.041391149715255704,
+        "min": 0.8125,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 74,
+        "mean_survival_at_step": {
+          "1": 0.9807291666666668,
+          "100": 0.92890625,
+          "250": 0.92890625,
+          "500": 0.92890625
+        },
+        "mean_action_dist": [
+          0.031710398597173096,
+          0.019582419375477507,
+          0.01928271632934595,
+          0.0673943507694635,
+          0.8620301149285401
+        ]
+      },
+      "deg90": {
+        "n": 40,
+        "mean_final_survival": 0.9065104166666668,
+        "std": 0.06715596929590585,
+        "min": 0.59375,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 78,
+        "mean_survival_at_step": {
+          "1": 0.9796875,
+          "100": 0.9065104166666668,
+          "250": 0.9065104166666668,
+          "500": 0.9065104166666668
+        },
+        "mean_action_dist": [
+          0.032627003051849776,
+          0.01981511298241564,
+          0.01952365802308273,
+          0.06726155368391332,
+          0.8607726722587385
+        ]
+      },
+      "deg180": {
+        "n": 40,
+        "mean_final_survival": 0.8815104166666667,
+        "std": 0.07043974913113119,
+        "min": 0.625,
+        "max": 0.9583333333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 84,
+        "mean_survival_at_step": {
+          "1": 0.978125,
+          "100": 0.8815104166666667,
+          "250": 0.8815104166666667,
+          "500": 0.8815104166666667
+        },
+        "mean_action_dist": [
+          0.03342771499822046,
+          0.02000441188502784,
+          0.019750433807353505,
+          0.06715618741253129,
+          0.8596612518968669
+        ]
+      },
+      "deg270": {
+        "n": 40,
+        "mean_final_survival": 0.9158854166666666,
+        "std": 0.04870950245538919,
+        "min": 0.7708333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 79,
+        "mean_survival_at_step": {
+          "1": 0.9794270833333334,
+          "100": 0.9158854166666666,
+          "250": 0.9158854166666666,
+          "500": 0.9158854166666666
+        },
+        "mean_action_dist": [
+          0.03228953828654422,
+          0.01968420030575862,
+          0.019326504662000463,
+          0.06734200699637735,
+          0.8613577497493192
+        ]
+      }
+    }
+  },
+  "manifest": {
+    "path": "experiments/v55/artifacts/frozen_config/v55_frozen_manifest.json",
+    "created_utc": "2026-10-09T11:47:14.938958+00:00",
+    "intervention": "post-reset deterministic rotation of ONLY predator_vel by 0/90/180/270 deg via exact integer matrices (norm preserved exactly), on the nominal world (full heading/speed bias and pre-roll). NOT a resample of the natural initial-heading distribution and NOT a gravity turn; fish pos/vel/alive/timestep/pre-roll/RNG held identical. deg0 is the exact identity and must reproduce the nominal."
+  },
+  "caveats": [
+    "Statistical unit is the episode (scenario), never the 96 fish.",
+    "Every condition diff is paired to the SAME controller's deg0 (nominal) on the SAME initial world.",
+    "The three PPO policies are fixed models, not a random draw; their spread is descriptive.",
+    "The aggregate contrast averages the 3 PPO policies per scenario, then bootstraps over scenarios.",
+    "No episode is dropped; an early all-death scenario stays in with a fixed /96 denominator.",
+    "The rotations probe post-reset predator-heading generalization, not the natural initial-heading distribution.",
+    "The worst-rotation listing is descriptive only and must not select a training plan.",
+    "Gravity stays fixed at +y; rotating the predator velocity is not a gravity turn.",
+    "A first-step death caused by the rotated spawn direction is kept, not filtered."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "scope": "post-review current hash record; NOT run-source and NOT a rerun. Records the CURRENT on-disk hashes of the v55 tooling/tests/dev after the review's minimal fixes. The RUN-TIME hashes stay embedded in report.summary.json and run_provenance.json and are never refreshed.",
+  "note": "The original results/post_run_source_hashes.json covers ONLY the seven evaluation dependencies (v55 common/env/evaluate/verify, v50 common/env, fish_env). It does NOT cover the v55 freeze/report/analyze/snapshot tools, the two test files, or the dev document. This file covers those remaining files so a post-run doc/tool edit cannot masquerade as run-time provenance.",
+  "changed_in_this_review": [
+    "experiments/v55/v55_analyze.py",
+    "experiments/v55/v55_snapshot.py",
+    "experiments/v55/tests/test_v55_acceptance_gates.py",
+    "experiments/v55/dev_v55.md"
+  ],
+  "not_rerun": true,
+  "run_time_hashes_left_untouched": {
+    "report_summary_source_sha256_relpath": "experiments/v55/artifacts/results/report.summary.json#source_sha256",
+    "run_provenance_source_sha256_relpath": "experiments/v55/artifacts/results/run_provenance.json#source_sha256_at_run",
+    "post_run_source_hashes_relpath": "experiments/v55/artifacts/results/post_run_source_hashes.json",
+    "note": "these three files are byte-unchanged; their embedded runtime hashes still describe the original run"
+  },
+  "post_review_current_sha256": {
+    "v55_common.py": "c2004f9daec22f14723feeb8297e66082fc7a8fd7ee3fb114c669e0ddade492a",
+    "v55_env.py": "d732aae63727dcf1346985d75e0fea85440bc054400cd7f96e68734c6d979855",
+    "v55_verify.py": "17842c04900f0044655ccaea62018e752365ede7a35c244c6d21ea04a83f0cf4",
+    "v55_freeze.py": "0c3be080181abee98451074e0e46b5114a10b68f8bb2d882efdae39ad2748eca",
+    "v55_evaluate.py": "c5ec719f683d52776c9ea4e6a39df701c28e84cae522e663c92bd22433385ad9",
+    "v55_report.py": "1097ff8a4a450be7ccada63f3605195194f6c2090c019b7a8dc2e184a12de6ca",
+    "v55_analyze.py": "b6e2d77240f0b48e13938fb70db69bf5e3f6d262d0752b6822cfbd724deb6e4f",
+    "v55_snapshot.py": "8298554c6026005298b6e17fa610ec2cdb8ea2dadc93147a16b25b35c161f664",
+    "tests/test_v55_semantics.py": "6975c89c0093340a969553f639be4f0220b96c7558f72038ab26bdc64f44c695",
+    "tests/test_v55_acceptance_gates.py": "d2492eed310b648360390fa3248918b4572214e119e7c2139e9819a54594b067",
+    "dev_v55.md": "212a7c22edc901cf6712f35de8e6fe37c750a137563ac7e1e9d32be56a7d6acb"
+  }
+}

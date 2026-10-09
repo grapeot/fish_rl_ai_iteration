@@ -1,0 +1,87 @@
+{
+  "round": "v55 (7/10) post-reset predator-velocity rotation one-axis generalization probe",
+  "no_training": true,
+  "python": "experiments/v48/.venv/bin/python",
+  "cli": {
+    "freeze": "experiments/v48/.venv/bin/python experiments/v55/v55_freeze.py --out experiments/v55/artifacts/frozen_config/v55_frozen_manifest.json",
+    "debug": "experiments/v48/.venv/bin/python experiments/v55/v55_evaluate.py --seeds debug --workers 2 --arm rep0_ppo=experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip --arm rep1_ppo=experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip --arm rep2_ppo=experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip --arm rule_hold --arm rule_flee_lead --arm rule_safe_top --out experiments/v55/artifacts/results/debug.jsonl --require-manifest experiments/v55/artifacts/frozen_config/v55_frozen_manifest.json",
+    "report": "experiments/v48/.venv/bin/python experiments/v55/v55_report.py --manifest experiments/v55/artifacts/frozen_config/v55_frozen_manifest.json --out experiments/v55/artifacts/results/report.jsonl --seeds report --workers 4",
+    "analyze": "experiments/v48/.venv/bin/python experiments/v55/v55_analyze.py --report-summary experiments/v55/artifacts/results/report.summary.json --report-jsonl experiments/v55/artifacts/results/report.jsonl --manifest experiments/v55/artifacts/frozen_config/v55_frozen_manifest.json --out experiments/v55/artifacts/results/analysis.json",
+    "snapshot": "experiments/v48/.venv/bin/python experiments/v55/v55_snapshot.py --out experiments/v55/artifacts/results/post_run_source_hashes.json"
+  },
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": false,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_heading_bias": [
+      {"start_deg": 0.0, "end_deg": 60.0, "weight": 1.1},
+      {"start_deg": 60.0, "end_deg": 90.0, "weight": 0.8},
+      {"start_deg": 90.0, "end_deg": 120.0, "weight": 0.08},
+      {"start_deg": 120.0, "end_deg": 150.0, "weight": 0.05},
+      {"start_deg": 150.0, "end_deg": 210.0, "weight": 0.9},
+      {"start_deg": 210.0, "end_deg": 270.0, "weight": 1.3},
+      {"start_deg": 270.0, "end_deg": 330.0, "weight": 1.2},
+      {"start_deg": 330.0, "end_deg": 360.0, "weight": 0.95}
+    ],
+    "predator_pre_roll_speed_bias": [
+      {"min_speed": 0.0, "max_speed": 1.0, "weight": 1.6},
+      {"min_speed": 1.0, "max_speed": 1.6, "weight": 1.3},
+      {"min_speed": 1.6, "max_speed": 2.0, "weight": 0.7},
+      {"min_speed": 2.0, "max_speed": 2.4, "weight": 0.35},
+      {"min_speed": 2.4, "max_speed": 3.0, "weight": 0.2}
+    ]
+  },
+  "conditions": ["deg0", "deg90", "deg180", "deg270"],
+  "rotation_degrees": {"deg0": 0, "deg90": 90, "deg180": 180, "deg270": 270},
+  "rotation_matrices": {
+    "deg0": [[1, 0], [0, 1]],
+    "deg90": [[0, -1], [1, 0]],
+    "deg180": [[-1, 0], [0, -1]],
+    "deg270": [[0, 1], [-1, 0]]
+  },
+  "intervention": "post-reset deterministic rotation of ONLY predator_vel by 0/90/180/270 deg via exact integer matrices (norm preserved exactly), on the nominal world (full heading/speed bias and pre-roll). NOT a resample of the natural initial-heading distribution and NOT a gravity turn; fish pos/vel/alive/timestep/pre-roll/RNG held identical. deg0 is the exact identity.",
+  "seed_banks": {
+    "debug": {"rng_seed": 550101, "n": 2},
+    "report": {"rng_seed": 550102, "n": 40}
+  },
+  "model_manifest": {
+    "rep0_ppo": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8"
+    },
+    "rep1_ppo": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17"
+    },
+    "rep2_ppo": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce"
+    }
+  },
+  "source_sha256_at_run": {
+    "v55_common.py": "c2004f9daec22f14723feeb8297e66082fc7a8fd7ee3fb114c669e0ddade492a",
+    "v55_env.py": "d732aae63727dcf1346985d75e0fea85440bc054400cd7f96e68734c6d979855",
+    "v55_evaluate.py": "c5ec719f683d52776c9ea4e6a39df701c28e84cae522e663c92bd22433385ad9",
+    "v55_verify.py": "17842c04900f0044655ccaea62018e752365ede7a35c244c6d21ea04a83f0cf4",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "resource": {
+    "debug": {"n_episodes": 48, "workers": 2, "wall_sec": 188.3},
+    "report": {"n_episodes": 960, "workers": 4, "wall_sec": 1838.1, "wall_label": "30.6 min", "target": "<=40 min"},
+    "angles_kept_full": true,
+    "note": "benchmark predicted under budget at 4 angles (0/90/180/270); no pre-emptive simplification was applied."
+  }
+}

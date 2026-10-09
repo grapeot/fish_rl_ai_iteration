@@ -1,0 +1,102 @@
+{
+  "scope": "post-hoc supplementary analysis on the SAME frozen raw; no new eval, no training, no model/bank/threshold change. NOT a pre-registered primary metric.",
+  "conditions": [
+    "deg0",
+    "deg90",
+    "deg180",
+    "deg270"
+  ],
+  "rotation_degrees": {
+    "deg0": 0,
+    "deg90": 90,
+    "deg180": 180,
+    "deg270": 270
+  },
+  "definition": "For each scenario seed and condition: average the fixed three PPO policies' survival, then subtract the SAME condition's rule_hold survival (G = mean(rep0,rep1,rep2) - HOLD). Paired episode bootstrap over the 40 seeds. The DiD is computed per scenario as G(cond) - G(deg0), never by subtracting CI endpoints.",
+  "reference_controller": "rule_hold",
+  "ppo_minus_hold": {
+    "deg0": {
+      "mean": 0.17378472222222224,
+      "ci95_low": 0.15859375,
+      "ci95_high": 0.19001736111111112,
+      "n": 40,
+      "win_rate": 1.0,
+      "loss_rate": 0.0
+    },
+    "deg90": {
+      "mean": 0.17708333333333334,
+      "ci95_low": 0.1603298611111111,
+      "ci95_high": 0.1943598090277778,
+      "n": 40,
+      "win_rate": 1.0,
+      "loss_rate": 0.0
+    },
+    "deg180": {
+      "mean": 0.15130208333333334,
+      "ci95_low": 0.1365451388888889,
+      "ci95_high": 0.16657986111111112,
+      "n": 40,
+      "win_rate": 1.0,
+      "loss_rate": 0.0
+    },
+    "deg270": {
+      "mean": 0.15269097222222222,
+      "ci95_low": 0.14227430555555556,
+      "ci95_high": 0.16328125,
+      "n": 40,
+      "win_rate": 1.0,
+      "loss_rate": 0.0
+    }
+  },
+  "did_advantage_vs_deg0": {
+    "deg90": {
+      "contrast": "(PPO-HOLD deg90) - (PPO-HOLD deg0)",
+      "mean": 0.003298611111111102,
+      "ci95_low": -0.014236111111111093,
+      "ci95_high": 0.020138888888888866,
+      "n": 40,
+      "win_rate": 0.575,
+      "loss_rate": 0.4
+    },
+    "deg180": {
+      "contrast": "(PPO-HOLD deg180) - (PPO-HOLD deg0)",
+      "mean": -0.022482638888888903,
+      "ci95_low": -0.03906250000000001,
+      "ci95_high": -0.006336805555555544,
+      "n": 40,
+      "win_rate": 0.275,
+      "loss_rate": 0.675
+    },
+    "deg270": {
+      "contrast": "(PPO-HOLD deg270) - (PPO-HOLD deg0)",
+      "mean": -0.021093750000000005,
+      "ci95_low": -0.0368923611111111,
+      "ci95_high": -0.005989583333333365,
+      "n": 40,
+      "win_rate": 0.35,
+      "loss_rate": 0.65
+    }
+  },
+  "rule_hold_contrast_vs_deg0": {
+    "deg180": {
+      "contrast": "rule_hold deg180 - deg0",
+      "mean": -0.008593749999999989,
+      "ci95_low": -0.02656249999999999,
+      "ci95_high": 0.010156250000000002,
+      "n": 40
+    }
+  },
+  "bootstrap": {
+    "n_boot": 10000,
+    "alpha": 0.05,
+    "rng_seed": 550301,
+    "method": "percentile over episodes (scenarios)"
+  },
+  "caveats": [
+    "Episode (scenario) is the unit; the fixed three PPO policies are averaged first, then bootstrapped over scenarios.",
+    "The DiD is the advantage change under THIS specific passive reference (rule_hold); it is not a causal removal of all environment difficulty.",
+    "rule_hold's own CI crossing zero does not imply baseline difficulty is unchanged.",
+    "PPO still exceeds same-condition HOLD at all four points; this is a comparison, not proof of direction robustness.",
+    "Post-hoc supplement: cannot be retroactively promoted to a pre-run primary metric."
+  ]
+}
