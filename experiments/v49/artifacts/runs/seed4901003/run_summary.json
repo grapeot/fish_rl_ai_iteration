@@ -1,0 +1,29 @@
+{
+  "seed": 4901003,
+  "iterations": 200,
+  "num_envs": 6,
+  "total_steps": 614400,
+  "wall_sec": 1377.2200729846954,
+  "steps_per_sec": 446.1160652912061,
+  "episodes": 1430,
+  "deaths": 269,
+  "truncs": 1161,
+  "focal_survival_rate": 0.8118881118881119,
+  "checkpoints": [
+    "model_final.zip",
+    "model_iter_100.zip",
+    "model_iter_150.zip",
+    "model_iter_50.zip"
+  ],
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  }
+}
