@@ -1,0 +1,78 @@
+{
+  "replicate": 1,
+  "arm": "treatment",
+  "augment_velocity": true,
+  "aug_factors": [
+    1.0,
+    0.5,
+    0.0
+  ],
+  "augment_factor_counts": {
+    "1.0": 471,
+    "0.5": 427,
+    "0.0": 452
+  },
+  "augment_resets_total": 1350,
+  "model_seed": 7000021,
+  "num_envs": 6,
+  "env_bank_worker_seeds": [
+    6000021,
+    6000022,
+    6000023,
+    6000024,
+    6000025,
+    6000026
+  ],
+  "iterations": 200,
+  "total_steps": 614400,
+  "wall_sec": 1450.9700827598572,
+  "steps_per_sec": 423.44084643796634,
+  "episodes": 1344,
+  "deaths": 127,
+  "truncs": 1217,
+  "focal_survival_rate": 0.9055059523809523,
+  "updates_completed": 200,
+  "train_metrics_rows": 200,
+  "checkpoints": [
+    {
+      "updates_completed": 50,
+      "collected_steps": 153600,
+      "path": "model_updates_50.zip"
+    },
+    {
+      "updates_completed": 100,
+      "collected_steps": 307200,
+      "path": "model_updates_100.zip"
+    },
+    {
+      "updates_completed": 150,
+      "collected_steps": 460800,
+      "path": "model_updates_150.zip"
+    },
+    {
+      "updates_completed": 200,
+      "collected_steps": 614400,
+      "path": "model_final.zip"
+    }
+  ],
+  "initial_policy_hash": "cc978bc27d6fd2ea2213cb4e83f7197c9cdc2f84d3ad7b37cacd3814242b6c8e",
+  "runtime_source_sha256": {
+    "v57_common.py": "ae5cf42ded1b7408f3c5209dae9ec91c36c1eb29566cd4204c76c04b2f9481ef",
+    "v57_env.py": "0ce167f4333beab543f530722a7c6c19772447afbf72be3db94af5933ebd7529",
+    "v57_train.py": "dd904642f553495d80e61d8cbf54055779df0d9343b7452d911f3badc3f32490",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  }
+}
