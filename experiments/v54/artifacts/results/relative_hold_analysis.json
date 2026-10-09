@@ -1,0 +1,44 @@
+{
+  "source": "computed directly from raw report records (not copied from the summary)",
+  "manifest": {
+    "path": "experiments/v54/artifacts/frozen_config/v54_frozen_manifest.json",
+    "created_utc": "2026-10-09T11:13:29.694428+00:00"
+  },
+  "caveats": [
+    "Statistical unit is the scenario (40), never the 96 fish or the policy-scenario.",
+    "Per scenario the fixed 3 PPO policies are averaged, then paired against HOLD.",
+    "DiD is a paired outcome contrast, NOT a causal mediation decomposition.",
+    "Do not replace the DiD CI by subtracting two independent CIs."
+  ],
+  "relative_hold": {
+    "unit": "scenario (40); each scenario averages the fixed 3 PPO policies, then pairs against HOLD",
+    "nominal_ppo_minus_hold": {
+      "contrast": "nominal: fixed-3 PPO average - HOLD",
+      "mean": 0.17934027777777778,
+      "ci95_low": 0.16215277777777778,
+      "ci95_high": 0.19626953125,
+      "pos_scenarios": 40,
+      "zero_scenarios": 0,
+      "neg_scenarios": 0
+    },
+    "zero_ppo_minus_hold": {
+      "contrast": "zero: fixed-3 PPO average - HOLD",
+      "mean": 0.018315972222222227,
+      "ci95_low": 0.011892361111111102,
+      "ci95_high": 0.023784722222222228,
+      "pos_scenarios": 38,
+      "zero_scenarios": 0,
+      "neg_scenarios": 2
+    },
+    "difference_in_differences": {
+      "contrast": "DiD: zero advantage - nominal advantage",
+      "mean": -0.16102430555555558,
+      "ci95_low": -0.1785590277777778,
+      "ci95_high": -0.14279513888888892,
+      "pos_scenarios": 0,
+      "zero_scenarios": 0,
+      "neg_scenarios": 40
+    },
+    "note": "Paired outcome contrast, NOT a causal mediation decomposition: HOLD's own task difficulty changes with the intervention. Do not subtract two independent CIs. Same sorted report seeds, numpy RNG 540301, 10,000 resamples, percentile 95% CI."
+  }
+}

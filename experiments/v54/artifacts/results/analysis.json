@@ -1,0 +1,852 @@
+{
+  "conditions": [
+    "nominal",
+    "half",
+    "zero"
+  ],
+  "velocity_factors": {
+    "nominal": 1.0,
+    "half": 0.5,
+    "zero": 0.0
+  },
+  "per_controller": {
+    "rep0_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9453125,
+        "std": 0.028866549650875133,
+        "min": 0.8854166666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.94609375,
+          "250": 0.9453125,
+          "500": 0.9453125
+        },
+        "mean_action_dist": [
+          0.1198784787063298,
+          0.05166826743609855,
+          0.029403117251914086,
+          0.7838892032134408,
+          0.015160933392216757
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9447916666666668,
+        "std": 0.03420013474424065,
+        "min": 0.8125,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 75,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.9453125,
+          "250": 0.9447916666666668,
+          "500": 0.9447916666666668
+        },
+        "mean_action_dist": [
+          0.11894714967203446,
+          0.03290307014739853,
+          0.029229714774696873,
+          0.8013248669251439,
+          0.017595198480726274
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625,
+        "std": 0.06363814134768579,
+        "min": 0.6666666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.90234375,
+          "250": 0.86953125,
+          "500": 0.865625
+        },
+        "mean_action_dist": [
+          0.0001073996433763739,
+          0.016455012619664623,
+          0.9212193648301259,
+          0.0015421506076913553,
+          0.06067607229914176
+        ]
+      }
+    },
+    "rep1_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9341145833333332,
+        "std": 0.033141433124799044,
+        "min": 0.84375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.9346354166666666,
+          "250": 0.9346354166666666,
+          "500": 0.9341145833333332
+        },
+        "mean_action_dist": [
+          0.1652121786980177,
+          0.06087104387829441,
+          0.04753948075816676,
+          0.333908103315326,
+          0.3924691933501951
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.93125,
+        "std": 0.04111547822727529,
+        "min": 0.8020833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 76,
+        "mean_survival_at_step": {
+          "1": 0.9802083333333332,
+          "100": 0.9317708333333332,
+          "250": 0.9317708333333332,
+          "500": 0.93125
+        },
+        "mean_action_dist": [
+          0.17201283073900844,
+          0.060209783156953356,
+          0.0471635452183016,
+          0.3237340373948828,
+          0.39687980349085367
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.9205729166666667,
+        "std": 0.05689267144302948,
+        "min": 0.7291666666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.9208333333333334,
+          "250": 0.9205729166666667,
+          "500": 0.9205729166666667
+        },
+        "mean_action_dist": [
+          0.10256794286788598,
+          0.06925177593493992,
+          0.00044674709755118685,
+          0.16592308748992415,
+          0.6618104466096988
+        ]
+      }
+    },
+    "rep2_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.921875,
+        "std": 0.058972762195031024,
+        "min": 0.7083333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 71,
+        "mean_survival_at_step": {
+          "1": 0.9815104166666668,
+          "100": 0.9223958333333332,
+          "250": 0.921875,
+          "500": 0.921875
+        },
+        "mean_action_dist": [
+          0.025228567903144466,
+          0.5613460545249721,
+          0.054874449888365096,
+          0.1883743474706672,
+          0.1701765802128512
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.8953125,
+        "std": 0.05358154963069108,
+        "min": 0.7291666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 77,
+        "mean_survival_at_step": {
+          "1": 0.9799479166666666,
+          "100": 0.91015625,
+          "250": 0.8971354166666666,
+          "500": 0.8953125
+        },
+        "mean_action_dist": [
+          0.008319719926998974,
+          0.7412913404445514,
+          0.055709681997662054,
+          0.10965326062562075,
+          0.08502599700516703
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625,
+        "std": 0.06363814134768579,
+        "min": 0.6666666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.90234375,
+          "250": 0.86953125,
+          "500": 0.865625
+        },
+        "mean_action_dist": [
+          0.0,
+          0.9945808674744849,
+          1.1118737300736788e-05,
+          0.005408013788214214,
+          0.0
+        ]
+      }
+    },
+    "rule_hold": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.7544270833333334,
+        "std": 0.0629386096549012,
+        "min": 0.6145833333333334,
+        "max": 0.8854166666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.9098958333333332,
+          "250": 0.8575520833333332,
+          "500": 0.7544270833333334
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.8330729166666668,
+        "std": 0.054382352263520894,
+        "min": 0.6979166666666666,
+        "max": 0.96875,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 75,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.928125,
+          "250": 0.8591145833333332,
+          "500": 0.8330729166666668
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625,
+        "std": 0.06363814134768579,
+        "min": 0.6666666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.90234375,
+          "250": 0.86953125,
+          "500": 0.865625
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9734375,
+        "std": 0.022496388994820215,
+        "min": 0.90625,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 67,
+        "mean_survival_at_step": {
+          "1": 0.9825520833333334,
+          "100": 0.98203125,
+          "250": 0.9791666666666667,
+          "500": 0.9734375
+        },
+        "mean_action_dist": [
+          0.013928180871873794,
+          0.03445328656931888,
+          0.03322471565620106,
+          0.0,
+          0.9183938169026064
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9721354166666668,
+        "std": 0.026414268188320145,
+        "min": 0.8854166666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 73,
+        "mean_survival_at_step": {
+          "1": 0.9809895833333334,
+          "100": 0.9799479166666668,
+          "250": 0.9778645833333334,
+          "500": 0.9721354166666668
+        },
+        "mean_action_dist": [
+          0.01729519835348049,
+          0.02476514753402339,
+          0.02553540563230065,
+          0.0,
+          0.9324042484801953
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.96015625,
+        "std": 0.028394022405586458,
+        "min": 0.875,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.9669270833333334,
+          "250": 0.96484375,
+          "500": 0.96015625
+        },
+        "mean_action_dist": [
+          0.017349432423247026,
+          0.012154973704107955,
+          0.013373553751378808,
+          0.0,
+          0.9571220401212661
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9255208333333333,
+        "std": 0.049286554362048776,
+        "min": 0.8020833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 73,
+        "mean_survival_at_step": {
+          "1": 0.9809895833333332,
+          "100": 0.9255208333333333,
+          "250": 0.9255208333333333,
+          "500": 0.9255208333333333
+        },
+        "mean_action_dist": [
+          0.03181430950332307,
+          0.018990296111515745,
+          0.019235295628097546,
+          0.06737921163592867,
+          0.8625808871211348
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9265625,
+        "std": 0.05237365665073101,
+        "min": 0.75,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 76,
+        "mean_survival_at_step": {
+          "1": 0.9802083333333332,
+          "100": 0.9265625,
+          "250": 0.9265625,
+          "500": 0.9265625
+        },
+        "mean_action_dist": [
+          0.03767346737700071,
+          0.021563412875700926,
+          0.021363141521731032,
+          0.06508005471057673,
+          0.8543199235149904
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.9239583333333334,
+        "std": 0.05076866420300287,
+        "min": 0.7708333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.9239583333333334,
+          "250": 0.9239583333333334,
+          "500": 0.9239583333333334
+        },
+        "mean_action_dist": [
+          0.051167183044869266,
+          0.02018174396379763,
+          0.025853949664623767,
+          0.062193947521163674,
+          0.8406031758055456
+        ]
+      }
+    }
+  },
+  "per_ppo_replicate": {
+    "rep0_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9453125
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9447916666666668
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625
+      }
+    },
+    "rep1_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9341145833333334
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.93125
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.9205729166666667
+      }
+    },
+    "rep2_ppo": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.921875
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.8953125
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625
+      }
+    }
+  },
+  "paired_vs_nominal": {
+    "rep0_ppo": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.0005208333333333287,
+        "std_diff": 0.029363461545458568,
+        "ci95_low": -0.009375,
+        "ci95_high": 0.00833333333333334,
+        "win_rate": 0.425,
+        "tie_rate": 0.125,
+        "loss_rate": 0.45
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.0796875,
+        "std_diff": 0.06851203636947949,
+        "ci95_low": -0.10104166666666667,
+        "ci95_high": -0.05962890625000008,
+        "win_rate": 0.05,
+        "tie_rate": 0.075,
+        "loss_rate": 0.875
+      }
+    },
+    "rep1_ppo": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.0028645833333333453,
+        "std_diff": 0.022624337420056775,
+        "ci95_low": -0.009895833333333336,
+        "ci95_high": 0.004166666666666657,
+        "win_rate": 0.325,
+        "tie_rate": 0.325,
+        "loss_rate": 0.35
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.013541666666666674,
+        "std_diff": 0.04483171286748342,
+        "ci95_low": -0.02812500000000001,
+        "ci95_high": -0.0007812500000000111,
+        "win_rate": 0.325,
+        "tie_rate": 0.25,
+        "loss_rate": 0.425
+      }
+    },
+    "rep2_ppo": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.02656250000000001,
+        "std_diff": 0.024165883792211906,
+        "ci95_low": -0.03385416666666668,
+        "ci95_high": -0.01927083333333333,
+        "win_rate": 0.075,
+        "tie_rate": 0.1,
+        "loss_rate": 0.825
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.05625,
+        "std_diff": 0.04867593358089305,
+        "ci95_low": -0.07239583333333333,
+        "ci95_high": -0.042708333333333334,
+        "win_rate": 0.025,
+        "tie_rate": 0.0,
+        "loss_rate": 0.975
+      }
+    },
+    "rule_flee_lead": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.0013020833333333315,
+        "std_diff": 0.013589351447232893,
+        "ci95_low": -0.00546875,
+        "ci95_high": 0.0028645833333333453,
+        "win_rate": 0.325,
+        "tie_rate": 0.275,
+        "loss_rate": 0.4
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.013281249999999994,
+        "std_diff": 0.01901631560216639,
+        "ci95_low": -0.019010416666666672,
+        "ci95_high": -0.007552083333333326,
+        "win_rate": 0.15,
+        "tie_rate": 0.25,
+        "loss_rate": 0.6
+      }
+    },
+    "rule_hold": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": 0.07864583333333333,
+        "std_diff": 0.06771141511724214,
+        "ci95_low": 0.05832682291666667,
+        "ci95_high": 0.09947916666666667,
+        "win_rate": 0.85,
+        "tie_rate": 0.05,
+        "loss_rate": 0.1
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": 0.11119791666666667,
+        "std_diff": 0.0630048829324062,
+        "ci95_low": 0.09192708333333333,
+        "ci95_high": 0.12994791666666666,
+        "win_rate": 0.925,
+        "tie_rate": 0.05,
+        "loss_rate": 0.025
+      }
+    },
+    "rule_safe_top": {
+      "half": {
+        "contrast": "half - nominal",
+        "n_pairs": 40,
+        "mean_diff": 0.0010416666666666686,
+        "std_diff": 0.021203968074590716,
+        "ci95_low": -0.00520833333333334,
+        "ci95_high": 0.0075520833333333395,
+        "win_rate": 0.3,
+        "tie_rate": 0.4,
+        "loss_rate": 0.3
+      },
+      "zero": {
+        "contrast": "zero - nominal",
+        "n_pairs": 40,
+        "mean_diff": -0.0015624999999999862,
+        "std_diff": 0.024689804564439144,
+        "ci95_low": -0.00911458333333332,
+        "ci95_high": 0.005989583333333356,
+        "win_rate": 0.325,
+        "tie_rate": 0.2,
+        "loss_rate": 0.475
+      }
+    }
+  },
+  "aggregate_ppo_contrast": {
+    "half": {
+      "contrast": "half - nominal (mean over 3 frozen PPO policies per scenario)",
+      "n_scenarios": 40,
+      "mean_diff": -0.009982638888888893,
+      "ci95_low": -0.014409722222222227,
+      "ci95_high": -0.005642361111111112,
+      "win_rate": 0.175,
+      "loss_rate": 0.75,
+      "note": "per scenario average over the 3 fixed PPO policies, then bootstrap over scenarios"
+    },
+    "zero": {
+      "contrast": "zero - nominal (mean over 3 frozen PPO policies per scenario)",
+      "n_scenarios": 40,
+      "mean_diff": -0.04982638888888889,
+      "ci95_low": -0.06284939236111112,
+      "ci95_high": -0.038628472222222224,
+      "win_rate": 0.025,
+      "loss_rate": 0.975,
+      "note": "per scenario average over the 3 fixed PPO policies, then bootstrap over scenarios"
+    }
+  },
+  "rule_anchors": {
+    "rule_hold": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.7544270833333334,
+        "std": 0.0629386096549012,
+        "min": 0.6145833333333334,
+        "max": 0.8854166666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 72,
+        "mean_survival_at_step": {
+          "1": 0.98125,
+          "100": 0.9098958333333332,
+          "250": 0.8575520833333332,
+          "500": 0.7544270833333334
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.8330729166666668,
+        "std": 0.054382352263520894,
+        "min": 0.6979166666666666,
+        "max": 0.96875,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 75,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.928125,
+          "250": 0.8591145833333332,
+          "500": 0.8330729166666668
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.865625,
+        "std": 0.06363814134768579,
+        "min": 0.6666666666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.90234375,
+          "250": 0.86953125,
+          "500": 0.865625
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9734375,
+        "std": 0.022496388994820215,
+        "min": 0.90625,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 67,
+        "mean_survival_at_step": {
+          "1": 0.9825520833333334,
+          "100": 0.98203125,
+          "250": 0.9791666666666667,
+          "500": 0.9734375
+        },
+        "mean_action_dist": [
+          0.013928180871873794,
+          0.03445328656931888,
+          0.03322471565620106,
+          0.0,
+          0.9183938169026064
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9721354166666668,
+        "std": 0.026414268188320145,
+        "min": 0.8854166666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 73,
+        "mean_survival_at_step": {
+          "1": 0.9809895833333334,
+          "100": 0.9799479166666668,
+          "250": 0.9778645833333334,
+          "500": 0.9721354166666668
+        },
+        "mean_action_dist": [
+          0.01729519835348049,
+          0.02476514753402339,
+          0.02553540563230065,
+          0.0,
+          0.9324042484801953
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.96015625,
+        "std": 0.028394022405586458,
+        "min": 0.875,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.9669270833333334,
+          "250": 0.96484375,
+          "500": 0.96015625
+        },
+        "mean_action_dist": [
+          0.017349432423247026,
+          0.012154973704107955,
+          0.013373553751378808,
+          0.0,
+          0.9571220401212661
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "nominal": {
+        "n": 40,
+        "mean_final_survival": 0.9255208333333333,
+        "std": 0.049286554362048776,
+        "min": 0.8020833333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 73,
+        "mean_survival_at_step": {
+          "1": 0.9809895833333332,
+          "100": 0.9255208333333333,
+          "250": 0.9255208333333333,
+          "500": 0.9255208333333333
+        },
+        "mean_action_dist": [
+          0.03181430950332307,
+          0.018990296111515745,
+          0.019235295628097546,
+          0.06737921163592867,
+          0.8625808871211348
+        ]
+      },
+      "half": {
+        "n": 40,
+        "mean_final_survival": 0.9265625,
+        "std": 0.05237365665073101,
+        "min": 0.75,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 76,
+        "mean_survival_at_step": {
+          "1": 0.9802083333333332,
+          "100": 0.9265625,
+          "250": 0.9265625,
+          "500": 0.9265625
+        },
+        "mean_action_dist": [
+          0.03767346737700071,
+          0.021563412875700926,
+          0.021363141521731032,
+          0.06508005471057673,
+          0.8543199235149904
+        ]
+      },
+      "zero": {
+        "n": 40,
+        "mean_final_survival": 0.9239583333333334,
+        "std": 0.05076866420300287,
+        "min": 0.7708333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 80,
+        "mean_survival_at_step": {
+          "1": 0.9791666666666666,
+          "100": 0.9239583333333334,
+          "250": 0.9239583333333334,
+          "500": 0.9239583333333334
+        },
+        "mean_action_dist": [
+          0.051167183044869266,
+          0.02018174396379763,
+          0.025853949664623767,
+          0.062193947521163674,
+          0.8406031758055456
+        ]
+      }
+    }
+  },
+  "manifest": {
+    "path": "experiments/v54/artifacts/frozen_config/v54_frozen_manifest.json",
+    "created_utc": "2026-10-09T11:13:29.694428+00:00",
+    "intervention": "post-reset scale of ONLY fish_velocities by the condition factor, on the nominal boosted world (initial_escape_boost=True, escape_boost_speed=0.8). NOT initial_escape_boost=False; positions/alive/predator/pre-roll/RNG held identical."
+  },
+  "caveats": [
+    "Statistical unit is the episode (scenario), never the 96 fish.",
+    "Every condition diff is paired to the SAME controller's nominal on the SAME initial world.",
+    "The three PPO policies are fixed models, not a random draw; their spread is descriptive.",
+    "The aggregate contrast averages the 3 PPO policies per scenario, then bootstraps over scenarios.",
+    "No episode is dropped; an early all-death scenario stays in with a fixed /96 denominator."
+  ]
+}

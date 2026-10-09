@@ -1,0 +1,45 @@
+{
+  "kind": "v54_post_review_source_hashes",
+  "version": 1,
+  "recorded_utc": "2026-10-09T11:59:01.883244+00:00",
+  "scope": "post-run analysis, NOT a rerun. No model retraining and no re-evaluation of the 720 episodes.",
+  "final_copy_correction": "Documentation-only follow-up removed an unsupported trajectory mechanism and corrected the gate-test count to 16; the dev file hash below reflects this follow-up. All runtime hashes and episode records remain unchanged.",
+  "reason": "round-6 review corrections: v54_common.py docstring; v54_analyze.py (raw-derived PPO-vs-HOLD contrast + summary-vs-raw guard); v54_verify.py (velocity-factor binding); v54_evaluate.py (wire factor binding); tests strengthened; dev_v54.md rewritten. Runtime hashes in report.summary.json / run_provenance.json / post_run_source_hashes.json are NOT refreshed.",
+  "runtime_source_list_note": "The run-time source list covered only v54_common/env/evaluate/verify + v50 sources + fish_env.py; it did not cover freeze/report/analyze/snapshot/dev/tests.",
+  "changed_since_runtime": [
+    "v54_common.py",
+    "v54_evaluate.py",
+    "v54_verify.py"
+  ],
+  "current_source_sha256": {
+    "v54_common.py": "36e8d5b1a369d233e979712e2d5026de5a8c29bbb501fc63bb7adeb74f700038",
+    "v54_env.py": "cacdefd6483f80a41f6c2f0a35fe4fbf4e1abdb2838ee289a93dc667afdfe24d",
+    "v54_evaluate.py": "d2e388b1206850871fe5e434fbce6ef94074605568acd5ee7fc64623d2ad1c02",
+    "v54_verify.py": "65b098019827c677ee16f81c79f3c63879b02e25951bb7942008f21d51d8817d",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "runtime_source_sha256": {
+    "v54_common.py": "eb778d9622aea1bc1b1c65ae58759e179d34db66f141828276fcb45c1938e203",
+    "v54_env.py": "cacdefd6483f80a41f6c2f0a35fe4fbf4e1abdb2838ee289a93dc667afdfe24d",
+    "v54_evaluate.py": "7dd56500842aea6882c6af9f2272e6545859c0b1ce19767aef83b42e855c2c5e",
+    "v54_verify.py": "950438d4294f061c7bfc371c704cc7e131296b74a388bbeaf17381e4c26ba889",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "files": {
+    "experiments/v54/v54_common.py": "36e8d5b1a369d233e979712e2d5026de5a8c29bbb501fc63bb7adeb74f700038",
+    "experiments/v54/v54_env.py": "cacdefd6483f80a41f6c2f0a35fe4fbf4e1abdb2838ee289a93dc667afdfe24d",
+    "experiments/v54/v54_verify.py": "65b098019827c677ee16f81c79f3c63879b02e25951bb7942008f21d51d8817d",
+    "experiments/v54/v54_freeze.py": "af2fbbac0285d7d7b2e85b872484490ad3f19b6e77ba8e636096453fbf770497",
+    "experiments/v54/v54_evaluate.py": "d2e388b1206850871fe5e434fbce6ef94074605568acd5ee7fc64623d2ad1c02",
+    "experiments/v54/v54_report.py": "d644cdd71a52948432634e7089c42b10ff1c6c512c12ee87233319b667b7a905",
+    "experiments/v54/v54_analyze.py": "36b075d9d3adeaf25c053cc0bee63d86409931548cc8c9a9aa48090a3973d1a3",
+    "experiments/v54/v54_snapshot.py": "f1ef53d7f3dfadc05d3d1033f9887a75a0344b4a28934cfcab21634091172972",
+    "experiments/v54/tests/test_v54_semantics.py": "c58c01744fef4c8f53293a7b1f638f5054e22b54f408b19292f83e4e3fd0e67d",
+    "experiments/v54/tests/test_v54_acceptance_gates.py": "319cdc08145b717a8e64cd42b6eb6be6856b11d0b6b9e3e8149601f95221c4d4",
+    "experiments/v54/dev_v54.md": "703de262947fce320144878bfb0ef32a9f83b75847b9b9ee44135b57274974cf"
+  }
+}
