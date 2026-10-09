@@ -1,0 +1,76 @@
+{
+  "schema": "v49_metadata_notes_v1",
+  "purpose": "Record real, verifiable metadata for the v49 baseline that the original run did not persist, so the round-1 record is accurate. Values are read back from the existing artifacts and installed SB3 source; no training or evaluation was rerun, and no original numerical files were altered.",
+  "checkpoint_updates": {
+    "note": "SB3 saves in the callback's on_rollout_end, which fires AFTER the rollout is collected and BEFORE that iteration's PPO update. So the stage label iN holds the weights after N-1 completed updates. Read from each checkpoint's data['num_timesteps'] and data['_n_updates'] (epochs = updates * n_epochs).",
+    "n_epochs": 10,
+    "rows": [
+      {"label": "i50", "env_steps_collected": 153600, "completed_ppo_updates": 49, "_n_updates": 490},
+      {"label": "i100", "env_steps_collected": 307200, "completed_ppo_updates": 99, "_n_updates": 990},
+      {"label": "i150", "env_steps_collected": 460800, "completed_ppo_updates": 149, "_n_updates": 1490},
+      {"label": "final", "env_steps_collected": 614400, "completed_ppo_updates": 200, "_n_updates": 2000}
+    ],
+    "identical_across_runs": ["4901001", "4901002", "4901003"]
+  },
+  "train_metrics_rows": {
+    "note": "Each run's train_metrics.jsonl has 199 rows (iteration=1..199), not 200. Row n's train/* come from update n, but the episodes/deaths/truncs counters already include the rollout of iteration n+1. Update 200's loss/entropy/KL were never logged. Because the callback runs before dump_logs, rollout/ep_rew_mean, rollout/ep_len_mean and time/total_timesteps are NOT present in these files; what is public is loss, value_loss, policy_gradient_loss, entropy_loss (reported as train/entropy_loss), approx_kl, clip_fraction, explained_variance, learning_rate, n_updates, wall time and the cumulative counters.",
+    "rows_per_run": 199,
+    "last_logged_iteration": 199,
+    "final_entropy_loss": {
+      "4901001": -1.435805730025,
+      "4901002": -1.437241999308,
+      "4901003": -1.423168353240
+    },
+    "cumulative_survival_adjacent_drops": {
+      "4901001": {"drops": 69, "comparisons": 198},
+      "4901002": {"drops": 52, "comparisons": 198},
+      "4901003": {"drops": 77, "comparisons": 198}
+    },
+    "final_cumulative_survival": {
+      "4901001": 0.854271356784,
+      "4901002": 0.847857142857,
+      "4901003": 0.811888111888
+    }
+  },
+  "environment_seed_overlap": {
+    "note": "SB3 BaseVecEnv.seed assigns seed+rank (verified in the installed stable_baselines3/common/vec_env/base_vec_env.py). Each run used num_envs=6, so the per-run environment seed banks overlap.",
+    "per_run_env_seed_banks": {
+      "4901001": [4901001, 4901002, 4901003, 4901004, 4901005, 4901006],
+      "4901002": [4901002, 4901003, 4901004, 4901005, 4901006, 4901007],
+      "4901003": [4901003, 4901004, 4901005, 4901006, 4901007, 4901008]
+    },
+    "unique_env_seeds_across_18_workers": 8,
+    "consequence": "The three runs use different model/action RNG seeds but share 5/6 of their per-env starting RNG streams pairwise (8 distinct env seeds over 18 workers). The 3-run std is a descriptive dispersion of these three runs, not an independent-sample generalization CI. v50 should use non-overlapping environment seed segments."
+  },
+  "select_report_timing": {
+    "note": "File mtimes order the visible artifacts; mtime can be perturbed by copy/rewrite, so this is a timing observation, not proof of what the author read. There is no independent pre-registered selection manifest or tie-break record. The selection is a per-run argmax of mean final survival applied as post-processing; the report table is a descriptive summary generated before selection finished.",
+    "mtimes_local": {
+      "report.jsonl": "00:09:54",
+      "report.summary.json": "00:09:55",
+      "analysis.json": "00:10:59",
+      "selection.jsonl": "00:15:29",
+      "selection.summary.json": "00:15:29",
+      "dev_v49.md": "00:16:35"
+    },
+    "logged_wall_sec": {"report": 571.6, "selection": 254.3}
+  },
+  "eval_assets": {
+    "report.jsonl": {"rows": 640, "arms": 16, "episodes_per_arm": 40},
+    "selection.jsonl": {"rows": 300, "arms": 15, "episodes_per_arm": 20, "has_untrained": false},
+    "selection_means_selected_stage": {"run1_i150": 0.915625, "run2_i100": 0.901041666667, "run3_i50": 0.8828125},
+    "report_means_selected_stage": {"run1_i150": 0.9265625, "run2_i100": 0.914583333333, "run3_i50": 0.884635416667},
+    "report_means_final": {"run1": 0.905989583333, "run2": 0.870833333333, "run3": 0.882552083333},
+    "untrained_action_dist_per_episode_normalized": [0.055099282, 0.359794937, 0.432676710, 0.081584190, 0.070844880],
+    "untrained_note": "Mean over episodes of each episode's per-alive-fish-step action distribution (episodes equally weighted, not a pooled fish-step weighting). This is the deterministic argmax of the run1 initialization; it is not a uniform-random policy. L/R turns total about 79%, not 20%/action."
+  },
+  "reward_scaling": {
+    "note": "The env returns rewards * REWARD_SCALE (=0.1) from _compute_rewards, then adds the death penalty -50 AFTER scaling (fish_env.py). So per alive step the common baseline is +2*0.1=+0.2 survival plus +5*0.1=+0.5 distance (outside vision) = +0.7, with smaller terms inside vision / near the wall; a death step adds -50 unscaled. gamma=0.99 discounts distant return. These raw magnitudes should not be read as '+2 vs -50' without the scaling, and do not by themselves identify the dominant term or the policy bottleneck."
+  },
+  "source_record_gaps": {
+    "no_run_python_argv": "config.json stores argparse fields only; it does not store the absolute python executable or the original argv.",
+    "no_arm_to_checkpoint_hashes": "The evaluation did not persist a manifest mapping each policy arm to its checkpoint hash.",
+    "no_preregistered_selection": "No frozen pre-selection mapping or tie-break record exists.",
+    "no_runtime_source_snapshot": "No immutable snapshot of the exact runtime source was saved; the current repo source is authoritative for what the code does, not a notarized proof of the historical execution.",
+    "no_uniform_random_rule_in_report": "The v49 report set has no rule_random arm; untrained must not be used as a substitute for a uniform-random control."
+  }
+}
