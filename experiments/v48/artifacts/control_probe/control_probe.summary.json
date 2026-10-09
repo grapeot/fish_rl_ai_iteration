@@ -1,0 +1,632 @@
+{
+  "probe": "control_probe",
+  "seed_rng": 482002,
+  "n_episodes": 40,
+  "n_seeds_available": 40,
+  "split_step": 100,
+  "horizon": 500,
+  "near_static_speed_threshold": 0.05,
+  "guide_speed_threshold": 0.06,
+  "shielded_requested": "auto",
+  "shielded_ran": true,
+  "workers": 8,
+  "wall_sec": 531.667237997055,
+  "seeds": [
+    654860631,
+    865481635,
+    1060975866,
+    1461174955,
+    1607949025,
+    501591129,
+    1452150982,
+    787972244,
+    881269478,
+    3916275,
+    2143212197,
+    515783690,
+    1747067721,
+    1902587025,
+    1161184195,
+    1749131312,
+    1240841987,
+    1644736855,
+    446562559,
+    1926314976,
+    620980245,
+    1663906154,
+    1179375294,
+    1142726194,
+    866032460,
+    678936312,
+    215357216,
+    379262550,
+    60488645,
+    1108455194,
+    5235011,
+    572597066,
+    1618582257,
+    1642749562,
+    972502120,
+    680211311,
+    1564362003,
+    425110668,
+    879197310,
+    1226846968
+  ],
+  "dependency_sha256": {
+    "experiments/v48/control_probe.py": "a3555d07ae8060fe83f958c4b109a469a61ecacdb1f6a64566ea421da7ec2814",
+    "experiments/v48/common.py": "9eb5bb4a9babbf812adf3de95ffd345e00f462d1cba05a269de6944929ca4463",
+    "experiments/v48/evaluate.py": "e5b79fe79829ce0d92cf1d144c1c9c910349dbcce69df0c7ee2db40b33798725",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "dependency_snapshot": {
+    "python": "3.12.9",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.13.0",
+      "stable_baselines3": "2.9.0",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.1",
+      "pygame": "2.6.1"
+    }
+  },
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": true,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "arms": {
+    "flee_lead_continued": {
+      "n": 40,
+      "mean_final_survival": 0.97578125,
+      "std_final_survival": 0.020616864168467176,
+      "min_final_survival": 0.9166666666666666,
+      "max_final_survival": 1.0,
+      "mean_new_deaths_100_500": 0.675,
+      "mean_action_dist": {
+        "1_100": [
+          0.031822408700233125,
+          0.04041813736406518,
+          0.03964499245999108,
+          0.0,
+          0.8881144614757106
+        ],
+        "101_250": [
+          0.01378516274633292,
+          0.03615760459138452,
+          0.03606553454467559,
+          0.0,
+          0.9139916981176072
+        ],
+        "251_500": [
+          0.006721360338159031,
+          0.030157197889575875,
+          0.030923449814206076,
+          0.0,
+          0.9321979919580589
+        ]
+      },
+      "mean_speed_101_500": 1.8349587751835075,
+      "mean_near_static_ratio_101_500": 0.0,
+      "mean_min_pred_dist_101_500": 1.0072847962379456,
+      "total_safe_guide_steps": 32615,
+      "total_safe_park_steps": 0,
+      "total_safe_reentries": 896
+    },
+    "flee_lead_hold": {
+      "n": 40,
+      "mean_final_survival": 0.76171875,
+      "std_final_survival": 0.05706357567956644,
+      "min_final_survival": 0.65625,
+      "max_final_survival": 0.8958333333333334,
+      "mean_new_deaths_100_500": 21.225,
+      "mean_action_dist": {
+        "1_100": [
+          0.031822408700233125,
+          0.04041813736406518,
+          0.03964499245999108,
+          0.0,
+          0.8881144614757106
+        ],
+        "101_250": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "251_500": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "mean_speed_101_500": 0.9393299503512264,
+      "mean_near_static_ratio_101_500": 0.0,
+      "mean_min_pred_dist_101_500": 0.7048901468515396,
+      "total_safe_guide_steps": 18556,
+      "total_safe_park_steps": 0,
+      "total_safe_reentries": 108
+    },
+    "safe_top_continued": {
+      "n": 40,
+      "mean_final_survival": 0.9330729166666668,
+      "std_final_survival": 0.04530628272996685,
+      "min_final_survival": 0.8125,
+      "max_final_survival": 1.0,
+      "mean_new_deaths_100_500": 0.0,
+      "mean_action_dist": {
+        "1_100": [
+          0.15621641902538724,
+          0.06803791372979252,
+          0.06781182764473484,
+          0.3351555946859486,
+          0.3727782449141369
+        ],
+        "101_250": [
+          0.0,
+          0.004269445339085955,
+          0.004754280810103071,
+          5.838090295796575e-06,
+          0.9909704357605154
+        ],
+        "251_500": [
+          0.0,
+          0.007710300929671894,
+          0.00739249424335046,
+          0.0,
+          0.984897204826978
+        ]
+      },
+      "mean_speed_101_500": 0.055817210279679695,
+      "mean_near_static_ratio_101_500": 0.0,
+      "mean_min_pred_dist_101_500": 8.840263748168946,
+      "total_safe_guide_steps": 1,
+      "total_safe_park_steps": 1414820,
+      "total_safe_reentries": 3576
+    },
+    "safe_top_hold": {
+      "n": 40,
+      "mean_final_survival": 0.9330729166666668,
+      "std_final_survival": 0.04530628272996685,
+      "min_final_survival": 0.8125,
+      "max_final_survival": 1.0,
+      "mean_new_deaths_100_500": 0.0,
+      "mean_action_dist": {
+        "1_100": [
+          0.15621641902538724,
+          0.06803791372979252,
+          0.06781182764473484,
+          0.3351555946859486,
+          0.3727782449141369
+        ],
+        "101_250": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "251_500": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "mean_speed_101_500": 0.05582312934377256,
+      "mean_near_static_ratio_101_500": 0.0,
+      "mean_min_pred_dist_101_500": 8.840263748168946,
+      "total_safe_guide_steps": 353,
+      "total_safe_park_steps": 578604,
+      "total_safe_reentries": 0
+    },
+    "flee_lead_shielded": {
+      "n": 40,
+      "mean_final_survival": 0.84609375,
+      "std_final_survival": 0.07836013404840529,
+      "min_final_survival": 0.6354166666666666,
+      "max_final_survival": 0.9791666666666666,
+      "mean_new_deaths_100_500": 13.125,
+      "mean_action_dist": {
+        "1_100": [
+          0.03182240870023313,
+          0.04041813736406519,
+          0.03964499245999108,
+          0.0,
+          0.8881144614757105
+        ],
+        "101_250": [
+          0.0001988613186972796,
+          0.030192439584675667,
+          0.029995446420271982,
+          0.0,
+          0.9396132526763553
+        ],
+        "251_500": [
+          0.0002919733007598527,
+          0.0277391671473336,
+          0.027615729554005902,
+          0.0,
+          0.9443531299979006
+        ]
+      },
+      "mean_speed_101_500": 1.778772935639747,
+      "mean_near_static_ratio_101_500": 0.0,
+      "mean_min_pred_dist_101_500": 0.711454926431179,
+      "total_safe_guide_steps": 28409,
+      "total_safe_park_steps": 0,
+      "total_safe_reentries": 837
+    }
+  },
+  "paired": {
+    "flee_lead_continued_vs_hold": {
+      "n_pairs": 40,
+      "mean_diff": 0.2140625,
+      "std_diff": 0.05506679364935381,
+      "ci95_low": 0.19713541666666665,
+      "ci95_high": 0.23098958333333336,
+      "win_rate": 1.0,
+      "tie_rate": 0.0,
+      "loss_rate": 0.0,
+      "wins": 40,
+      "ties": 0,
+      "losses": 0
+    },
+    "safe_top_continued_vs_hold": {
+      "n_pairs": 40,
+      "mean_diff": 0.0,
+      "std_diff": 0.0,
+      "ci95_low": 0.0,
+      "ci95_high": 0.0,
+      "win_rate": 0.0,
+      "tie_rate": 1.0,
+      "loss_rate": 0.0,
+      "wins": 0,
+      "ties": 40,
+      "losses": 0
+    },
+    "flee_lead_shielded_vs_continued": {
+      "n_pairs": 40,
+      "mean_diff": -0.1296875,
+      "std_diff": 0.07610731418721872,
+      "ci95_low": -0.15364583333333334,
+      "ci95_high": -0.10703125,
+      "win_rate": 0.0,
+      "tie_rate": 0.0,
+      "loss_rate": 1.0,
+      "wins": 0,
+      "ties": 0,
+      "losses": 40
+    },
+    "flee_lead_shielded_vs_hold": {
+      "n_pairs": 40,
+      "mean_diff": 0.084375,
+      "std_diff": 0.09083490157824438,
+      "ci95_low": 0.055989583333333336,
+      "ci95_high": 0.11145833333333335,
+      "win_rate": 0.75,
+      "tie_rate": 0.05,
+      "loss_rate": 0.2,
+      "wins": 30,
+      "ties": 2,
+      "losses": 8
+    }
+  },
+  "assertions": {
+    "all_pairs_passed": true,
+    "per_seed": {
+      "654860631": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "865481635": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1060975866": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1461174955": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1607949025": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "501591129": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1452150982": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "787972244": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "881269478": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "3916275": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "2143212197": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "515783690": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1747067721": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1902587025": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1161184195": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1749131312": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1240841987": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1644736855": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "446562559": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1926314976": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "620980245": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1663906154": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1179375294": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1142726194": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "866032460": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "678936312": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "215357216": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "379262550": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "60488645": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1108455194": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "5235011": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "572597066": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1618582257": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1642749562": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "972502120": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "680211311": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1564362003": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "425110668": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "879197310": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      },
+      "1226846968": {
+        "lead_replay_final_alive_match": true,
+        "lead_replay_death_match": true,
+        "safe_top_replay_final_alive_match": true,
+        "safe_top_replay_death_match": true
+      }
+    }
+  },
+  "upgrade_condition": {
+    "rule": "lead continued beats HOLD: mean_diff>0 and ci95_low>0",
+    "mean_diff": 0.2140625,
+    "ci95_low": 0.19713541666666665,
+    "met": true
+  },
+  "shielded_wall_sec": 62.402703285217285,
+  "safe_zone_relabel_wall_sec": 338.0939440727234,
+  "guide_speed_threshold_normalized": 0.03,
+  "metric_semantics": {
+    "min_pred_dist_101_500": "SURVIVOR-ONLY post-collision; not a capture margin.",
+    "near_static_ratio_101_500": "survivor fish-steps with actual speed < 0.05; observed 0.",
+    "safe_park_steps": "arrival-radius survivor fish-steps with speed <= 0.06 actual.",
+    "safe_guide_steps": "arrival-radius survivor fish-steps with speed > 0.06 actual."
+  },
+  "env_config_note": "predator_heading_bias is applied by common.env_config() but omitted from this summary view; see common.py:50-53,98 for the exact spec.",
+  "post_review_metadata_correction": {
+    "date": "2026-10-08",
+    "scope": "metadata/comments only; no simulation, no rule change, no stats change",
+    "records_changed": false,
+    "reasons": [
+      "guide_speed_threshold relabelled to ACTUAL units 0.06; the normalized 0.03 is recorded separately. The rule and the diagnostic value are unchanged.",
+      "metric_semantics added: min_pred_dist is survivor-only (post-collision), near_static ratio is 0 under the pre-set <0.05 definition, and safe_park/safe_guide are survivor fish-step labels, not action counts.",
+      "env_config_note added: predator_heading_bias is applied but omitted from the summary view; see common.py for the exact spec."
+    ],
+    "runtime_provenance_limitation": "dependency_sha256 is the RAW hash recorded at the last run pass and is kept verbatim. Because each pass rewrites it and --refresh-hashes can rewrite it without simulating, a matching hash only shows the stored version matched the metadata at that moment; it does not prove this source produced every batch's records or that all replay checks were runtime hard-asserted. No immutable per-pass source snapshot was kept.",
+    "source_sha256_before_this_patch": "a3555d07ae8060fe83f958c4b109a469a61ecacdb1f6a64566ea421da7ec2814",
+    "source_sha256_after_this_patch": "e4af9991c912430aeb13f38c0c00656627e56e69dff437d692b844c2cfedfd11",
+    "note_on_hash_change": "control_probe.py changed by this metadata-only patch; the recorded runtime hash above is retained verbatim and is not claimed to match the post-patch source."
+  }
+}
