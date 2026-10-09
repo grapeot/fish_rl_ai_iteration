@@ -1,0 +1,33 @@
+{
+  "kind": "v58_post_review_source_hashes",
+  "scope": "Post-review doc/tooling edits only (R1-R6): prose corrections in dev_v58.md, neutralized internal review labels, and the nominal-triple runtime binding in v58_verify.py/v58_evaluate.py plus its acceptance test. No training, no new 1152 episode evaluation, no change to the frozen manifest, scenes, input models, raw records, analysis, the run-time 7 hashes or the post_run snapshot.",
+  "not_refreshing_historical_runtime_hashes": true,
+  "historical_runtime_7_hashes_preserved_in": "experiments/v58/artifacts/results/report.summary.json",
+  "historical_runtime_7_hashes": {
+    "v58_common.py": "a07b51d33cce08f05d409e89288e8865ec6c4233873c290f2914116a3048d615",
+    "v58_env.py": "2ba6711c2d22bd4b1cca66bc4df9a63f163badd5648326bc37ab3cd2a78a8838",
+    "v58_evaluate.py": "fe5c2517199b46b02f16e7e30eccdab18d29a3251ca546ad7efe12e5f8ecadcb",
+    "v58_verify.py": "c22c3746814ef3373a7ff565d40299d592588e38b9c76c392748c31285b57a97",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "post_run_snapshot_preserved_in": "experiments/v58/artifacts/results/post_run_source_hashes.json",
+  "post_run_snapshot_sha256": "bbd7f82bba569d1c9713b63d59c7d7b8a605cb09dd959f7bad0d9a93535e64c7",
+  "changed_files_current_sha256": {
+    "experiments/v58/v58_common.py": "043710619ec0b4a84b0075ead2625b9738b3a99a2fa8b4e2f3db303e7149b575",
+    "experiments/v58/v58_freeze.py": "fda1032070d9050d8dc16b62bbb5d38658d6a1157a3f156492693c970ffdb5b3",
+    "experiments/v58/v58_evaluate.py": "83284df062363a75a692a9c78f3ab2f46f6fed048cfb161c8c22f93b895f7d43",
+    "experiments/v58/v58_verify.py": "40d7d03f85552afbefaf4e0716223169bf33ca06b8cedac93173aaa48732cd38",
+    "experiments/v58/v58_snapshot.py": "38be3d22b0babc0d152922cf9f3b1babdd5e3d0e890a19ae6b8234d197761280",
+    "experiments/v58/tests/test_v58_acceptance_gates.py": "034f0effa7faa4a90f8688691591d3dc84b226fb8a79703e045aaf7338fc33cf",
+    "experiments/v58/dev_v58.md": "a4ba3ed7ab79a82ff12e6a72b6e8227e7149d7b9415d3998a715792acca78f3d"
+  },
+  "unchanged_frozen_artifacts_sha256": {
+    "frozen_config/v58_frozen_manifest.json": "b5b6f7aad90f880dbe6d7f5d8959a6789d7e7db29d90ca162ae0d9ae929e5da3",
+    "results/report.jsonl": "cae459f2e9c6fc70972271ab4e43d56d4bd54e22017d951ea30388e4cf6c3a64",
+    "results/report.summary.json": "156ae5678f35cdf7433648630034de10d6ff52b686abb1552b0be3cdcf242800",
+    "results/analysis.json": "3c96e14da77d1824ee4d02a694175ee99a49c932c6af05759040f3ec04acda82"
+  },
+  "note": "The changed_files_* hashes differ from the historical run-time 7 hashes for the files that are on the scoring path (common/verify/evaluate); that difference is recorded here and is intentionally NOT written back into report.summary.json or post_run_source_hashes.json. The nominal-triple binding and label cleanups were added AFTER the 1152 episode report; the report was not re-run."
+}

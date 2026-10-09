@@ -1,0 +1,14 @@
+{
+  "scope": "post-run snapshot; run-time hashes are embedded in the result files and never refreshed",
+  "note": "v58 round 10/10 is a no-training independent confirmation on the frozen v57/v50 models. This snapshot is for auditing doc/tooling edits after the run.",
+  "post_run_evaluation_source_sha256": {
+    "v58_common.py": "a07b51d33cce08f05d409e89288e8865ec6c4233873c290f2914116a3048d615",
+    "v58_env.py": "2ba6711c2d22bd4b1cca66bc4df9a63f163badd5648326bc37ab3cd2a78a8838",
+    "v58_evaluate.py": "fe5c2517199b46b02f16e7e30eccdab18d29a3251ca546ad7efe12e5f8ecadcb",
+    "v58_verify.py": "c22c3746814ef3373a7ff565d40299d592588e38b9c76c392748c31285b57a97",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "fish_env_sha256": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+}

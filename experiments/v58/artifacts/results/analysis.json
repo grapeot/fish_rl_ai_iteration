@@ -1,0 +1,1049 @@
+{
+  "conditions": [
+    "nominal",
+    "combined_stress"
+  ],
+  "nominal_triple": [
+    1.0,
+    0,
+    1.0
+  ],
+  "treatment_names": [
+    "rep0_treatment_selected",
+    "rep1_treatment_selected",
+    "rep2_treatment_selected"
+  ],
+  "control_names": [
+    "rep0_control_selected",
+    "rep1_control_selected",
+    "rep2_control_selected"
+  ],
+  "per_controller": {
+    "rule_hold": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.7472330729166666,
+        "std": 0.0539270936813,
+        "min": 0.59375,
+        "max": 0.875,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9099934895833333,
+          "250": 0.8566080729166667,
+          "500": 0.7472330729166666
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.78076171875,
+        "std": 0.09646512339933404,
+        "min": 0.4375,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 122,
+        "mean_survival_at_step": {
+          "1": 0.9801432291666666,
+          "100": 0.88623046875,
+          "250": 0.8302408854166666,
+          "500": 0.78076171875
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9747721354166666,
+        "std": 0.01647591397231103,
+        "min": 0.9375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 98,
+        "mean_survival_at_step": {
+          "1": 0.9840494791666666,
+          "100": 0.9830729166666667,
+          "250": 0.9811197916666666,
+          "500": 0.9747721354166666
+        },
+        "mean_action_dist": [
+          0.014275641528334422,
+          0.034261857184536774,
+          0.03319061104307639,
+          0.0,
+          0.9182718902440523
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.9547526041666666,
+        "std": 0.036568887087397764,
+        "min": 0.84375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 120,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.9661458333333333,
+          "250": 0.9620768229166666,
+          "500": 0.9547526041666666
+        },
+        "mean_action_dist": [
+          0.019795595009735552,
+          0.02577201286648991,
+          0.026080540363173952,
+          0.0,
+          0.9283518517606008
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9342447916666666,
+        "std": 0.03997366547964181,
+        "min": 0.78125,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9342447916666666,
+          "250": 0.9342447916666666,
+          "500": 0.9342447916666666
+        },
+        "mean_action_dist": [
+          0.03167950797304123,
+          0.019087711498389226,
+          0.019282326342788064,
+          0.06737140370665229,
+          0.8625790504791292
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.8896484375,
+        "std": 0.09010053476180302,
+        "min": 0.40625,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 121,
+        "mean_survival_at_step": {
+          "1": 0.9803059895833333,
+          "100": 0.8896484375,
+          "250": 0.8896484375,
+          "500": 0.8896484375
+        },
+        "mean_action_dist": [
+          0.04128785487597945,
+          0.02085142161907526,
+          0.02319046810382491,
+          0.06541829514282833,
+          0.8492519602582921
+        ]
+      }
+    },
+    "rep0_control_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9386393229166666,
+        "std": 0.033206873394340454,
+        "min": 0.8541666666666666,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9388020833333333,
+          "250": 0.9386393229166666,
+          "500": 0.9386393229166666
+        },
+        "mean_action_dist": [
+          0.1182974195806798,
+          0.05361143818639127,
+          0.028655727059561504,
+          0.7837357199280498,
+          0.015699695245317367
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.88037109375,
+        "std": 0.08910626066650076,
+        "min": 0.625,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 123,
+        "mean_survival_at_step": {
+          "1": 0.97998046875,
+          "100": 0.89697265625,
+          "250": 0.8841145833333333,
+          "500": 0.88037109375
+        },
+        "mean_action_dist": [
+          0.07569856015169793,
+          0.04165255352328534,
+          0.3435400585119651,
+          0.5019407099715489,
+          0.037168117841502694
+        ]
+      }
+    },
+    "rep0_treatment_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9251302083333334,
+        "std": 0.03923435520723307,
+        "min": 0.8125,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 119,
+        "mean_survival_at_step": {
+          "1": 0.9806315104166667,
+          "100": 0.92529296875,
+          "250": 0.9251302083333334,
+          "500": 0.9251302083333334
+        },
+        "mean_action_dist": [
+          0.10965691631994831,
+          0.05326169198720253,
+          0.22690372678790008,
+          0.12093376056381092,
+          0.4892439043411382
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.87451171875,
+        "std": 0.07662368513820973,
+        "min": 0.6875,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 130,
+        "mean_survival_at_step": {
+          "1": 0.9788411458333333,
+          "100": 0.8878580729166667,
+          "250": 0.8771158854166667,
+          "500": 0.87451171875
+        },
+        "mean_action_dist": [
+          0.10425460025941119,
+          0.06367366868109307,
+          0.244055616173995,
+          0.08577262285102212,
+          0.5022434920344786
+        ]
+      }
+    },
+    "rep1_control_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9334309895833334,
+        "std": 0.035970478767235754,
+        "min": 0.84375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9347330729166667,
+          "250": 0.93359375,
+          "500": 0.9334309895833334
+        },
+        "mean_action_dist": [
+          0.16481571344299137,
+          0.0607871103783592,
+          0.04739291237063187,
+          0.32638027262957814,
+          0.40062399117843944
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.89892578125,
+        "std": 0.07741197298861587,
+        "min": 0.4791666666666667,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 120,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.90234375,
+          "250": 0.8992513020833333,
+          "500": 0.89892578125
+        },
+        "mean_action_dist": [
+          0.1409419799702865,
+          0.06561113696939946,
+          0.02961880595546052,
+          0.2710043612530799,
+          0.4928237158517737
+        ]
+      }
+    },
+    "rep1_treatment_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9391276041666667,
+        "std": 0.031618133125107487,
+        "min": 0.8333333333333334,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 109,
+        "mean_survival_at_step": {
+          "1": 0.9822591145833333,
+          "100": 0.9391276041666667,
+          "250": 0.9391276041666667,
+          "500": 0.9391276041666667
+        },
+        "mean_action_dist": [
+          0.00035575317804208893,
+          0.0812122075132522,
+          0.05762719213467087,
+          0.6204266033762089,
+          0.24037824379782574
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.8839518229166667,
+        "std": 0.08958577861149872,
+        "min": 0.625,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 122,
+        "mean_survival_at_step": {
+          "1": 0.9801432291666666,
+          "100": 0.900390625,
+          "250": 0.8876953125,
+          "500": 0.8839518229166667
+        },
+        "mean_action_dist": [
+          0.00015820894266186823,
+          0.37958295935437153,
+          0.09364751308367368,
+          0.34793587571057816,
+          0.1786754429087148
+        ]
+      }
+    },
+    "rep2_control_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.921875,
+        "std": 0.03866503029743071,
+        "min": 0.8125,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 114,
+        "mean_survival_at_step": {
+          "1": 0.9814453125,
+          "100": 0.921875,
+          "250": 0.921875,
+          "500": 0.921875
+        },
+        "mean_action_dist": [
+          0.0027195981554882947,
+          0.07754715198842617,
+          0.0581111530484872,
+          0.023477492410271084,
+          0.8381446043973274
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.8678385416666666,
+        "std": 0.08815176366954405,
+        "min": 0.625,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 122,
+        "mean_survival_at_step": {
+          "1": 0.9801432291666665,
+          "100": 0.8844401041666666,
+          "250": 0.87158203125,
+          "500": 0.8678385416666666
+        },
+        "mean_action_dist": [
+          0.0014714482767128288,
+          0.3394474283765031,
+          0.1390883200713765,
+          0.011722066931731973,
+          0.5082707363436756
+        ]
+      }
+    },
+    "rep2_treatment_selected": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9217122395833333,
+        "std": 0.03462248510431958,
+        "min": 0.8229166666666666,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 112,
+        "mean_survival_at_step": {
+          "1": 0.9817708333333334,
+          "100": 0.9236653645833333,
+          "250": 0.9217122395833333,
+          "500": 0.9217122395833333
+        },
+        "mean_action_dist": [
+          0.08659183792454223,
+          0.03031331539196065,
+          0.19274904383002708,
+          0.664160022008907,
+          0.02618578084456322
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.8982747395833333,
+        "std": 0.057317730588274454,
+        "min": 0.7604166666666666,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 123,
+        "mean_survival_at_step": {
+          "1": 0.97998046875,
+          "100": 0.90087890625,
+          "250": 0.8982747395833333,
+          "500": 0.8982747395833333
+        },
+        "mean_action_dist": [
+          0.09654535731473142,
+          0.04073530958471618,
+          0.21279151993835776,
+          0.6245402321540338,
+          0.02538758100816076
+        ]
+      }
+    }
+  },
+  "per_arm_condition": {
+    "treatment": {
+      "nominal": {
+        "n_models": 3,
+        "n_scenes": 64,
+        "mean_final_survival": 0.9286566840277777
+      },
+      "combined_stress": {
+        "n_models": 3,
+        "n_scenes": 64,
+        "mean_final_survival": 0.8855794270833334
+      }
+    },
+    "control": {
+      "nominal": {
+        "n_models": 3,
+        "n_scenes": 64,
+        "mean_final_survival": 0.9313151041666666
+      },
+      "combined_stress": {
+        "n_models": 3,
+        "n_scenes": 64,
+        "mean_final_survival": 0.8823784722222222
+      }
+    }
+  },
+  "rule_anchors": {
+    "rule_hold": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.7472330729166666,
+        "std": 0.0539270936813,
+        "min": 0.59375,
+        "max": 0.875,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9099934895833333,
+          "250": 0.8566080729166667,
+          "500": 0.7472330729166666
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.78076171875,
+        "std": 0.09646512339933404,
+        "min": 0.4375,
+        "max": 0.9791666666666666,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 122,
+        "mean_survival_at_step": {
+          "1": 0.9801432291666666,
+          "100": 0.88623046875,
+          "250": 0.8302408854166666,
+          "500": 0.78076171875
+        },
+        "mean_action_dist": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    "rule_flee_lead": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9747721354166666,
+        "std": 0.01647591397231103,
+        "min": 0.9375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 98,
+        "mean_survival_at_step": {
+          "1": 0.9840494791666666,
+          "100": 0.9830729166666667,
+          "250": 0.9811197916666666,
+          "500": 0.9747721354166666
+        },
+        "mean_action_dist": [
+          0.014275641528334422,
+          0.034261857184536774,
+          0.03319061104307639,
+          0.0,
+          0.9182718902440523
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.9547526041666666,
+        "std": 0.036568887087397764,
+        "min": 0.84375,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 120,
+        "mean_survival_at_step": {
+          "1": 0.98046875,
+          "100": 0.9661458333333333,
+          "250": 0.9620768229166666,
+          "500": 0.9547526041666666
+        },
+        "mean_action_dist": [
+          0.019795595009735552,
+          0.02577201286648991,
+          0.026080540363173952,
+          0.0,
+          0.9283518517606008
+        ]
+      }
+    },
+    "rule_safe_top": {
+      "nominal": {
+        "n": 64,
+        "mean_final_survival": 0.9342447916666666,
+        "std": 0.03997366547964181,
+        "min": 0.78125,
+        "max": 1.0,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 111,
+        "mean_survival_at_step": {
+          "1": 0.98193359375,
+          "100": 0.9342447916666666,
+          "250": 0.9342447916666666,
+          "500": 0.9342447916666666
+        },
+        "mean_action_dist": [
+          0.03167950797304123,
+          0.019087711498389226,
+          0.019282326342788064,
+          0.06737140370665229,
+          0.8625790504791292
+        ]
+      },
+      "combined_stress": {
+        "n": 64,
+        "mean_final_survival": 0.8896484375,
+        "std": 0.09010053476180302,
+        "min": 0.40625,
+        "max": 0.9895833333333334,
+        "mean_steps": 500.0,
+        "total_step_one_deaths": 121,
+        "mean_survival_at_step": {
+          "1": 0.9803059895833333,
+          "100": 0.8896484375,
+          "250": 0.8896484375,
+          "500": 0.8896484375
+        },
+        "mean_action_dist": [
+          0.04128785487597945,
+          0.02085142161907526,
+          0.02319046810382491,
+          0.06541829514282833,
+          0.8492519602582921
+        ]
+      }
+    }
+  },
+  "combined_stress_triples_by_seed": {
+    "1915735164": [
+      1.0,
+      270,
+      1.0
+    ],
+    "1934913160": [
+      0.0,
+      270,
+      1.25
+    ],
+    "1133246696": [
+      1.0,
+      270,
+      1.25
+    ],
+    "2143678902": [
+      1.0,
+      90,
+      1.25
+    ],
+    "1485268665": [
+      0.0,
+      180,
+      1.25
+    ],
+    "1264091991": [
+      0.5,
+      180,
+      0.75
+    ],
+    "1551724518": [
+      0.0,
+      270,
+      0.75
+    ],
+    "1826908031": [
+      1.0,
+      0,
+      1.0
+    ],
+    "1563426514": [
+      0.0,
+      180,
+      1.0
+    ],
+    "157432156": [
+      1.0,
+      90,
+      1.0
+    ],
+    "1447770937": [
+      0.0,
+      180,
+      1.25
+    ],
+    "359980424": [
+      1.0,
+      270,
+      1.0
+    ],
+    "2050113662": [
+      1.0,
+      270,
+      0.75
+    ],
+    "1301865219": [
+      0.5,
+      270,
+      1.25
+    ],
+    "1647295554": [
+      0.0,
+      180,
+      0.75
+    ],
+    "508866908": [
+      0.0,
+      90,
+      0.75
+    ],
+    "684681145": [
+      1.0,
+      90,
+      1.25
+    ],
+    "44997983": [
+      0.0,
+      90,
+      0.75
+    ],
+    "1412087141": [
+      0.5,
+      270,
+      0.75
+    ],
+    "328409253": [
+      0.0,
+      90,
+      0.75
+    ],
+    "526381201": [
+      0.5,
+      270,
+      1.25
+    ],
+    "457880536": [
+      0.5,
+      270,
+      1.0
+    ],
+    "1817166942": [
+      0.0,
+      180,
+      0.75
+    ],
+    "78215931": [
+      0.5,
+      180,
+      1.0
+    ],
+    "348765983": [
+      0.0,
+      90,
+      1.0
+    ],
+    "711310637": [
+      1.0,
+      180,
+      0.75
+    ],
+    "1770606802": [
+      0.0,
+      180,
+      1.0
+    ],
+    "729136997": [
+      1.0,
+      90,
+      1.0
+    ],
+    "233882751": [
+      1.0,
+      90,
+      1.0
+    ],
+    "311754899": [
+      0.0,
+      90,
+      0.75
+    ],
+    "1841084833": [
+      1.0,
+      0,
+      1.25
+    ],
+    "1959876944": [
+      0.0,
+      180,
+      1.0
+    ],
+    "1188219193": [
+      0.5,
+      180,
+      1.25
+    ],
+    "1157017685": [
+      0.0,
+      180,
+      1.0
+    ],
+    "725378680": [
+      1.0,
+      0,
+      1.0
+    ],
+    "1074308733": [
+      0.0,
+      90,
+      1.25
+    ],
+    "184933537": [
+      1.0,
+      90,
+      1.0
+    ],
+    "55527984": [
+      0.5,
+      90,
+      1.25
+    ],
+    "1235238630": [
+      0.0,
+      270,
+      1.0
+    ],
+    "602193986": [
+      1.0,
+      90,
+      0.75
+    ],
+    "1467433732": [
+      0.0,
+      90,
+      0.75
+    ],
+    "1544242476": [
+      0.5,
+      90,
+      1.0
+    ],
+    "311034646": [
+      1.0,
+      0,
+      1.25
+    ],
+    "203205619": [
+      1.0,
+      270,
+      0.75
+    ],
+    "856095518": [
+      1.0,
+      180,
+      1.0
+    ],
+    "799614370": [
+      0.5,
+      90,
+      1.25
+    ],
+    "495716783": [
+      0.0,
+      0,
+      0.75
+    ],
+    "1053657499": [
+      0.0,
+      90,
+      0.75
+    ],
+    "422652865": [
+      0.5,
+      90,
+      1.0
+    ],
+    "570818788": [
+      1.0,
+      270,
+      1.25
+    ],
+    "259680175": [
+      1.0,
+      180,
+      0.75
+    ],
+    "1686426209": [
+      0.5,
+      0,
+      1.25
+    ],
+    "1172362641": [
+      0.5,
+      90,
+      1.0
+    ],
+    "1677886352": [
+      0.0,
+      180,
+      1.25
+    ],
+    "631579697": [
+      0.0,
+      180,
+      1.25
+    ],
+    "526536255": [
+      0.5,
+      90,
+      1.25
+    ],
+    "1777338784": [
+      1.0,
+      0,
+      1.0
+    ],
+    "238683613": [
+      1.0,
+      270,
+      0.75
+    ],
+    "1871752928": [
+      0.0,
+      90,
+      1.25
+    ],
+    "789132420": [
+      0.5,
+      180,
+      1.0
+    ],
+    "1654407524": [
+      1.0,
+      0,
+      1.25
+    ],
+    "471403107": [
+      0.5,
+      180,
+      0.75
+    ],
+    "1311378714": [
+      1.0,
+      180,
+      0.75
+    ],
+    "1925310444": [
+      0.5,
+      90,
+      1.25
+    ]
+  },
+  "manifest": {
+    "path": "experiments/v58/artifacts/frozen_config/v58_frozen_manifest.json",
+    "created_utc": "2026-10-09T13:31:16.637763+00:00",
+    "role": "v58 round 10/10: independent confirmation of the training-time initial-velocity randomization under a pre-specified joint stress",
+    "v57_manifest_sha256": "ac3bcae513eb092d3d0a2f4cd2eafda01ff9f9ed019df80260022c0133b89ea7"
+  },
+  "caveats": [
+    "Only 3 paired replicates per arm: the three-model spread is descriptive, not a sampling CI over training randomness.",
+    "The episode-paired CI conditions on the six fixed selected models.",
+    "Statistical unit is the episode (scene), never the 96 shared-policy fish.",
+    "Each scene is one initial world; the combined-stress condition is a finite discrete artificial joint draw, not a natural deployment distribution.",
+    "The paired bootstrap resamples whole base-scene rows (both conditions and all six models kept together); it never treats fish, conditions or model-scenario pairs as independent observations.",
+    "No episode is dropped; an early all-death scene stays in with a fixed /96 denominator, and a first-step death induced by the combined stress is kept.",
+    "The recommendation is a selection between the two recipes only; it is not a claim that either beats the hand-written lead heuristic."
+  ],
+  "primary_combined_stress": {
+    "contrast": "mean(3 treatment models) - mean(3 control models), per scene, combined_stress",
+    "mean_diff": 0.003200954861111103,
+    "ci95_low": -0.0024427625868055913,
+    "ci95_high": 0.009494357638888862,
+    "win_rate": 0.5,
+    "loss_rate": 0.40625,
+    "tie_rate": 0.09375,
+    "n_scenes": 64
+  },
+  "secondary_nominal": {
+    "contrast": "mean(3 treatment models) - mean(3 control models), per scene, nominal",
+    "mean_diff": -0.0026584201388888864,
+    "ci95_low": -0.007866753472222201,
+    "ci95_high": 0.0024956597222222307,
+    "win_rate": 0.390625,
+    "loss_rate": 0.578125,
+    "tie_rate": 0.03125,
+    "n_scenes": 64
+  },
+  "secondary_ppo_minus_hold": {
+    "definition": "per scene mean(PPO policies) - rule_hold, same condition",
+    "treatment": {
+      "combined_stress": {
+        "mean": 0.10481770833333331
+      },
+      "nominal": {
+        "mean": 0.18142361111111113
+      }
+    },
+    "control": {
+      "combined_stress": {
+        "mean": 0.10161675347222221
+      },
+      "nominal": {
+        "mean": 0.18408203125
+      }
+    },
+    "advantage_change_did": {
+      "contrast": "(treatment PPO-HOLD adv in combined_stress - nominal) - (control PPO-HOLD adv in combined_stress - nominal)",
+      "mean": 0.00585937499999999,
+      "ci95_low": -0.0008151584201389164,
+      "ci95_high": 0.013076443142361128,
+      "n_scenes": 64
+    }
+  },
+  "per_replicate_direction": {
+    "rep0": {
+      "combined_stress": {
+        "mean_diff": -0.005859375000000007,
+        "ci95_low": -0.017252604166666678,
+        "ci95_high": 0.005371093749999984,
+        "direction": "negative"
+      },
+      "nominal": {
+        "mean_diff": -0.01350911458333333,
+        "ci95_low": -0.023437499999999997,
+        "ci95_high": -0.0035807291666666626,
+        "direction": "negative"
+      }
+    },
+    "rep1": {
+      "combined_stress": {
+        "mean_diff": -0.014973958333333334,
+        "ci95_low": -0.03141276041666667,
+        "ci95_high": 0.0019531249999999965,
+        "direction": "negative"
+      },
+      "nominal": {
+        "mean_diff": 0.005696614583333332,
+        "ci95_low": -0.0024414062500000035,
+        "ci95_high": 0.013834635416666663,
+        "direction": "positive"
+      }
+    },
+    "rep2": {
+      "combined_stress": {
+        "mean_diff": 0.03043619791666667,
+        "ci95_low": 0.01627604166666667,
+        "ci95_high": 0.04622395833333334,
+        "direction": "positive"
+      },
+      "nominal": {
+        "mean_diff": -0.00016276041666666262,
+        "ci95_low": -0.0061848958333333235,
+        "ci95_high": 0.005696614583333339,
+        "direction": "negative"
+      }
+    }
+  },
+  "recommendation": {
+    "note": "pre-registered rule; report only, not a deployment action",
+    "primary_predicate_all3rep_positive_and_ci_lower_gt0": false,
+    "primary_detail": {
+      "all_3_replicates_positive": false,
+      "combined_ci95_low": -0.0024427625868055913,
+      "combined_ci_lower_gt_0": false
+    },
+    "nominal_predicate_loss_lt_1pp_and_ci_lower_ge_-2pp": true,
+    "nominal_detail": {
+      "nominal_mean_loss_pp": 0.2658420138888886,
+      "loss_tolerance_pp": 1.0,
+      "nominal_ci95_low_pp": -0.7866753472222201,
+      "ci_lower_floor_pp": -2.0
+    },
+    "overall_pass": false,
+    "recommendation": "retain nominal training as default",
+    "tolerance_is_engineering_choice": true
+  }
+}
