@@ -1,0 +1,24 @@
+{
+  "scope": "post-run snapshot; run-time hashes are embedded in the run/result files and never refreshed",
+  "note": "v57 round 9/10 trains 3 treatment runs and evaluates frozen models. This snapshot is for auditing doc/tooling edits after the run.",
+  "post_run_training_source_sha256": {
+    "v57_common.py": "ae5cf42ded1b7408f3c5209dae9ec91c36c1eb29566cd4204c76c04b2f9481ef",
+    "v57_env.py": "0ce167f4333beab543f530722a7c6c19772447afbf72be3db94af5933ebd7529",
+    "v57_train.py": "dd904642f553495d80e61d8cbf54055779df0d9343b7452d911f3badc3f32490",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "post_run_evaluation_source_sha256": {
+    "v57_common.py": "ae5cf42ded1b7408f3c5209dae9ec91c36c1eb29566cd4204c76c04b2f9481ef",
+    "v57_env.py": "0ce167f4333beab543f530722a7c6c19772447afbf72be3db94af5933ebd7529",
+    "v57_evaluate.py": "ae1e537015ef2db9b8e850c7f98e7a6412ae700fb9362f39772fdb53910a8e67",
+    "v57_verify.py": "a476893e28fb03a674da6a5d3497ac52f25a0ed0f74495c87ed090aa1482f8eb",
+    "v54_common.py": "36e8d5b1a369d233e979712e2d5026de5a8c29bbb501fc63bb7adeb74f700038",
+    "v54_env.py": "cacdefd6483f80a41f6c2f0a35fe4fbf4e1abdb2838ee289a93dc667afdfe24d",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  },
+  "fish_env_sha256": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+}

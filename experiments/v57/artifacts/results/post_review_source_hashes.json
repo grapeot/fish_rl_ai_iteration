@@ -1,0 +1,21 @@
+{
+  "scope": "post-review snapshot of the COMPLETE v57 public toolchain (all source modules, both tests, dev record). Separate from the run-time and post-run snapshots, which are preserved unchanged.",
+  "note": "Records current on-disk hashes after the review-driven doc/comment/gate hardening edits. Run-time hashes embedded in run/report artifacts are NOT refreshed by this script.",
+  "final_copy_correction": "Documentation and common-module docstring now avoid initial-velocity causal-contribution claims; the exploratory per-scenario minimum contrast is not asserted to have a negative sign. No executable logic, frozen model manifest, episode record or runtime source hash changed in this follow-up.",
+  "post_review_toolchain_sha256": {
+    "v57_common.py": "c5ffb8d7ccfab430583555c741ccd51b4b9e989fc47ddd290b43489a8abb7723",
+    "v57_env.py": "70e17fd9efdc95fdd59ac36c571f2263682e8663bc45dfbff1e0320743ee6e3c",
+    "v57_train.py": "dd904642f553495d80e61d8cbf54055779df0d9343b7452d911f3badc3f32490",
+    "v57_evaluate.py": "4760f82c0dca6a63ad379018168814b85c86518dc53648d6dcee886d9be61ef1",
+    "v57_select.py": "e65d9402fac8b1ecd1482a5a20b990146ebd862b04622de7368e9eeb21c0fa5e",
+    "v57_report.py": "40941ef2968c90effbe78fd00b17dadfed31c8f037ee2f983c9c98e876c464a0",
+    "v57_analyze.py": "70276c5e9ae1550289c4678d8da0464adac15b17af488b9efe40e82083d83a40",
+    "v57_verify.py": "40780ecd2820ba417c84b264ce015d7acbba60a0060a1be497e32bf2cc22a2bf",
+    "v57_snapshot.py": "162663ea6effee3fdabe4765df84c02ebb962374032e7cdeb0aa5945d927ce16",
+    "v57_post_review_snapshot.py": "d2bce1fbdc8e27e2971f67d0fd2970277fbeb7fcf0e0bed9f60d347b38e417f8",
+    "tests/test_v57_semantics.py": "2efb625699eb2fc0dd83852e69ffc64fca3122429475ffebf0154829a92ea16f",
+    "tests/test_v57_acceptance_gates.py": "8d8598814e2310a2f80054c26d12c744072c2a35d678e99d96c07d8ce374c49c",
+    "dev_v57.md": "8e2cc15a4c1009ceec49aa3396a06e23a31a7a3f08b6824ea0cfad02fdf57681"
+  },
+  "fish_env_sha256": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "v57_manifest_binding_supplement",
+  "version": 1,
+  "created_utc": "2026-10-09T13:28:55Z",
+  "role": "Supplementary review-driven tool-binding metadata for v57 round 9/10. This is NOT part of the frozen selection manifest and does NOT modify any frozen field.",
+  "relation_to_frozen_manifest": {
+    "frozen_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json",
+    "frozen_manifest_sha256": "ac3bcae513eb092d3d0a2f4cd2eafda01ff9f9ed019df80260022c0133b89ea7",
+    "frozen_manifest_created_utc": "2026-10-09T12:44:59.478406+00:00",
+    "note": "The frozen manifest and its created_utc are unchanged. This supplement only records a tooling-side binding hardening applied AFTER the review; it adds no selection, model, seed, factor or scenario field."
+  },
+  "binding_hardening": [
+    {
+      "tool": "experiments/v57/v57_verify.py",
+      "function": "validate_manifest_gate",
+      "added_parameter": "actual_velocity_factors",
+      "effect": "The condition -> factor map actually used by the evaluation is now a hard gate parameter; a mutated map (e.g. half=0.25 or zero=0.1) is refused. Previously only env config, conditions, model path/hash and seeds were bound.",
+      "frozen_values_bound": {"nominal": 1.0, "half": 0.5, "zero": 0.0},
+      "negative_tests": [
+        "tests/test_v57_acceptance_gates.py::test_wrong_velocity_factor",
+        "tests/test_v57_acceptance_gates.py::test_wrong_velocity_factor_zero"
+      ]
+    }
+  ],
+  "post_review_hashes": {
+    "v57_verify.py": "40780ecd2820ba417c84b264ce015d7acbba60a0060a1be497e32bf2cc22a2bf",
+    "v57_evaluate.py": "4760f82c0dca6a63ad379018168814b85c86518dc53648d6dcee886d9be61ef1",
+    "full_toolchain_snapshot": "experiments/v57/artifacts/results/post_review_source_hashes.json"
+  },
+  "run_time_hashes_preserved": {
+    "note": "Run-time training/eval source hashes embedded in run configs / report summary are NOT refreshed. The report-time v57_verify.py hash was the run-time identity-gate version e92e89bb7ec00e4e30dabcce95e42360b8e3c0892321c154891678094c19db6c."
+  }
+}
