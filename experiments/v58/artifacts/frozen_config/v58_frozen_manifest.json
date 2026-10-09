@@ -1,0 +1,998 @@
+{
+  "kind": "v58_frozen_manifest",
+  "version": 1,
+  "hash_scheme": "policy_tensor_sha256",
+  "created_utc": "2026-10-09T13:31:16.637763+00:00",
+  "role": "v58 round 10/10: independent confirmation of the training-time initial-velocity randomization under a pre-specified joint stress",
+  "depends_on": {
+    "v57_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json",
+    "v57_manifest_sha256": "ac3bcae513eb092d3d0a2f4cd2eafda01ff9f9ed019df80260022c0133b89ea7",
+    "note": "accepted corrected survival_only controls + v57 augmented-velocity treatments (v57 round 9/10). No retraining, no reselection on v58."
+  },
+  "conditions": [
+    "nominal",
+    "combined_stress"
+  ],
+  "fish_factors": [
+    0.0,
+    0.5,
+    1.0
+  ],
+  "rotation_degrees": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "speed_factors": [
+    0.75,
+    1.0,
+    1.25
+  ],
+  "nominal_triple": [
+    1.0,
+    0,
+    1.0
+  ],
+  "aug_rng_seed": 580202,
+  "intervention": "post-reset joint change of ONLY the velocity vectors on the nominal world (full heading/speed bias and pre-roll): fish initial velocities scaled by a factor in {0.0,0.5,1.0}; predator initial velocity rotated by an exact integer matrix of 0/90/180/270 deg then scaled by a positive factor in {0.75,1.0,1.25}. The nominal condition is the exact identity. All other state (positions, alive, death timesteps, predator position, timestep, pre-roll trace) and the env RNG are restored bit-identically; subsequent gravity/bounce physics are unchanged. The combined-stress triple is one finite discrete draw per scene, shared by every controller, frozen before any score. This is NOT a natural deployment distribution and NOT full continuous-domain coverage.",
+  "models": {
+    "rep0_control_selected": {
+      "run_key": "rep0_control",
+      "arm": "control",
+      "replicate": 0,
+      "update": 200,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    },
+    "rep0_treatment_selected": {
+      "run_key": "rep0_treatment",
+      "arm": "treatment",
+      "replicate": 0,
+      "update": 100,
+      "checkpoint": "experiments/v57/artifacts/runs/rep0_augmented_velocity/checkpoints/model_updates_100.zip",
+      "policy_tensor_sha256": "b6cd56dc5a7e7b6d4e81f1e073d63a99a71cd6d1b5e13f1b96fa0e732a3e0bae",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    },
+    "rep1_control_selected": {
+      "run_key": "rep1_control",
+      "arm": "control",
+      "replicate": 1,
+      "update": 200,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    },
+    "rep1_treatment_selected": {
+      "run_key": "rep1_treatment",
+      "arm": "treatment",
+      "replicate": 1,
+      "update": 100,
+      "checkpoint": "experiments/v57/artifacts/runs/rep1_augmented_velocity/checkpoints/model_updates_100.zip",
+      "policy_tensor_sha256": "31b899144aeee38b67e554322389d4170711d2dba6884534f06f55ef171e144d",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    },
+    "rep2_control_selected": {
+      "run_key": "rep2_control",
+      "arm": "control",
+      "replicate": 2,
+      "update": 100,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_updates_100.zip",
+      "policy_tensor_sha256": "7936cd653b026451822cffd0726a5bd7bf80b4fe93372ef92f197e7e67bd1fca",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    },
+    "rep2_treatment_selected": {
+      "run_key": "rep2_treatment",
+      "arm": "treatment",
+      "replicate": 2,
+      "update": 100,
+      "checkpoint": "experiments/v57/artifacts/runs/rep2_augmented_velocity/checkpoints/model_updates_100.zip",
+      "policy_tensor_sha256": "2d09a767325eb97c06aacdfd720ed2ae45c052450f0cc984c928eb3a14e15b6e",
+      "source_manifest": "experiments/v57/artifacts/frozen_config/v57_frozen_manifest.json"
+    }
+  },
+  "rule_controllers": [
+    "rule_hold",
+    "rule_flee_lead",
+    "rule_safe_top"
+  ],
+  "seed_banks": {
+    "debug": {
+      "rng_seed": 580101,
+      "n": 2,
+      "seeds": [
+        562519740,
+        222298856
+      ],
+      "combined_stress_triples": [
+        [
+          1.0,
+          270,
+          1.0
+        ],
+        [
+          0.0,
+          270,
+          1.25
+        ]
+      ]
+    },
+    "report": {
+      "rng_seed": 580102,
+      "n": 64,
+      "seeds": [
+        1915735164,
+        1934913160,
+        1133246696,
+        2143678902,
+        1485268665,
+        1264091991,
+        1551724518,
+        1826908031,
+        1563426514,
+        157432156,
+        1447770937,
+        359980424,
+        2050113662,
+        1301865219,
+        1647295554,
+        508866908,
+        684681145,
+        44997983,
+        1412087141,
+        328409253,
+        526381201,
+        457880536,
+        1817166942,
+        78215931,
+        348765983,
+        711310637,
+        1770606802,
+        729136997,
+        233882751,
+        311754899,
+        1841084833,
+        1959876944,
+        1188219193,
+        1157017685,
+        725378680,
+        1074308733,
+        184933537,
+        55527984,
+        1235238630,
+        602193986,
+        1467433732,
+        1544242476,
+        311034646,
+        203205619,
+        856095518,
+        799614370,
+        495716783,
+        1053657499,
+        422652865,
+        570818788,
+        259680175,
+        1686426209,
+        1172362641,
+        1677886352,
+        631579697,
+        526536255,
+        1777338784,
+        238683613,
+        1871752928,
+        789132420,
+        1654407524,
+        471403107,
+        1311378714,
+        1925310444
+      ],
+      "combined_stress_triples": [
+        [
+          1.0,
+          270,
+          1.0
+        ],
+        [
+          0.0,
+          270,
+          1.25
+        ],
+        [
+          1.0,
+          270,
+          1.25
+        ],
+        [
+          1.0,
+          90,
+          1.25
+        ],
+        [
+          0.0,
+          180,
+          1.25
+        ],
+        [
+          0.5,
+          180,
+          0.75
+        ],
+        [
+          0.0,
+          270,
+          0.75
+        ],
+        [
+          1.0,
+          0,
+          1.0
+        ],
+        [
+          0.0,
+          180,
+          1.0
+        ],
+        [
+          1.0,
+          90,
+          1.0
+        ],
+        [
+          0.0,
+          180,
+          1.25
+        ],
+        [
+          1.0,
+          270,
+          1.0
+        ],
+        [
+          1.0,
+          270,
+          0.75
+        ],
+        [
+          0.5,
+          270,
+          1.25
+        ],
+        [
+          0.0,
+          180,
+          0.75
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          1.0,
+          90,
+          1.25
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          0.5,
+          270,
+          0.75
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          0.5,
+          270,
+          1.25
+        ],
+        [
+          0.5,
+          270,
+          1.0
+        ],
+        [
+          0.0,
+          180,
+          0.75
+        ],
+        [
+          0.5,
+          180,
+          1.0
+        ],
+        [
+          0.0,
+          90,
+          1.0
+        ],
+        [
+          1.0,
+          180,
+          0.75
+        ],
+        [
+          0.0,
+          180,
+          1.0
+        ],
+        [
+          1.0,
+          90,
+          1.0
+        ],
+        [
+          1.0,
+          90,
+          1.0
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          1.0,
+          0,
+          1.25
+        ],
+        [
+          0.0,
+          180,
+          1.0
+        ],
+        [
+          0.5,
+          180,
+          1.25
+        ],
+        [
+          0.0,
+          180,
+          1.0
+        ],
+        [
+          1.0,
+          0,
+          1.0
+        ],
+        [
+          0.0,
+          90,
+          1.25
+        ],
+        [
+          1.0,
+          90,
+          1.0
+        ],
+        [
+          0.5,
+          90,
+          1.25
+        ],
+        [
+          0.0,
+          270,
+          1.0
+        ],
+        [
+          1.0,
+          90,
+          0.75
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          0.5,
+          90,
+          1.0
+        ],
+        [
+          1.0,
+          0,
+          1.25
+        ],
+        [
+          1.0,
+          270,
+          0.75
+        ],
+        [
+          1.0,
+          180,
+          1.0
+        ],
+        [
+          0.5,
+          90,
+          1.25
+        ],
+        [
+          0.0,
+          0,
+          0.75
+        ],
+        [
+          0.0,
+          90,
+          0.75
+        ],
+        [
+          0.5,
+          90,
+          1.0
+        ],
+        [
+          1.0,
+          270,
+          1.25
+        ],
+        [
+          1.0,
+          180,
+          0.75
+        ],
+        [
+          0.5,
+          0,
+          1.25
+        ],
+        [
+          0.5,
+          90,
+          1.0
+        ],
+        [
+          0.0,
+          180,
+          1.25
+        ],
+        [
+          0.0,
+          180,
+          1.25
+        ],
+        [
+          0.5,
+          90,
+          1.25
+        ],
+        [
+          1.0,
+          0,
+          1.0
+        ],
+        [
+          1.0,
+          270,
+          0.75
+        ],
+        [
+          0.0,
+          90,
+          1.25
+        ],
+        [
+          0.5,
+          180,
+          1.0
+        ],
+        [
+          1.0,
+          0,
+          1.25
+        ],
+        [
+          0.5,
+          180,
+          0.75
+        ],
+        [
+          1.0,
+          180,
+          0.75
+        ],
+        [
+          0.5,
+          90,
+          1.25
+        ]
+      ]
+    }
+  },
+  "report_seeds": [
+    1915735164,
+    1934913160,
+    1133246696,
+    2143678902,
+    1485268665,
+    1264091991,
+    1551724518,
+    1826908031,
+    1563426514,
+    157432156,
+    1447770937,
+    359980424,
+    2050113662,
+    1301865219,
+    1647295554,
+    508866908,
+    684681145,
+    44997983,
+    1412087141,
+    328409253,
+    526381201,
+    457880536,
+    1817166942,
+    78215931,
+    348765983,
+    711310637,
+    1770606802,
+    729136997,
+    233882751,
+    311754899,
+    1841084833,
+    1959876944,
+    1188219193,
+    1157017685,
+    725378680,
+    1074308733,
+    184933537,
+    55527984,
+    1235238630,
+    602193986,
+    1467433732,
+    1544242476,
+    311034646,
+    203205619,
+    856095518,
+    799614370,
+    495716783,
+    1053657499,
+    422652865,
+    570818788,
+    259680175,
+    1686426209,
+    1172362641,
+    1677886352,
+    631579697,
+    526536255,
+    1777338784,
+    238683613,
+    1871752928,
+    789132420,
+    1654407524,
+    471403107,
+    1311378714,
+    1925310444
+  ],
+  "combined_stress_triples": [
+    [
+      1.0,
+      270,
+      1.0
+    ],
+    [
+      0.0,
+      270,
+      1.25
+    ],
+    [
+      1.0,
+      270,
+      1.25
+    ],
+    [
+      1.0,
+      90,
+      1.25
+    ],
+    [
+      0.0,
+      180,
+      1.25
+    ],
+    [
+      0.5,
+      180,
+      0.75
+    ],
+    [
+      0.0,
+      270,
+      0.75
+    ],
+    [
+      1.0,
+      0,
+      1.0
+    ],
+    [
+      0.0,
+      180,
+      1.0
+    ],
+    [
+      1.0,
+      90,
+      1.0
+    ],
+    [
+      0.0,
+      180,
+      1.25
+    ],
+    [
+      1.0,
+      270,
+      1.0
+    ],
+    [
+      1.0,
+      270,
+      0.75
+    ],
+    [
+      0.5,
+      270,
+      1.25
+    ],
+    [
+      0.0,
+      180,
+      0.75
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      1.0,
+      90,
+      1.25
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      0.5,
+      270,
+      0.75
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      0.5,
+      270,
+      1.25
+    ],
+    [
+      0.5,
+      270,
+      1.0
+    ],
+    [
+      0.0,
+      180,
+      0.75
+    ],
+    [
+      0.5,
+      180,
+      1.0
+    ],
+    [
+      0.0,
+      90,
+      1.0
+    ],
+    [
+      1.0,
+      180,
+      0.75
+    ],
+    [
+      0.0,
+      180,
+      1.0
+    ],
+    [
+      1.0,
+      90,
+      1.0
+    ],
+    [
+      1.0,
+      90,
+      1.0
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      1.0,
+      0,
+      1.25
+    ],
+    [
+      0.0,
+      180,
+      1.0
+    ],
+    [
+      0.5,
+      180,
+      1.25
+    ],
+    [
+      0.0,
+      180,
+      1.0
+    ],
+    [
+      1.0,
+      0,
+      1.0
+    ],
+    [
+      0.0,
+      90,
+      1.25
+    ],
+    [
+      1.0,
+      90,
+      1.0
+    ],
+    [
+      0.5,
+      90,
+      1.25
+    ],
+    [
+      0.0,
+      270,
+      1.0
+    ],
+    [
+      1.0,
+      90,
+      0.75
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      0.5,
+      90,
+      1.0
+    ],
+    [
+      1.0,
+      0,
+      1.25
+    ],
+    [
+      1.0,
+      270,
+      0.75
+    ],
+    [
+      1.0,
+      180,
+      1.0
+    ],
+    [
+      0.5,
+      90,
+      1.25
+    ],
+    [
+      0.0,
+      0,
+      0.75
+    ],
+    [
+      0.0,
+      90,
+      0.75
+    ],
+    [
+      0.5,
+      90,
+      1.0
+    ],
+    [
+      1.0,
+      270,
+      1.25
+    ],
+    [
+      1.0,
+      180,
+      0.75
+    ],
+    [
+      0.5,
+      0,
+      1.25
+    ],
+    [
+      0.5,
+      90,
+      1.0
+    ],
+    [
+      0.0,
+      180,
+      1.25
+    ],
+    [
+      0.0,
+      180,
+      1.25
+    ],
+    [
+      0.5,
+      90,
+      1.25
+    ],
+    [
+      1.0,
+      0,
+      1.0
+    ],
+    [
+      1.0,
+      270,
+      0.75
+    ],
+    [
+      0.0,
+      90,
+      1.25
+    ],
+    [
+      0.5,
+      180,
+      1.0
+    ],
+    [
+      1.0,
+      0,
+      1.25
+    ],
+    [
+      0.5,
+      180,
+      0.75
+    ],
+    [
+      1.0,
+      180,
+      0.75
+    ],
+    [
+      0.5,
+      90,
+      1.25
+    ]
+  ],
+  "env": {
+    "neighbor": false,
+    "env_config": {
+      "num_fish": 96,
+      "include_neighbor_features": false,
+      "neighbor_radius": 3.0,
+      "neighbor_average_count": 6,
+      "initial_escape_boost": true,
+      "escape_boost_speed": 0.8,
+      "escape_jitter_std": 0.35,
+      "divergence_reward_coef": 0.0,
+      "density_penalty_coef": 0.05,
+      "density_target": 0.4,
+      "predator_spawn_jitter_radius": 1.6,
+      "predator_pre_roll_steps": 16,
+      "predator_pre_roll_angle_jitter": 0.3,
+      "predator_pre_roll_speed_jitter": 0.2,
+      "predator_heading_bias": [
+        {
+          "start_deg": 0.0,
+          "end_deg": 60.0,
+          "weight": 1.1
+        },
+        {
+          "start_deg": 60.0,
+          "end_deg": 90.0,
+          "weight": 0.8
+        },
+        {
+          "start_deg": 90.0,
+          "end_deg": 120.0,
+          "weight": 0.08
+        },
+        {
+          "start_deg": 120.0,
+          "end_deg": 150.0,
+          "weight": 0.05
+        },
+        {
+          "start_deg": 150.0,
+          "end_deg": 210.0,
+          "weight": 0.9
+        },
+        {
+          "start_deg": 210.0,
+          "end_deg": 270.0,
+          "weight": 1.3
+        },
+        {
+          "start_deg": 270.0,
+          "end_deg": 330.0,
+          "weight": 1.2
+        },
+        {
+          "start_deg": 330.0,
+          "end_deg": 360.0,
+          "weight": 0.95
+        }
+      ],
+      "predator_pre_roll_speed_bias": [
+        {
+          "min_speed": 0.0,
+          "max_speed": 1.0,
+          "weight": 1.6
+        },
+        {
+          "min_speed": 1.0,
+          "max_speed": 1.6,
+          "weight": 1.3
+        },
+        {
+          "min_speed": 1.6,
+          "max_speed": 2.0,
+          "weight": 0.7
+        },
+        {
+          "min_speed": 2.0,
+          "max_speed": 2.4,
+          "weight": 0.35
+        },
+        {
+          "min_speed": 2.4,
+          "max_speed": 3.0,
+          "weight": 0.2
+        }
+      ]
+    },
+    "num_fish": 96,
+    "max_timesteps": 500
+  },
+  "statistic": "final_survival = num_alive / 96, per episode (scene)",
+  "recommendation_rule": {
+    "nominal_loss_tolerance": 0.01,
+    "nominal_ci_lower_floor": -0.02,
+    "note": "pre-declared engineering tolerances, NOT discovered statistical constants; never changed after seeing v57/v58 outcomes"
+  }
+}
