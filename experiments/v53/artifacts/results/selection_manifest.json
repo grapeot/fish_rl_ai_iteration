@@ -1,0 +1,415 @@
+{
+  "kind": "v53_selection_manifest",
+  "version": 1,
+  "hash_scheme": "policy_tensor_sha256",
+  "created_utc": "2026-10-09T11:33:52.692945+00:00",
+  "selection_seed_bank": {
+    "rng_seed": 530101,
+    "n": 24
+  },
+  "selection_seeds": [
+    424058741,
+    1583461337,
+    2090747733,
+    466468211,
+    500542723,
+    494644765,
+    1471757033,
+    1662213731,
+    859866775,
+    1263124771,
+    266671813,
+    1893376781,
+    1625550170,
+    1748467672,
+    37465278,
+    956674061,
+    2072674908,
+    1826661100,
+    1690824437,
+    1210939512,
+    706360718,
+    294844630,
+    492488225,
+    41871067
+  ],
+  "report_seed_bank": {
+    "rng_seed": 530102,
+    "n": 40
+  },
+  "report_seeds": [
+    1479590770,
+    317459602,
+    1112416102,
+    2042175479,
+    1455071526,
+    1867858362,
+    727126849,
+    457656909,
+    314705346,
+    1387041895,
+    1628052325,
+    2006558596,
+    1177618262,
+    472764008,
+    1633845515,
+    1583215402,
+    1035730479,
+    984831154,
+    1959123732,
+    1681321609,
+    198282851,
+    1832609641,
+    2127865704,
+    1446100147,
+    1296099078,
+    1770758004,
+    1324438291,
+    1335544478,
+    1940801554,
+    1781196880,
+    1877438690,
+    1496527252,
+    165772250,
+    473157861,
+    890951582,
+    176818291,
+    1057731232,
+    2003415254,
+    164037772,
+    2093553691
+  ],
+  "env": {
+    "neighbor": false,
+    "env_config": {
+      "num_fish": 96,
+      "include_neighbor_features": false,
+      "neighbor_radius": 3.0,
+      "neighbor_average_count": 6,
+      "initial_escape_boost": true,
+      "escape_boost_speed": 0.8,
+      "escape_jitter_std": 0.35,
+      "divergence_reward_coef": 0.0,
+      "density_penalty_coef": 0.05,
+      "density_target": 0.4,
+      "predator_spawn_jitter_radius": 1.6,
+      "predator_pre_roll_steps": 16,
+      "predator_pre_roll_angle_jitter": 0.3,
+      "predator_pre_roll_speed_jitter": 0.2,
+      "predator_heading_bias": [
+        {
+          "start_deg": 0.0,
+          "end_deg": 60.0,
+          "weight": 1.1
+        },
+        {
+          "start_deg": 60.0,
+          "end_deg": 90.0,
+          "weight": 0.8
+        },
+        {
+          "start_deg": 90.0,
+          "end_deg": 120.0,
+          "weight": 0.08
+        },
+        {
+          "start_deg": 120.0,
+          "end_deg": 150.0,
+          "weight": 0.05
+        },
+        {
+          "start_deg": 150.0,
+          "end_deg": 210.0,
+          "weight": 0.9
+        },
+        {
+          "start_deg": 210.0,
+          "end_deg": 270.0,
+          "weight": 1.3
+        },
+        {
+          "start_deg": 270.0,
+          "end_deg": 330.0,
+          "weight": 1.2
+        },
+        {
+          "start_deg": 330.0,
+          "end_deg": 360.0,
+          "weight": 0.95
+        }
+      ],
+      "predator_pre_roll_speed_bias": [
+        {
+          "min_speed": 0.0,
+          "max_speed": 1.0,
+          "weight": 1.6
+        },
+        {
+          "min_speed": 1.0,
+          "max_speed": 1.6,
+          "weight": 1.3
+        },
+        {
+          "min_speed": 1.6,
+          "max_speed": 2.0,
+          "weight": 0.7
+        },
+        {
+          "min_speed": 2.0,
+          "max_speed": 2.4,
+          "weight": 0.35
+        },
+        {
+          "min_speed": 2.4,
+          "max_speed": 3.0,
+          "weight": 0.2
+        }
+      ]
+    }
+  },
+  "termination_arms": {
+    "control": "timeout_bootstrap (reused v50 corrected survival_only)",
+    "treatment": "finite_terminal (new v53 runs)"
+  },
+  "rule": "For each run key (rep{r}_control, rep{r}_treatment) pick the stage with the highest mean final survival over the frozen selection bank 530101; ties broken toward the earliest update. Computed and frozen before any report.",
+  "statistic": "mean final_survival over selection episodes",
+  "selected": {
+    "rep0_control": {
+      "selected_arm": "rep0_control_u100",
+      "selected_update": 100,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_updates_100.zip",
+      "selection_mean_final_survival": 0.9487847222222223,
+      "selection_n": 24,
+      "policy_tensor_sha256": "dba36838394a3e8e78b4351cf636449e5db107f7287d80ab92933a180c688449",
+      "policy_state_hash": "dba36838394a3e8e78b4351cf636449e5db107f7287d80ab92933a180c688449",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep0_control_u50",
+          "update": 50,
+          "mean_final_survival": 0.9249131944444445,
+          "std": 0.03711293379092044
+        },
+        {
+          "arm": "rep0_control_u100",
+          "update": 100,
+          "mean_final_survival": 0.9487847222222223,
+          "std": 0.02474901692121988
+        },
+        {
+          "arm": "rep0_control_u150",
+          "update": 150,
+          "mean_final_survival": 0.9479166666666666,
+          "std": 0.029462782549439483
+        },
+        {
+          "arm": "rep0_control_u200",
+          "update": 200,
+          "mean_final_survival": 0.9479166666666666,
+          "std": 0.02624467970009134
+        }
+      ]
+    },
+    "rep0_treatment": {
+      "selected_arm": "rep0_treatment_u150",
+      "selected_update": 150,
+      "checkpoint": "experiments/v53/artifacts/runs/rep0_finite_terminal/checkpoints/model_updates_150.zip",
+      "selection_mean_final_survival": 0.9253472222222223,
+      "selection_n": 24,
+      "policy_tensor_sha256": "fb2895299e78f2420f0ae11daad29c45cfab39d929144a4f86e43ea22c0ba3d6",
+      "policy_state_hash": "fb2895299e78f2420f0ae11daad29c45cfab39d929144a4f86e43ea22c0ba3d6",
+      "final_checkpoint": "experiments/v53/artifacts/runs/rep0_finite_terminal/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "de4ba3c13b997860007a81fa7b7d845fba60675982e59c230e0792b770dd9f44",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep0_treatment_u50",
+          "update": 50,
+          "mean_final_survival": 0.859375,
+          "std": 0.05355704890976262
+        },
+        {
+          "arm": "rep0_treatment_u100",
+          "update": 100,
+          "mean_final_survival": 0.8328993055555557,
+          "std": 0.07252607385199938
+        },
+        {
+          "arm": "rep0_treatment_u150",
+          "update": 150,
+          "mean_final_survival": 0.9253472222222223,
+          "std": 0.029086760799102718
+        },
+        {
+          "arm": "rep0_treatment_u200",
+          "update": 200,
+          "mean_final_survival": 0.919704861111111,
+          "std": 0.05848188630735869
+        }
+      ]
+    },
+    "rep1_control": {
+      "selected_arm": "rep1_control_u200",
+      "selected_update": 200,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "selection_mean_final_survival": 0.9327256944444443,
+      "selection_n": 24,
+      "policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "policy_state_hash": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "selected_is_final": true,
+      "candidates": [
+        {
+          "arm": "rep1_control_u50",
+          "update": 50,
+          "mean_final_survival": 0.9266493055555557,
+          "std": 0.06655612202287506
+        },
+        {
+          "arm": "rep1_control_u100",
+          "update": 100,
+          "mean_final_survival": 0.9266493055555555,
+          "std": 0.06139413917943419
+        },
+        {
+          "arm": "rep1_control_u150",
+          "update": 150,
+          "mean_final_survival": 0.9236111111111112,
+          "std": 0.07062700840061095
+        },
+        {
+          "arm": "rep1_control_u200",
+          "update": 200,
+          "mean_final_survival": 0.9327256944444443,
+          "std": 0.04637964580923942
+        }
+      ]
+    },
+    "rep1_treatment": {
+      "selected_arm": "rep1_treatment_u100",
+      "selected_update": 100,
+      "checkpoint": "experiments/v53/artifacts/runs/rep1_finite_terminal/checkpoints/model_updates_100.zip",
+      "selection_mean_final_survival": 0.8598090277777777,
+      "selection_n": 24,
+      "policy_tensor_sha256": "497e3749b2140fe12279e93bc473ed4ad5fc713752ebfec885639fbde879a020",
+      "policy_state_hash": "497e3749b2140fe12279e93bc473ed4ad5fc713752ebfec885639fbde879a020",
+      "final_checkpoint": "experiments/v53/artifacts/runs/rep1_finite_terminal/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "987aa99d95a124ebab6a8405ff903434577090a3a4ce56f521ff628ee11b619d",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep1_treatment_u50",
+          "update": 50,
+          "mean_final_survival": 0.8368055555555557,
+          "std": 0.06549775352320222
+        },
+        {
+          "arm": "rep1_treatment_u100",
+          "update": 100,
+          "mean_final_survival": 0.8598090277777777,
+          "std": 0.06354643058486045
+        },
+        {
+          "arm": "rep1_treatment_u150",
+          "update": 150,
+          "mean_final_survival": 0.8077256944444443,
+          "std": 0.09137899352933353
+        },
+        {
+          "arm": "rep1_treatment_u200",
+          "update": 200,
+          "mean_final_survival": 0.8532986111111112,
+          "std": 0.051757738322380224
+        }
+      ]
+    },
+    "rep2_control": {
+      "selected_arm": "rep2_control_u150",
+      "selected_update": 150,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_updates_150.zip",
+      "selection_mean_final_survival": 0.9388020833333334,
+      "selection_n": 24,
+      "policy_tensor_sha256": "4d0e15cc3858cd06b72304fca7f23833d7ac3f19a55d36878a588f40111ddfe4",
+      "policy_state_hash": "4d0e15cc3858cd06b72304fca7f23833d7ac3f19a55d36878a588f40111ddfe4",
+      "final_checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce",
+      "selected_is_final": false,
+      "candidates": [
+        {
+          "arm": "rep2_control_u50",
+          "update": 50,
+          "mean_final_survival": 0.9353298611111112,
+          "std": 0.03595067977533073
+        },
+        {
+          "arm": "rep2_control_u100",
+          "update": 100,
+          "mean_final_survival": 0.9270833333333334,
+          "std": 0.04545711866892973
+        },
+        {
+          "arm": "rep2_control_u150",
+          "update": 150,
+          "mean_final_survival": 0.9388020833333334,
+          "std": 0.028537550612971724
+        },
+        {
+          "arm": "rep2_control_u200",
+          "update": 200,
+          "mean_final_survival": 0.9327256944444445,
+          "std": 0.03515450266278552
+        }
+      ]
+    },
+    "rep2_treatment": {
+      "selected_arm": "rep2_treatment_u200",
+      "selected_update": 200,
+      "checkpoint": "experiments/v53/artifacts/runs/rep2_finite_terminal/checkpoints/model_final.zip",
+      "selection_mean_final_survival": 0.8936631944444443,
+      "selection_n": 24,
+      "policy_tensor_sha256": "1272831a4acb61aef5e9550362df3f8203b2e20ce5aa9592a95219af7b2ff18a",
+      "policy_state_hash": "1272831a4acb61aef5e9550362df3f8203b2e20ce5aa9592a95219af7b2ff18a",
+      "final_checkpoint": "experiments/v53/artifacts/runs/rep2_finite_terminal/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "1272831a4acb61aef5e9550362df3f8203b2e20ce5aa9592a95219af7b2ff18a",
+      "selected_is_final": true,
+      "candidates": [
+        {
+          "arm": "rep2_treatment_u50",
+          "update": 50,
+          "mean_final_survival": 0.786892361111111,
+          "std": 0.0688897875274974
+        },
+        {
+          "arm": "rep2_treatment_u100",
+          "update": 100,
+          "mean_final_survival": 0.8854166666666666,
+          "std": 0.06050561917450991
+        },
+        {
+          "arm": "rep2_treatment_u150",
+          "update": 150,
+          "mean_final_survival": 0.8836805555555557,
+          "std": 0.04901916382293931
+        },
+        {
+          "arm": "rep2_treatment_u200",
+          "update": 200,
+          "mean_final_survival": 0.8936631944444443,
+          "std": 0.06443115300658252
+        }
+      ]
+    }
+  },
+  "selection_summary_sha256": "6dd37289a76fbf37fc1bd4a5755bfbb6f3ffaf8afa2200eee2d8e3eaadaab284",
+  "selected_only": {
+    "rep0_control": "rep0_control_u100",
+    "rep0_treatment": "rep0_treatment_u150",
+    "rep1_control": "rep1_control_u200",
+    "rep1_treatment": "rep1_treatment_u100",
+    "rep2_control": "rep2_control_u150",
+    "rep2_treatment": "rep2_treatment_u200"
+  }
+}

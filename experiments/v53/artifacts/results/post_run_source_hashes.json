@@ -1,0 +1,24 @@
+{
+  "note": "v53 post-run source snapshot. Training-source hashes are recorded inside each run config.json/run_summary.json at run time and are NOT refreshed here. v53_evaluate.py (rule-arm branch) and v53_verify.py/v53_select.py (repo-relative manifest paths, heading-bias binding already present) were touched AFTER training and BEFORE the report; training never imports them. Scope: eval/analysis tools only; no retraining.",
+  "post_run_source_sha256": {
+    "v53_common.py": "12ede05a59dbf997c8cd25f73cbb0bb27e366e46a677797cf52ff24fefe4e4c0",
+    "v53_env.py": "cec9aec9bc23636e68a2db296d4d3f74fce24d7f9374cfdf6366d83acb01155e",
+    "v53_train.py": "44ff5dcd848d8efba51c518534ace63294e16d6d519384b76410a911f6f8dd15",
+    "v53_evaluate.py": "8a5feea1bbce225743ee2a916198000d8c2364969415d46cbc5fc85d40e74ae2",
+    "v53_select.py": "b1fdd081b59f10c517086895b01cf9b5840fe8ac4a22031c71ccb2f5971c9462",
+    "v53_report.py": "7bb9f59c4714f465215f6b508bac19282485a71e4c943423bb3618b5325a719f",
+    "v53_analyze.py": "8b58e5a6a74a2c4f8f2719e27e64a2bf5a343889ddd7f2c3c9fcab1cc182177a",
+    "v53_verify.py": "e6d47a65ff51af9ed88d78d9f16dfbf076f8bf1a040fe2cf1ada531dcdb60ab5",
+    "v53_reuse_check.py": "a61297acd767e2f3faaaa312f89c2d9816c8eefe82ab7a2704949c0af5baf9c6",
+    "tests/test_v53_semantics.py": "44ca7672d5a29dde27c431e8b58246a67a3afdff75f0eb718453aa9e651c3975",
+    "tests/test_v53_acceptance_gates.py": "d0cfe8b7bd7708f5bb5b5ebd31d9475d3e5e0d1fb62f97a16adc0935b669b6d3"
+  },
+  "run_time_source_sha256": {
+    "v53_common.py": "12ede05a59dbf997c8cd25f73cbb0bb27e366e46a677797cf52ff24fefe4e4c0",
+    "v53_env.py": "cec9aec9bc23636e68a2db296d4d3f74fce24d7f9374cfdf6366d83acb01155e",
+    "v53_train.py": "44ff5dcd848d8efba51c518534ace63294e16d6d519384b76410a911f6f8dd15",
+    "v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+    "v50_env.py": "1dc9a8e40be521c6bd30e41557c122c9c462b153f67343770977ea1e497ba0a6",
+    "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e"
+  }
+}
