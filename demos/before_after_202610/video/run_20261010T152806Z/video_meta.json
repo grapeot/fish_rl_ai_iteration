@@ -1,0 +1,42 @@
+{
+  "kind": "before_after_video_meta",
+  "scene_seed": 2000781883,
+  "scene_index": 0,
+  "panels": [
+    "old_ppo",
+    "new_rep0",
+    "rule_flee_lead"
+  ],
+  "fps": 10,
+  "steps": 500,
+  "frames": 500,
+  "expected_duration_sec": 50.0,
+  "size_mb": 2.520694,
+  "ffprobe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1800,
+        "height": 800,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "10/1",
+        "nb_frames": "500"
+      }
+    ],
+    "format": {
+      "duration": "50.000000"
+    }
+  },
+  "render_wall_sec": 37.99361801147461,
+  "predator_trace_head": [
+    -2.0021092891693115,
+    -2.0243303775787354,
+    -2.046551465988159,
+    -2.068772554397583,
+    -2.090993642807007
+  ],
+  "shared_initial_state": true,
+  "shared_predator_trajectory": true
+}

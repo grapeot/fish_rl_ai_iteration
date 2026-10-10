@@ -1,0 +1,87 @@
+{
+  "kind": "before_after_demo_verification",
+  "checks": [
+    {
+      "check": "report bank disjoint from prior",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "debug bank disjoint from prior",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "report/debug mutually disjoint",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep0 hash == manifest final",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep1 hash == manifest final",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep2 hash == manifest final",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_fixed3_mean recompute",
+      "ok": true,
+      "detail": "0.937229"
+    },
+    {
+      "check": "old_ppo mean recompute",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep0 mean recompute",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep1 mean recompute",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "new_rep2 mean recompute",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "rule_flee_lead mean recompute",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "video seed shared initial state",
+      "ok": true,
+      "detail": "seed=2000781883"
+    },
+    {
+      "check": "video seed shared predator trajectory",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "video sample final alive recorded",
+      "ok": true,
+      "detail": "{\"old_ppo\": 87, \"new_rep0\": 94, \"rule_flee_lead\": 93}"
+    }
+  ],
+  "all_pass": true,
+  "video_seed": 2000781883,
+  "video_sample_final_alive": {
+    "old_ppo": 87,
+    "new_rep0": 94,
+    "rule_flee_lead": 93
+  }
+}
