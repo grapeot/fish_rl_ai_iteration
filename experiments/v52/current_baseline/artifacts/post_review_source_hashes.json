@@ -1,0 +1,22 @@
+{
+  "kind": "v52_post_review_source_hashes",
+  "note": "Hashes captured after the post-review doc/comment/test/tool edits. These changes are non-semantic for the scored run: no new eval, NO 480-episode rerun. Historical runtime_source_hashes.json is preserved unchanged and not refreshed. raw/summary/analysis/spec bytes are unchanged (verified).",
+  "no_rerun_scope": true,
+  "final_copy_correction": "Two rounded phase-survival values in dev_v52.md were corrected to 0.89323 and 0.80729. No experimental records, runtime hashes or executable logic changed.",
+  "unchanged_frozen_artifacts": {
+    "artifacts/v52_spec_manifest.json": "adf63e327e1e5bc928a44e9bd24b6a728147eb0ee1b2be4bf01d3ceacddaf7c1",
+    "artifacts/raw_episodes.jsonl": "6fa73743139d36c5a4d91c78159b980ecc3f8598b4466044caf4999043211156",
+    "artifacts/raw_episodes.summary.json": "5b47e76ea25eb478d88f3e22c9c189397df52fdb16e04dcb32e360ec241eae48",
+    "artifacts/analysis.json": "2b70cbae952bc8453b59afa55751226e994551e2d06681367ad1e469f2670ad1"
+  },
+  "changed_after_review": {
+    "v52_eval.py": "279171b0bd0c1c4660be1a4d6be546f5583fd8224c766beb05300e8d8d161b12",
+    "v52_analyze.py": "29bb9ff7c84eb34df09ec070ccafdb0bbd91d5e4b19f01d539cd2fb87d4e2dd9",
+    "tests/test_v52_mask.py": "9deda83d09de7f0775f3acde384be2d5ff9f9ec118fd69e179c212bd3a9f2a18",
+    "dev_v52.md": "fdd00aff49f856609a6971b9102297007fb782d0d60478e3d8adde9510b2ba76",
+    "config.md": "41c7d1496415b08fc72ff31f9a119be08a58862365f54443495ca00bc6cd86ac"
+  },
+  "new_after_review": {
+    "artifacts/matched_observation_diagnostic.json": "c878e63ae3226e36ae163cec741a700db31af92fd9bd14c5a830ddf89e3ab4a9"
+  }
+}

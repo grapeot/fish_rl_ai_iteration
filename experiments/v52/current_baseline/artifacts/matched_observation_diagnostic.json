@@ -1,0 +1,39 @@
+{
+  "kind": "v52_matched_observation_diagnostic",
+  "note": "Reset-only same-observation diagnostic; no env steps advanced. Counts deterministic action changes on identical observations; not a trajectory flip rate and not proof of beneficial use.",
+  "n_seeds": 40,
+  "n_observations": 3840,
+  "n_visible": 1473,
+  "models": {
+    "rep0_survival_only_final": {
+      "mask_predator": {
+        "changes": 1473,
+        "changes_visible_only": 1473
+      },
+      "mask_velocity_only": {
+        "changes": 0,
+        "changes_visible_only": 0
+      }
+    },
+    "rep1_survival_only_final": {
+      "mask_predator": {
+        "changes": 963,
+        "changes_visible_only": 963
+      },
+      "mask_velocity_only": {
+        "changes": 116,
+        "changes_visible_only": 116
+      }
+    },
+    "rep2_survival_only_final": {
+      "mask_predator": {
+        "changes": 548,
+        "changes_visible_only": 548
+      },
+      "mask_velocity_only": {
+        "changes": 131,
+        "changes_visible_only": 131
+      }
+    }
+  }
+}

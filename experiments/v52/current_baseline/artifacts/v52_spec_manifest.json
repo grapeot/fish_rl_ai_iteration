@@ -1,0 +1,175 @@
+{
+  "kind": "v52_spec_manifest",
+  "version": 1,
+  "script_sha256": "d6b1dbd9455b6535a36ef1238cf4f6b8a555e6d06101df9a35788e41f08a88dc",
+  "debug": false,
+  "seed_rng": 520202,
+  "n_scenarios": 40,
+  "scenarios": [
+    1436750618,
+    880397672,
+    911142128,
+    1834207593,
+    1573622986,
+    306031741,
+    1476795744,
+    1278372229,
+    1033647693,
+    45443448,
+    1538649006,
+    1411502238,
+    116257101,
+    2072985257,
+    1201671160,
+    1040220725,
+    299818530,
+    647630589,
+    1482653478,
+    137265343,
+    2070400642,
+    1956393182,
+    1152638316,
+    545409295,
+    1858037059,
+    382746693,
+    1059291992,
+    1786564661,
+    852168772,
+    854912834,
+    2108385397,
+    714648687,
+    1732059622,
+    990047009,
+    427486974,
+    897731496,
+    1244705168,
+    2116346895,
+    1627478378,
+    2050568038
+  ],
+  "modes": [
+    "full",
+    "mask_predator",
+    "mask_velocity_only"
+  ],
+  "controllers": [
+    "rep0_survival_only_final",
+    "rep1_survival_only_final",
+    "rep2_survival_only_final",
+    "rule_flee_lead"
+  ],
+  "rule_controller": "rule_flee_lead",
+  "rule_source_sha256": "4a840ad19f4b29588aba13a5fe63c06851770966d3edc1010fbd00355ee2f9e5",
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": false,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_heading_bias": [
+      {
+        "start_deg": 0.0,
+        "end_deg": 60.0,
+        "weight": 1.1
+      },
+      {
+        "start_deg": 60.0,
+        "end_deg": 90.0,
+        "weight": 0.8
+      },
+      {
+        "start_deg": 90.0,
+        "end_deg": 120.0,
+        "weight": 0.08
+      },
+      {
+        "start_deg": 120.0,
+        "end_deg": 150.0,
+        "weight": 0.05
+      },
+      {
+        "start_deg": 150.0,
+        "end_deg": 210.0,
+        "weight": 0.9
+      },
+      {
+        "start_deg": 210.0,
+        "end_deg": 270.0,
+        "weight": 1.3
+      },
+      {
+        "start_deg": 270.0,
+        "end_deg": 330.0,
+        "weight": 1.2
+      },
+      {
+        "start_deg": 330.0,
+        "end_deg": 360.0,
+        "weight": 0.95
+      }
+    ],
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "neighbor": false,
+  "models": {
+    "rep0_survival_only_final": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8"
+    },
+    "rep1_survival_only_final": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17"
+    },
+    "rep2_survival_only_final": {
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "final_policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce"
+    }
+  },
+  "hash_scheme": "policy_tensor_sha256",
+  "phase_steps": [
+    100,
+    250,
+    500
+  ],
+  "bootstrap": {
+    "n": 10000,
+    "seed": 520202,
+    "alpha": 0.05
+  },
+  "note": "Frozen before scoring; non-overwritable. Rule logic copied from v50_evaluate.py. Interpretation limited to frozen-policy input sensitivity; mask_velocity_only may be OOD."
+}
