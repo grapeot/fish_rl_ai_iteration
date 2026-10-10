@@ -1,0 +1,11 @@
+{
+  "fish_env.py": "e907577e4afde06763af5cc768c6bcabd1c8a2ecea769fbccc40c3c75496270e",
+  "experiments/v50/v50_common.py": "f767a12472a5262ab1f4217c93ad4a7903a71313e0ac3b6026769da5222adb5e",
+  "experiments/v50/v50_evaluate.py": "4a840ad19f4b29588aba13a5fe63c06851770966d3edc1010fbd00355ee2f9e5",
+  "experiments/v50/v50_verify.py": "d5f6c534c505a9495747bf5c757e2a5e0e56db41c88290bca77a979e1010c64a",
+  "experiments/v52/current_baseline/v52_eval.py": "d6b1dbd9455b6535a36ef1238cf4f6b8a555e6d06101df9a35788e41f08a88dc",
+  "experiments/v52/current_baseline/artifacts/v52_spec_manifest.json": "adf63e327e1e5bc928a44e9bd24b6a728147eb0ee1b2be4bf01d3ceacddaf7c1",
+  "experiments/v52/current_baseline/artifacts/raw_episodes.jsonl": "6fa73743139d36c5a4d91c78159b980ecc3f8598b4466044caf4999043211156",
+  "experiments/v52/current_baseline/artifacts/raw_episodes.summary.json": "5b47e76ea25eb478d88f3e22c9c189397df52fdb16e04dcb32e360ec241eae48",
+  "_note": "Runtime inputs/artifacts at the formal v52 run. Frozen and NOT refreshed; later documentation/analysis edits are intentionally not reflected here."
+}
