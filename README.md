@@ -2,7 +2,17 @@
 
 > Reinforcement-learning fish survival, managed as an AI-operated laboratory.
 
-📊 **结果总览与方法论教训:[grapeot.github.io/fish_rl_ai_iteration](https://grapeot.github.io/fish_rl_ai_iteration/)**(v44–v47 冲刺结论、当前最优 0.899、SOP 方法论)
+📊 **历史结果与方法论教训:[grapeot.github.io/fish_rl_ai_iteration](https://grapeot.github.io/fish_rl_ai_iteration/)**（v44–v47 冲刺结论，0.899 为当时报告集上的单策略成绩）
+
+## 2026-10：世界设定审查与十轮迭代（v49–v58）
+
+保留原有局部避险世界，修正训练身份对应并采用存活/死亡奖励；初速随机化训练未达到新场景确认中的替换门槛。手写避让规则在最终同场景比较中仍领先 PPO，后续重点是诊断学到的威胁响应。[十轮结果与当前基线](experiments/iteration_review_v49_v58.md)包含逐轮证据、负结果和复现边界；当前训练入口见 [v50](experiments/v50/dev_v50.md)，历史页面分数不与新场景分数直接排序。
+
+### 同场景前后对照与视频
+
+在同一批 64 个新场景中，每局 96 条鱼运行 500 步，旧模型平均存活率 **91.11%**，新方案三模型均值 **93.72%**，手写规则 **96.97%**。新旧差为 **2.61 个百分点**，约每局多活 2.5 条鱼；这里统计最终活鱼比例，不是通关胜率。
+
+▶ [观看 50 秒三栏对比视频](https://grapeot.github.io/fish_rl_ai_iteration/assets/before_after_202610.mp4) · [基准定义与比较边界](demos/before_after_202610/benchmark_explainer.md)。视频是预设首个场景的单局过程，不能代替 64 局均值。
 
 ## 为什么存在
 - **项目目标**：训练一套策略，让大量小鱼在高速捕食者面前依旧保持高存活率。
@@ -42,14 +52,16 @@ fish_rl/
 
 详尽步骤见 [SOP.md](./SOP.md)。
 
-## 人类快速上手
+## 历史 v2 运行示例
+
+以下保留早期版本命令；恢复当前实验请使用上方 v50 入口及对应版本的复现说明。
 ```bash
 # 1) 安装依赖
 uv venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 uv pip install -r requirements.txt
 
-# 2) 运行当前迭代（建议 64+ 环境）
+# 2) 运行历史 v2 迭代
 python experiments/v2/train.py --total_iterations 100 --num_envs 128 --num_fish 25 \
   > experiments/v2/artifacts/logs/train_v2_iter100.log
 
@@ -72,7 +84,7 @@ tensorboard --logdir experiments/v2/artifacts/tb_logs --port 6006
 - artifacts 目录中的二进制文件不入库（由 `.gitignore` 排除），但其生成脚本和路径必须写进文档。
 - 若引入新依赖，请更新 `requirements.txt` 并在 README 中说明用途。
 
-## 当前状态(2026-07,v47)
+## 历史状态（2026-07，v47）
 - 最优单策略 held-out 终局存活率 **0.899**(96 鱼,独立 report set);健康 run baseline **0.848±0.016**。
 - 评估方法论(held-out only、多 run 分布对比、best-checkpoint 交付)见 `SOP.md` 方法论节,结论综述见上方 Pages 链接。
 - 开放问题:中期训练(iter10–25)侵蚀 held-out 泛化的机制;高密度课程的 within-run 正信号(v47)。
