@@ -1,0 +1,140 @@
+{
+  "kind": "before_after_identity_evidence",
+  "created_utc": "2026-10-10T15:26:24.297969+00:00",
+  "claim": "neighbor-on (18-dim) and neighbor-off (11-dim) envs share one identical physical reset and RNG stream; rendering changes neither",
+  "fields_compared": [
+    "fish_positions",
+    "fish_velocities",
+    "fish_alive",
+    "fish_death_timesteps",
+    "predator_pos",
+    "predator_vel",
+    "timestep",
+    "np_random_state"
+  ],
+  "checked_seeds": [
+    2000781883,
+    575569889,
+    1227382831,
+    1,
+    123456789
+  ],
+  "records": [
+    {
+      "seed": 2000781883,
+      "reset_state_identical": true,
+      "reset_state_first_mismatch": null,
+      "base_obs_identical": true,
+      "obs_shapes": [
+        [
+          96,
+          18
+        ],
+        [
+          96,
+          11
+        ]
+      ],
+      "render_state_unchanged": true,
+      "render_state_first_mismatch": null,
+      "render_frame_shape": [
+        800,
+        800,
+        3
+      ]
+    },
+    {
+      "seed": 575569889,
+      "reset_state_identical": true,
+      "reset_state_first_mismatch": null,
+      "base_obs_identical": true,
+      "obs_shapes": [
+        [
+          96,
+          18
+        ],
+        [
+          96,
+          11
+        ]
+      ],
+      "render_state_unchanged": true,
+      "render_state_first_mismatch": null,
+      "render_frame_shape": [
+        800,
+        800,
+        3
+      ]
+    },
+    {
+      "seed": 1227382831,
+      "reset_state_identical": true,
+      "reset_state_first_mismatch": null,
+      "base_obs_identical": true,
+      "obs_shapes": [
+        [
+          96,
+          18
+        ],
+        [
+          96,
+          11
+        ]
+      ],
+      "render_state_unchanged": true,
+      "render_state_first_mismatch": null,
+      "render_frame_shape": [
+        800,
+        800,
+        3
+      ]
+    },
+    {
+      "seed": 1,
+      "reset_state_identical": true,
+      "reset_state_first_mismatch": null,
+      "base_obs_identical": true,
+      "obs_shapes": [
+        [
+          96,
+          18
+        ],
+        [
+          96,
+          11
+        ]
+      ],
+      "render_state_unchanged": true,
+      "render_state_first_mismatch": null,
+      "render_frame_shape": [
+        800,
+        800,
+        3
+      ]
+    },
+    {
+      "seed": 123456789,
+      "reset_state_identical": true,
+      "reset_state_first_mismatch": null,
+      "base_obs_identical": true,
+      "obs_shapes": [
+        [
+          96,
+          18
+        ],
+        [
+          96,
+          11
+        ]
+      ],
+      "render_state_unchanged": true,
+      "render_state_first_mismatch": null,
+      "render_frame_shape": [
+        800,
+        800,
+        3
+      ]
+    }
+  ],
+  "all_identical": true
+}

@@ -1,0 +1,13 @@
+{
+  "title": "小鱼避障：旧策略、新策略与规则对比",
+  "subtitle": "同初始状态的单局过程（500 步 / 50 秒仿真）",
+  "old_label": "旧版 PPO",
+  "new_label": "新版 PPO (rep0)",
+  "rule_label": "手写避障规则",
+  "legend_fish": "蓝点：小鱼",
+  "legend_predator": "红圆：捕食者",
+  "sample_note": "单局示例，不代表多局平均",
+  "benchmark_note": "96 条鱼 · 500 步 · 同初始状态",
+  "elapsed_label": "仿真时间",
+  "survivors_label": "存活小鱼"
+}

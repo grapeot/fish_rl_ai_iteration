@@ -1,0 +1,123 @@
+{
+  "kind": "before_after_benchmark_summary",
+  "n_scenarios": 64,
+  "boot_n": 10000,
+  "boot_seed": 590301,
+  "per_controller": {
+    "old_ppo": {
+      "mean_final_survival": 0.9111328125,
+      "std": 0.03447175286747359,
+      "mean_final_num_alive": 87.46875,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 117,
+      "mean_survival_at": {
+        "1": 0.98095703125,
+        "100": 0.93359375,
+        "250": 0.91845703125,
+        "500": 0.9111328125
+      }
+    },
+    "new_rep0": {
+      "mean_final_survival": 0.9454752604166667,
+      "std": 0.02985431513544129,
+      "mean_final_num_alive": 90.765625,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 115,
+      "mean_survival_at": {
+        "1": 0.9812825520833334,
+        "100": 0.9454752604166667,
+        "250": 0.9454752604166667,
+        "500": 0.9454752604166667
+      }
+    },
+    "new_rep1": {
+      "mean_final_survival": 0.93310546875,
+      "std": 0.02903911353882382,
+      "mean_final_num_alive": 89.578125,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 117,
+      "mean_survival_at": {
+        "1": 0.98095703125,
+        "100": 0.9332682291666667,
+        "250": 0.93310546875,
+        "500": 0.93310546875
+      }
+    },
+    "new_rep2": {
+      "mean_final_survival": 0.93310546875,
+      "std": 0.030315882685263557,
+      "mean_final_num_alive": 89.578125,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 116,
+      "mean_survival_at": {
+        "1": 0.9811197916666667,
+        "100": 0.9334309895833334,
+        "250": 0.93310546875,
+        "500": 0.93310546875
+      }
+    },
+    "rule_flee_lead": {
+      "mean_final_survival": 0.9697265625,
+      "std": 0.021938192141007996,
+      "mean_final_num_alive": 93.09375,
+      "mean_steps": 500.0,
+      "total_step_one_deaths": 104,
+      "mean_survival_at": {
+        "1": 0.9830729166666667,
+        "100": 0.9824218750000001,
+        "250": 0.9788411458333333,
+        "500": 0.9697265625
+      }
+    }
+  },
+  "new_fixed3_mean": {
+    "mean_final_survival": 0.9372287326388888,
+    "std": 0.023867017972272503
+  },
+  "contrasts": {
+    "new_fixed3_mean_minus_old": {
+      "mean_diff": 0.026095920138888874,
+      "ci95": [
+        0.01974826388888887,
+        0.032443576388888874
+      ],
+      "win": 51,
+      "loss": 9,
+      "tie": 4,
+      "n": 64
+    },
+    "rule_minus_old": {
+      "mean_diff": 0.05859374999999999,
+      "ci95": [
+        0.050781249999999986,
+        0.06656901041666666
+      ],
+      "win": 62,
+      "loss": 1,
+      "tie": 1,
+      "n": 64
+    },
+    "rule_minus_new_fixed3_mean": {
+      "mean_diff": 0.03249782986111112,
+      "ci95": [
+        0.02647569444444446,
+        0.0383029513888889
+      ],
+      "win": 59,
+      "loss": 3,
+      "tie": 2,
+      "n": 64
+    },
+    "new_rep0_minus_old": {
+      "mean_diff": 0.034342447916666664,
+      "ci95": [
+        0.02522786458333333,
+        0.04296875000000001
+      ],
+      "win": 56,
+      "loss": 8,
+      "tie": 0,
+      "n": 64
+    }
+  }
+}

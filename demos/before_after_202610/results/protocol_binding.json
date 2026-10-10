@@ -1,0 +1,256 @@
+{
+  "kind": "before_after_demo_protocol_binding",
+  "version": 1,
+  "created_utc": "2026-10-10T15:26:22.711645+00:00",
+  "role": "freeze recorded before any benchmark score; see protocol.md",
+  "physics": "unchanged FishEscapeEnv via experiments/v50/v50_common.env_config",
+  "env_config": {
+    "num_fish": 96,
+    "include_neighbor_features": false,
+    "neighbor_radius": 3.0,
+    "neighbor_average_count": 6,
+    "initial_escape_boost": true,
+    "escape_boost_speed": 0.8,
+    "escape_jitter_std": 0.35,
+    "divergence_reward_coef": 0.0,
+    "density_penalty_coef": 0.05,
+    "density_target": 0.4,
+    "predator_spawn_jitter_radius": 1.6,
+    "predator_pre_roll_steps": 16,
+    "predator_pre_roll_angle_jitter": 0.3,
+    "predator_pre_roll_speed_jitter": 0.2,
+    "predator_heading_bias": [
+      {
+        "start_deg": 0.0,
+        "end_deg": 60.0,
+        "weight": 1.1
+      },
+      {
+        "start_deg": 60.0,
+        "end_deg": 90.0,
+        "weight": 0.8
+      },
+      {
+        "start_deg": 90.0,
+        "end_deg": 120.0,
+        "weight": 0.08
+      },
+      {
+        "start_deg": 120.0,
+        "end_deg": 150.0,
+        "weight": 0.05
+      },
+      {
+        "start_deg": 150.0,
+        "end_deg": 210.0,
+        "weight": 0.9
+      },
+      {
+        "start_deg": 210.0,
+        "end_deg": 270.0,
+        "weight": 1.3
+      },
+      {
+        "start_deg": 270.0,
+        "end_deg": 330.0,
+        "weight": 1.2
+      },
+      {
+        "start_deg": 330.0,
+        "end_deg": 360.0,
+        "weight": 0.95
+      }
+    ],
+    "predator_pre_roll_speed_bias": [
+      {
+        "min_speed": 0.0,
+        "max_speed": 1.0,
+        "weight": 1.6
+      },
+      {
+        "min_speed": 1.0,
+        "max_speed": 1.6,
+        "weight": 1.3
+      },
+      {
+        "min_speed": 1.6,
+        "max_speed": 2.0,
+        "weight": 0.7
+      },
+      {
+        "min_speed": 2.0,
+        "max_speed": 2.4,
+        "weight": 0.35
+      },
+      {
+        "min_speed": 2.4,
+        "max_speed": 3.0,
+        "weight": 0.2
+      }
+    ]
+  },
+  "num_fish": 96,
+  "max_timesteps": 500,
+  "dt": 0.1,
+  "phase_steps": [
+    1,
+    100,
+    250,
+    500
+  ],
+  "condition": "nominal same-scene initial state (initial_escape_boost=True, escape_boost_speed=0.8)",
+  "controllers": [
+    {
+      "name": "old_ppo",
+      "kind": "policy",
+      "rule": null,
+      "include_neighbor_features": true,
+      "obs_dim": 18,
+      "checkpoint": "experiments/v45/artifacts/checkpoints/ms_baseline_v42cfg_seed700000/model_iter_20.zip",
+      "policy_tensor_sha256": "96b03c31fbfbdfa21c1133fc63db2be1a577daa6b4c5bd8114dba46596e9916f",
+      "deterministic": true
+    },
+    {
+      "name": "new_rep0",
+      "kind": "policy",
+      "rule": null,
+      "include_neighbor_features": false,
+      "obs_dim": 11,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep0_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "deterministic": true
+    },
+    {
+      "name": "new_rep1",
+      "kind": "policy",
+      "rule": null,
+      "include_neighbor_features": false,
+      "obs_dim": 11,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep1_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "deterministic": true
+    },
+    {
+      "name": "new_rep2",
+      "kind": "policy",
+      "rule": null,
+      "include_neighbor_features": false,
+      "obs_dim": 11,
+      "checkpoint": "experiments/v50/artifacts/corrected_streams/runs/rep2_survival_only/checkpoints/model_final.zip",
+      "policy_tensor_sha256": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce",
+      "deterministic": true
+    },
+    {
+      "name": "rule_flee_lead",
+      "kind": "rule",
+      "rule": "flee_lead",
+      "include_neighbor_features": false,
+      "obs_dim": 11,
+      "checkpoint": null,
+      "policy_tensor_sha256": null,
+      "deterministic": true
+    }
+  ],
+  "new_hash_matches_manifest_final": {
+    "new_rep0": {
+      "computed": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "manifest_final": "aac9610481879e56335e8bc18d3144df0aab6d6ab0c22a3e3c0d77651257eec8",
+      "match": true
+    },
+    "new_rep1": {
+      "computed": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "manifest_final": "6aeb33ee08a715a87457a03fe9eba16ecfa241b6ed80d766c34f7c968457cc17",
+      "match": true
+    },
+    "new_rep2": {
+      "computed": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce",
+      "manifest_final": "f77a0ec8eba6ed3d86e20eecfd6938816633baf5e4bda1677e3276466c3f5cce",
+      "match": true
+    }
+  },
+  "report_bank": {
+    "rng_seed": 590102,
+    "n": 64
+  },
+  "debug_bank": {
+    "rng_seed": 590101,
+    "n": 2
+  },
+  "report_seeds": [
+    2000781883,
+    1964069072,
+    474606628,
+    634888531,
+    202708215,
+    1164680921,
+    325613018,
+    1727858454,
+    702844758,
+    1611751687,
+    1319803259,
+    1262541606,
+    1873942395,
+    1376542970,
+    1722483981,
+    625796376,
+    1246605793,
+    98927025,
+    1781984121,
+    2120276090,
+    2081032893,
+    657538887,
+    880627183,
+    731821967,
+    177144931,
+    162302155,
+    874950253,
+    1165982802,
+    1464601025,
+    1903855802,
+    590771962,
+    520927847,
+    793485199,
+    1504499797,
+    332635856,
+    1626221222,
+    449795020,
+    2097773610,
+    1119047362,
+    1927645377,
+    447177791,
+    769457262,
+    1395582341,
+    2132600975,
+    301391319,
+    1216861396,
+    741300741,
+    285002698,
+    1590761034,
+    1978193697,
+    412718010,
+    1305608406,
+    517008281,
+    1388769518,
+    1908354221,
+    599346076,
+    707489448,
+    2070459092,
+    1238838766,
+    51917359,
+    1638098927,
+    1859411256,
+    915384447,
+    1360993070
+  ],
+  "debug_seeds": [
+    575569889,
+    1227382831
+  ],
+  "disjointness": {
+    "report_vs_prior": [],
+    "debug_vs_prior": [],
+    "report_vs_debug": []
+  },
+  "statistic": "mean over scenarios of final_alive/96; fixed /96 denominator; no episode dropped",
+  "primary_contrast": "new_fixed3_mean(scene) - old(scene), scene-bootstrap 10000"
+}
